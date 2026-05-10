@@ -6,7 +6,12 @@
   <title>KNB Payslip Generator</title>
 
   <!-- PDF Generator CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+    integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
@@ -311,41 +316,64 @@
     /* Pay-schedule row */
     .schedule-row {
       display: grid;
-      grid-template-columns: minmax(200px, 1fr) 160px auto;
-      gap: 12px;
-      padding: 14px;
-      margin-bottom: 16px;
-      border-radius: 12px;
-      background: var(--soft);
-      border: 1px solid var(--line);
+      grid-template-columns: minmax(200px, 1fr) minmax(150px, 0.72fr) auto;
+      gap: 10px;
+      padding: 14px 0 16px;
+      margin: 0 0 18px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
       align-items: end;
     }
 
     .schedule-row .form-group { gap: 6px; min-width: 0; }
-    .schedule-row select, .schedule-row input { min-width: 0; }
-    .schedule-row label { white-space: nowrap; }
-    .schedule-row button { white-space: nowrap; height: 42px; padding: 0 18px; }
+    .schedule-row select,
+    .schedule-row input {
+      min-width: 0;
+      height: 42px;
+      background-color: var(--card);
+    }
+    .schedule-row label {
+      white-space: nowrap;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+    .schedule-row button {
+      white-space: nowrap;
+      height: 42px;
+      padding: 0 16px;
+      border-radius: 10px;
+    }
+    .schedule-apply { align-self: end; }
     .schedule-row input[type="month"] { padding-right: 34px; }
 
     .schedule-applied {
-      grid-column: 1 / -1;
+      grid-column: 3;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 10px;
-      border-radius: 8px;
+      min-height: 30px;
+      padding: 7px 10px;
+      border-radius: 10px;
       background: var(--success-bg);
       color: var(--success);
       font-size: 12px;
-      font-weight: 500;
+      font-weight: 600;
       width: fit-content;
     }
 
+    .schedule-applied[hidden] { display: none !important; }
+
     .schedule-extras {
-      grid-column: 1 / -1;
+      grid-column: 1 / 3;
       display: flex;
       gap: 8px;
-      flex-wrap: wrap;
+      align-self: end;
+    }
+
+    .schedule-extras .btn-secondary {
+      background: transparent;
     }
 
     /* Archive panel */
@@ -448,6 +476,10 @@
 
     @media (max-width: 760px) {
       .schedule-row { grid-template-columns: 1fr; }
+      .schedule-extras,
+      .schedule-applied { grid-column: 1; }
+      .schedule-row button { width: 100%; justify-content: center; }
+      .schedule-applied { width: 100%; justify-content: center; }
     }
 
     /* Keyboard shortcut hint kbd */
@@ -835,7 +867,7 @@
     }
 
     .panel.collapsible.expanded h2 {
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       padding-bottom: 12px;
       border-bottom: 1px solid var(--line);
     }
@@ -874,6 +906,7 @@
     .panel.collapsible.expanded .panel-body {
       max-height: 4000px;
       opacity: 1;
+      padding-top: 2px;
     }
 
     .step-num {
@@ -894,8 +927,8 @@
     .section-note {
       font-size: 13px;
       color: var(--muted);
-      margin-top: -6px;
-      margin-bottom: 14px;
+      margin: 0 0 16px;
+      line-height: 1.55;
     }
 
     .form-grid {
@@ -946,7 +979,7 @@
     textarea:focus {
       border-color: var(--text);
       box-shadow: 0 0 0 3px var(--primary-soft);
-      background: var(--card);
+      background-color: var(--card);
     }
 
     /* Custom dropdown styling */
@@ -973,6 +1006,9 @@
 
     select:focus {
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ededee' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 13px center;
+      background-size: 12px 12px;
     }
 
     [data-theme="light"] select:focus {
@@ -1285,7 +1321,7 @@
     }
 
     .slip-section {
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
     .slip-section-title {
@@ -1304,7 +1340,7 @@
     .line-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 10px;
+      gap: 12px;
     }
 
     .line-list {
@@ -1336,6 +1372,14 @@
       overflow-wrap: anywhere;
     }
 
+    .line-item.name-row .value {
+      text-align: left;
+    }
+
+    .line-item.name-row {
+      grid-template-columns: 90px max-content 1fr;
+    }
+
     .pay-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -1344,7 +1388,7 @@
 
     /* NET PAY hero block on the slip — compact receipt style */
     .net-hero {
-      margin-top: 10px;
+      margin: 12px 0 14px;
       padding: 8px 10px;
       border-radius: 0;
       background: #18181c;
@@ -1397,6 +1441,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      justify-content: flex-start;
     }
 
     .mini-table {
@@ -1420,7 +1465,7 @@
     }
 
     .mini-table tbody td {
-      padding: 3px 0;
+      padding: 6px 0;
       color: #18181c;
       font-variant-numeric: tabular-nums;
       font-feature-settings: "tnum", "lnum";
@@ -1432,7 +1477,7 @@
     }
 
     .mini-table tfoot td {
-      padding: 4px 0;
+      padding: 7px 0;
       border-top: 1px dashed #18181c !important;
       border-bottom: 0 !important;
       font-weight: 700;
@@ -1449,7 +1494,6 @@
 
     .mini-table tbody td,
     .mini-table tfoot td {
-      padding: 8px 0;
       border-bottom: 1px solid var(--line);
     }
 
@@ -1461,7 +1505,7 @@
       font-weight: 800;
       border-top: 1px solid var(--line-dark);
       border-bottom: 0;
-      padding-top: 10px;
+      padding-top: 9px;
     }
 
     .totals-strip {
@@ -1510,9 +1554,9 @@
     }
 
     .notes-block {
-      margin-top: 10px;
+      margin-top: 12px;
       border-top: 1px dashed #18181c;
-      padding-top: 6px;
+      padding-top: 8px;
     }
 
     .notes-block p {
@@ -1626,15 +1670,16 @@
 
     .slip-sheet.receipt {
       color: #000;
-      padding: 16mm 14mm;
+      padding: 15mm 11mm;
     }
 
     .slip-sheet.receipt .slip-header {
       flex-direction: column;
       align-items: center;
       text-align: center;
-      border-bottom: 2px dashed #000;
-      padding-bottom: 12px;
+      border-bottom: 1px dashed #000;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .slip-sheet.receipt .slip-company {
@@ -1659,7 +1704,7 @@
 
     .slip-sheet.receipt .slip-meta {
       text-align: center;
-      margin-top: 8px;
+      margin-top: 7px;
     }
 
     .slip-sheet.receipt .slip-badge {
@@ -1679,15 +1724,31 @@
       text-align: center;
       border-top: 1px dashed #000;
       border-bottom: 1px dashed #000;
-      padding: 4px 0;
-      margin-bottom: 8px;
+      padding: 3px 0;
+      margin: 0 0 7px;
       letter-spacing: 0.18em;
     }
 
+    .slip-sheet.receipt .net-hero {
+      margin: 0 0 12px;
+      padding: 8px 10px;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .slip-sheet.receipt .slip-section {
+      margin-top: 12px;
+    }
+
+    .slip-sheet.receipt .line-grid,
+    .slip-sheet.receipt .pay-grid {
+      gap: 12px;
+    }
+
     .slip-sheet.receipt .line-list,
-    .slip-sheet.receipt .mini-table,
-    .slip-sheet.receipt .totals-strip {
-      border-top: 1px dashed #000;
+    .slip-sheet.receipt .mini-table {
+      border-top: 0;
       border-bottom: 1px dashed #000;
     }
 
@@ -1699,8 +1760,25 @@
       color: #000;
     }
 
+    .slip-sheet.receipt .line-item {
+      padding: 5px 0;
+    }
+
+    .slip-sheet.receipt .line-item.name-row {
+      grid-template-columns: 90px max-content 1fr;
+    }
+
+    .slip-sheet.receipt .mini-table thead th {
+      padding: 4px 0 5px;
+    }
+
+    .slip-sheet.receipt .mini-table tbody td {
+      padding: 6px 0;
+    }
+
     .slip-sheet.receipt .mini-table tfoot td {
       border-top: 1px dashed #000;
+      padding: 7px 0 2px;
       font-weight: 700;
     }
 
@@ -1764,6 +1842,84 @@
 
     .slip-sheet.receipt .notes-block {
       border-top: 1px dashed #000;
+    }
+
+    .slip-sheet.formal,
+    .slip-sheet.formal * {
+      font-family: "Inter", Arial, sans-serif !important;
+      letter-spacing: 0;
+    }
+
+    .slip-sheet.formal {
+      width: 180mm;
+      padding: 18mm 16mm;
+      line-height: 1.45;
+    }
+
+    .slip-sheet.formal .slip-header {
+      align-items: stretch;
+      text-align: left;
+      border-bottom: 1px solid #d4d4d8;
+      margin-bottom: 14px;
+    }
+
+    .slip-sheet.formal .slip-company {
+      flex-direction: row;
+      align-items: center;
+      text-align: left;
+      gap: 12px;
+    }
+
+    .slip-sheet.formal .slip-company h3 {
+      margin-top: 0;
+      font-size: 16px;
+      letter-spacing: 0.02em;
+    }
+
+    .slip-sheet.formal .slip-meta {
+      text-align: left;
+    }
+
+    .slip-sheet.formal .slip-badge,
+    .slip-sheet.formal .slip-section-title {
+      border: 0;
+      text-align: left;
+      letter-spacing: 0.08em;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .slip-sheet.formal .net-hero {
+      border-radius: 8px;
+      margin: 16px 0;
+      padding: 14px 16px;
+    }
+
+    .slip-sheet.formal .line-item {
+      grid-template-columns: 130px 1fr;
+      padding: 7px 0;
+      border-bottom: 1px solid #e4e4e7;
+    }
+
+    .slip-sheet.formal .line-item.name-row {
+      grid-template-columns: 130px max-content 1fr;
+    }
+
+    .slip-sheet.formal .line-grid,
+    .slip-sheet.formal .pay-grid {
+      gap: 16px;
+    }
+
+    .slip-sheet.formal .mini-table thead th {
+      border-bottom: 1px solid #d4d4d8;
+    }
+
+    .slip-sheet.formal .mini-table tbody td {
+      border-bottom: 1px solid #eeeeef;
+    }
+
+    .slip-sheet.formal .mini-table tfoot td {
+      border-top: 1px solid #18181c !important;
     }
 
     @media print {
@@ -1972,7 +2128,7 @@
               <label for="payMonth">Month</label>
               <input id="payMonth" type="month" />
             </div>
-            <div class="form-group" style="align-self:end">
+            <div class="form-group schedule-apply">
               <button class="btn-secondary" type="button" id="applyScheduleBtn">
                 <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                 Apply
@@ -2009,7 +2165,7 @@
             <div class="form-group">
               <label for="basicPay">Basic Pay</label>
               <input id="basicPay" type="text" inputmode="decimal" placeholder="0.00" />
-              <div class="field-hint" id="basicPayHint">Auto-filled from Basic Salary — edit if needed</div>
+              <div class="field-hint" id="basicPayHint">Auto-filled from Basic Salary; semi-monthly schedules use half</div>
             </div>
 
             <div class="form-group">
@@ -2031,13 +2187,21 @@
               <div class="deductions-toggle">
                 <div>
                   <div class="dt-title">Auto-compute PH deductions</div>
-                  <div class="dt-sub">SSS · PhilHealth · Pag-IBIG · BIR Tax · TRAIN Law (2024)</div>
+                  <div class="dt-sub">SSS · PhilHealth · Pag-IBIG · BIR Tax · TRAIN Law (2025+)</div>
                 </div>
                 <label class="switch">
                   <input type="checkbox" id="autoDeductions" />
                   <span class="switch-track"><span class="switch-thumb"></span></span>
                 </label>
               </div>
+            </div>
+
+            <div class="form-group full">
+              <label for="pdfMode">PDF Format</label>
+              <select id="pdfMode">
+                <option value="receipt">Receipt style</option>
+                <option value="formal">Formal A4 style</option>
+              </select>
             </div>
 
             <div class="form-group">
@@ -2101,6 +2265,10 @@
               <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Download PDF
               <span class="kbd-hint">⌘P</span>
+            </button>
+            <button class="btn-secondary" type="button" id="batchDownloadBtn">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg>
+              Batch PDFs
             </button>
             <button class="btn-secondary" type="button" onclick="clearPayslipForm()">Clear Form</button>
           </div>
@@ -2267,6 +2435,8 @@
       attachBackupButtons();
       attachArchive();
       attach13thMonth();
+      attachPdfMode();
+      attachBatchDownload();
       loadDraft();
       setInterval(tickSaveLabel, 1000);
       MONEY_FIELDS.forEach((id) => {
@@ -2284,17 +2454,14 @@
         if (el) {
           el.addEventListener("input", function () {
             if (id === "basicSalary") {
-              const payEl = document.getElementById("basicPay");
-              if (!payEl.value || payEl.dataset.autofilled === "1") {
-                payEl.value = el.value;
-                payEl.dataset.autofilled = "1";
-              }
+              syncBasicPayFromSalary();
             }
             if (id === "basicPay") {
               document.getElementById("basicPay").dataset.autofilled = "0";
             }
             syncBasicPayHint();
             updateDownloadState();
+            applyValidationState();
             scheduleAutosave();
             updatePanelSummaries();
             renderPayslip();
@@ -2327,7 +2494,12 @@
       const toast = document.createElement("div");
       toast.className = `toast ${type}`;
       const icon = type === "success" ? ICONS.check : type === "error" ? ICONS.x : ICONS.info;
-      toast.innerHTML = `<span class="toast-icon">${icon}</span><span>${message}</span>`;
+      const iconEl = document.createElement("span");
+      iconEl.className = "toast-icon";
+      iconEl.innerHTML = icon;
+      const messageEl = document.createElement("span");
+      messageEl.textContent = String(message);
+      toast.append(iconEl, messageEl);
       stack.appendChild(toast);
       requestAnimationFrame(() => toast.classList.add("show"));
       setTimeout(() => {
@@ -2375,6 +2547,13 @@
       return String(value).replace(/,/g, "");
     }
 
+    function parseMoneyValue(value) {
+      const raw = String(value || "").replace(/,/g, "").trim();
+      if (!raw) return 0;
+      const num = Number(raw);
+      return Number.isFinite(num) ? num : NaN;
+    }
+
     function attachMoneyFormatting() {
       MONEY_FIELDS.forEach((id) => {
         const el = document.getElementById(id);
@@ -2386,6 +2565,7 @@
           el.value = formatMoneyInput(el.value);
           renderPayslip();
           updateDownloadState();
+          applyValidationState();
         });
       });
     }
@@ -2407,12 +2587,101 @@
       if (payField) payField.classList.toggle("invalid", cleanAmount("basicPay") <= 0 && payField.dataset.touched === "1");
     }
 
+    function getValidationErrors() {
+      const errors = [];
+
+      MONEY_FIELDS.forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el || !String(el.value || "").trim()) return;
+        const amount = parseMoneyValue(el.value);
+        if (!Number.isFinite(amount)) {
+          errors.push({ field: id, message: `${fieldLabel(id)} must be a valid amount` });
+        } else if (amount < 0) {
+          errors.push({ field: id, message: `${fieldLabel(id)} cannot be negative` });
+        }
+      });
+
+      const start = textValue("periodStart");
+      const end = textValue("periodEnd");
+      const payment = textValue("paymentDate");
+      if (start && end && end < start) {
+        errors.push({ field: "periodEnd", message: "Pay Period End cannot be before Pay Period Start" });
+      }
+      if (start && payment && payment < start) {
+        errors.push({ field: "paymentDate", message: "Payment Date cannot be before Pay Period Start" });
+      }
+
+      return errors;
+    }
+
+    function fieldLabel(id) {
+      const label = document.querySelector(`label[for="${id}"]`);
+      return label ? label.textContent.trim() : id;
+    }
+
+    function applyValidationState() {
+      document.querySelectorAll(".invalid").forEach((el) => {
+        if (!["employeeName", "basicPay"].includes(el.id)) el.classList.remove("invalid");
+      });
+      getValidationErrors().forEach((err) => {
+        const el = document.getElementById(err.field);
+        if (el) el.classList.add("invalid");
+      });
+    }
+
+    function isSemiMonthlyCutoff() {
+      const cutoff = document.getElementById("payCutoff")?.value;
+      return cutoff === "first" || cutoff === "second";
+    }
+
+    function getPayBasis() {
+      const cutoff = document.getElementById("payCutoff")?.value;
+      if (cutoff === "first") {
+        return {
+          type: "semi-monthly",
+          label: "Semi-Monthly Basic Pay",
+          schedule: "Semi-monthly - 1st cutoff",
+          salaryBasis: "Monthly salary prorated to 1st cutoff"
+        };
+      }
+      if (cutoff === "second") {
+        return {
+          type: "semi-monthly",
+          label: "Semi-Monthly Basic Pay",
+          schedule: "Semi-monthly - 2nd cutoff",
+          salaryBasis: "Monthly salary prorated to 2nd cutoff"
+        };
+      }
+      return {
+        type: "monthly",
+        label: "Monthly Basic Pay",
+        schedule: "Monthly / custom period",
+        salaryBasis: "Monthly salary used for selected period"
+      };
+    }
+
+    function suggestedBasicPayFromSalary() {
+      const monthlySalary = cleanAmount("basicSalary");
+      if (monthlySalary <= 0) return 0;
+      return isSemiMonthlyCutoff() ? monthlySalary / 2 : monthlySalary;
+    }
+
+    function syncBasicPayFromSalary() {
+      const payEl = document.getElementById("basicPay");
+      if (!payEl || (payEl.value && payEl.dataset.autofilled !== "1")) return;
+
+      const suggested = suggestedBasicPayFromSalary();
+      payEl.value = suggested > 0 ? formatMoneyInput(suggested) : "";
+      payEl.dataset.autofilled = "1";
+    }
+
     function attachValidation() {
-      ["employeeName", "basicPay"].forEach((id) => {
+      [...new Set(["employeeName", "basicPay", "periodStart", "periodEnd", "paymentDate", ...MONEY_FIELDS])].forEach((id) => {
         const el = document.getElementById(id);
         if (!el) return;
         el.addEventListener("blur", () => {
           el.dataset.touched = "1";
+          applyValidationState();
           updateDownloadState();
         });
       });
@@ -2423,11 +2692,14 @@
       if (!hint) return;
       const salary = cleanAmount("basicSalary");
       const pay = cleanAmount("basicPay");
-      if (salary > 0 && Math.abs(salary - pay) < 0.01) {
-        hint.innerHTML = `${ICONS.check} <span>Auto-filled from Basic Salary</span>`;
+      const suggested = suggestedBasicPayFromSalary();
+      if (suggested > 0 && Math.abs(suggested - pay) < 0.01) {
+        hint.innerHTML = `${ICONS.check} <span>Auto-filled as ${getPayBasis().label}</span>`;
         hint.classList.add("auto-filled");
       } else if (salary > 0) {
-        hint.textContent = "Edited — differs from Basic Salary";
+        hint.textContent = isSemiMonthlyCutoff()
+          ? "Edited - differs from selected cutoff amount"
+          : "Edited - differs from Basic Salary";
         hint.classList.remove("auto-filled");
       } else {
         hint.textContent = "Enter Basic Salary above to auto-fill";
@@ -2566,8 +2838,7 @@
       const monthlySalary = cleanAmount("basicSalary");
       const payEl = document.getElementById("basicPay");
       if (monthlySalary > 0 && (payEl.dataset.autofilled === "1" || !payEl.value)) {
-        payEl.value = formatMoneyInput(monthlySalary / 2);
-        payEl.dataset.autofilled = "1";
+        syncBasicPayFromSalary();
       }
 
       const label = cutoff === "first" ? "1st cutoff (1–15)" : "2nd cutoff (16–end)";
@@ -2576,6 +2847,7 @@
 
       syncBasicPayHint();
       updateDownloadState();
+      applyValidationState();
       scheduleAutosave();
       renderPayslip();
     }
@@ -2591,15 +2863,15 @@
       badge.hidden = false;
     }
 
-    /* === PH Statutory Deductions (2024) === */
+    /* === PH Statutory Deductions (2025+) === */
     function computeSSS(monthlySalary) {
-      // SSS 2024: Employee rate 4.5% of MSC. MSC steps of 500.
-      // MSC range: 4,000 to 30,000.
+      // SSS 2025: Employee rate 5% of MSC. MSC steps of 500.
+      // MSC range: 5,000 to 35,000.
       if (monthlySalary <= 0) return 0;
       let msc = Math.round(monthlySalary / 500) * 500;
-      if (msc < 4000) msc = 4000;
-      if (msc > 30000) msc = 30000;
-      return +(msc * 0.045).toFixed(2);
+      if (msc < 5000) msc = 5000;
+      if (msc > 35000) msc = 35000;
+      return +(msc * 0.05).toFixed(2);
     }
 
     function computePhilHealth(monthlySalary) {
@@ -2667,6 +2939,7 @@
 
       renderPayslip();
       updateDownloadState();
+      applyValidationState();
     }
 
     function attachAutoDeductions() {
@@ -2779,6 +3052,78 @@
     function redownloadArchive(id) {
       loadArchiveEntry(id);
       setTimeout(() => downloadPdf(), 500);
+    }
+
+    function snapshotForm() {
+      const values = {};
+      inputIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) values[id] = el.value;
+      });
+      values.employeeSelect = document.getElementById("employeeSelect")?.value || "";
+      values.basicPayAutofilled = document.getElementById("basicPay")?.dataset.autofilled || "";
+      return values;
+    }
+
+    function restoreForm(snapshot) {
+      Object.entries(snapshot).forEach(([id, value]) => {
+        if (id === "employeeSelect" || id === "basicPayAutofilled") return;
+        const el = document.getElementById(id);
+        if (el) el.value = value;
+      });
+      const select = document.getElementById("employeeSelect");
+      if (select) select.value = snapshot.employeeSelect || "";
+      const payEl = document.getElementById("basicPay");
+      if (payEl) payEl.dataset.autofilled = snapshot.basicPayAutofilled || "";
+      syncBasicPayHint();
+      updateDownloadState();
+      renderPayslip();
+    }
+
+    function wait(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    function attachBatchDownload() {
+      const btn = document.getElementById("batchDownloadBtn");
+      if (!btn) return;
+      btn.addEventListener("click", batchDownloadPdfs);
+    }
+
+    async function batchDownloadPdfs() {
+      const employees = getEmployees();
+      if (employees.length === 0) {
+        showToast("Save employees before batch download", "error");
+        return;
+      }
+      if (typeof html2pdf !== "function") {
+        showToast("PDF library did not load. Check your connection and reload the page.", "error");
+        return;
+      }
+
+      const snapshot = snapshotForm();
+      const btn = document.getElementById("batchDownloadBtn");
+      if (btn) btn.disabled = true;
+      let completed = 0;
+
+      try {
+        for (const employee of employees) {
+          fillEmployeeFields(employee);
+          if (document.getElementById("autoDeductions")?.checked) recomputeAutoDeductions();
+          renderPayslip();
+          const ok = await downloadPdf({ silent: true });
+          if (!ok) break;
+          completed += 1;
+          await wait(500);
+        }
+      } finally {
+        restoreForm(snapshot);
+        if (btn) btn.disabled = false;
+      }
+
+      if (completed > 0) {
+        showToast(`Generated ${completed} PDF${completed === 1 ? "" : "s"}`, "success");
+      }
     }
 
     function renderArchive() {
@@ -2970,6 +3315,7 @@
         exportedAt: new Date().toISOString(),
         company: JSON.parse(localStorage.getItem(STORAGE_KEYS.company) || "null"),
         employees: JSON.parse(localStorage.getItem(STORAGE_KEYS.employees) || "[]"),
+        archive: JSON.parse(localStorage.getItem(STORAGE_KEYS.archive) || "[]"),
         draft: JSON.parse(localStorage.getItem("phPayslipDraft") || "null"),
         theme: localStorage.getItem("phPayslipTheme"),
         autoDeductions: localStorage.getItem("phPayslipAutoDeductions")
@@ -3001,6 +3347,7 @@
 
         if (data.company) localStorage.setItem(STORAGE_KEYS.company, JSON.stringify(data.company));
         if (Array.isArray(data.employees)) localStorage.setItem(STORAGE_KEYS.employees, JSON.stringify(data.employees));
+        if (Array.isArray(data.archive)) localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(data.archive));
         if (data.draft) localStorage.setItem("phPayslipDraft", JSON.stringify(data.draft));
         if (data.theme) localStorage.setItem("phPayslipTheme", data.theme);
         if (data.autoDeductions != null) localStorage.setItem("phPayslipAutoDeductions", data.autoDeductions);
@@ -3062,6 +3409,31 @@
       return `<svg viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg" fill="#18181c">${cells}</svg>`;
     }
 
+    function preparePdfCloneAssets(clone) {
+      clone.querySelectorAll("img").forEach((img) => {
+        const src = img.getAttribute("src") || "";
+        const isLocalFileImage = location.protocol === "file:" && !src.startsWith("data:");
+        if (!isLocalFileImage) return;
+
+        const fallback = document.createElement("div");
+        fallback.className = img.className || "slip-logo";
+        fallback.textContent = "KNB";
+        fallback.setAttribute("aria-label", img.getAttribute("alt") || "Company Logo");
+        fallback.style.display = "inline-flex";
+        fallback.style.alignItems = "center";
+        fallback.style.justifyContent = "center";
+        fallback.style.width = img.classList.contains("slip-logo") ? "52px" : "64px";
+        fallback.style.height = img.classList.contains("slip-logo") ? "52px" : "64px";
+        fallback.style.borderRadius = "12px";
+        fallback.style.background = "#0a0a0b";
+        fallback.style.color = "#ffffff";
+        fallback.style.fontWeight = "800";
+        fallback.style.fontSize = "15px";
+        fallback.style.letterSpacing = "0";
+        img.replaceWith(fallback);
+      });
+    }
+
     function attachPaySchedule() {
       const btn = document.getElementById("applyScheduleBtn");
       const monthInput = document.getElementById("payMonth");
@@ -3103,12 +3475,40 @@
     }
 
     function cleanAmount(id) {
-      const raw = String(document.getElementById(id).value || "").replace(/,/g, "");
-      return Number(raw) || 0;
+      const el = document.getElementById(id);
+      return parseMoneyValue(el ? el.value : "") || 0;
     }
 
     function textValue(id) {
       return document.getElementById(id).value.trim();
+    }
+
+    function getPdfMode() {
+      const mode = document.getElementById("pdfMode")?.value || localStorage.getItem("phPayslipPdfMode") || "receipt";
+      return mode === "formal" ? "formal" : "receipt";
+    }
+
+    function attachPdfMode() {
+      const select = document.getElementById("pdfMode");
+      if (!select) return;
+      select.value = localStorage.getItem("phPayslipPdfMode") || "receipt";
+      select.addEventListener("change", () => {
+        localStorage.setItem("phPayslipPdfMode", getPdfMode());
+        renderPayslip();
+      });
+    }
+
+    function generatePayslipRef(data) {
+      const date = data.payPeriod.paymentDate || data.payPeriod.end || new Date().toISOString().slice(0, 10);
+      const compactDate = String(date).slice(0, 7).replace("-", "");
+      const employeeKey = (data.employee.employeeId || data.employee.name || "EMP")
+        .toUpperCase()
+        .replace(/[^A-Z0-9]/g, "")
+        .slice(0, 12) || "EMP";
+      const startDay = Number(String(data.payPeriod.start || "").slice(-2));
+      const endDay = Number(String(data.payPeriod.end || "").slice(-2));
+      const cutoff = startDay >= 16 ? "02" : endDay > 0 && endDay <= 15 ? "01" : "00";
+      return `KNB-${compactDate}-${employeeKey}-${cutoff}`;
     }
 
     function escapeHtml(value) {
@@ -3268,6 +3668,13 @@
 
       if (!employee) return;
 
+      fillEmployeeFields(employee);
+      updateDownloadState();
+      renderPayslip();
+      showToast(`Loaded: ${employee.name}`, "info");
+    }
+
+    function fillEmployeeFields(employee) {
       document.getElementById("employeeName").value = employee.name || "";
       document.getElementById("employeeId").value = employee.employeeId || "";
       document.getElementById("position").value = employee.position || "";
@@ -3275,13 +3682,11 @@
       document.getElementById("employeeEmail").value = employee.email || "";
       document.getElementById("basicSalary").value = formatMoneyInput(employee.basicSalary || "");
       const payEl = document.getElementById("basicPay");
-      payEl.value = formatMoneyInput(employee.basicSalary || "");
       payEl.dataset.autofilled = "1";
+      syncBasicPayFromSalary();
 
       syncBasicPayHint();
       updateDownloadState();
-      renderPayslip();
-      showToast(`Loaded: ${employee.name}`, "info");
     }
 
     async function deleteEmployee() {
@@ -3370,7 +3775,7 @@
 
       const netPay = grossPay - totalDeductions;
 
-      return {
+      const data = {
         company: {
           name: COMPANY_NAME,
           address: textValue("companyAddress"),
@@ -3389,7 +3794,8 @@
         payPeriod: {
           start: textValue("periodStart"),
           end: textValue("periodEnd"),
-          paymentDate: textValue("paymentDate")
+          paymentDate: textValue("paymentDate"),
+          basis: getPayBasis()
         },
         earnings: {
           basicPay,
@@ -3413,6 +3819,8 @@
         },
         notes: textValue("notes")
       };
+      data.reference = generatePayslipRef(data);
+      return data;
     }
 
     function renderPayslip() {
@@ -3450,7 +3858,7 @@
         : "Pay period";
 
       document.getElementById("payslipPreview").innerHTML = `
-        <div class="slip-sheet" id="payslipContent">
+        <div class="slip-sheet ${getPdfMode()}" id="payslipContent">
           <div class="slip-header">
             <div class="slip-company">
               ${logoHtml}
@@ -3482,7 +3890,7 @@
               <div>
                 <div class="slip-section-title">Employee</div>
                 <div class="line-list">
-                  <div class="line-item"><div class="label">Name</div><div class="value"><div class="slip-employee-row"><span class="slip-avatar">${escapeHtml(getInitials(data.employee.name))}</span><span>${escapeHtml(data.employee.name) || "—"}</span></div></div></div>
+                  <div class="line-item name-row"><div class="label">Name</div><div class="value"><div class="slip-employee-row"><span class="slip-avatar">${escapeHtml(getInitials(data.employee.name))}</span><span>${escapeHtml(data.employee.name) || "—"}</span></div></div></div>
                   <div class="line-item"><div class="label">Employee ID</div><div class="value">${escapeHtml(data.employee.employeeId) || "—"}</div></div>
                   <div class="line-item"><div class="label">Position</div><div class="value">${escapeHtml(data.employee.position) || "—"}</div></div>
                   <div class="line-item"><div class="label">Department</div><div class="value">${escapeHtml(data.employee.department) || "—"}</div></div>
@@ -3497,6 +3905,8 @@
                   <div class="line-item"><div class="label">Period End</div><div class="value">${formatDate(data.payPeriod.end)}</div></div>
                   <div class="line-item"><div class="label">Payment Date</div><div class="value">${formatDate(data.payPeriod.paymentDate)}</div></div>
                   <div class="line-item"><div class="label">Basic Salary</div><div class="value">${peso(data.employee.basicSalary)}</div></div>
+                  <div class="line-item"><div class="label">Pay Basis</div><div class="value">${escapeHtml(data.payPeriod.basis.schedule)}</div></div>
+                  <div class="line-item"><div class="label">Salary Basis</div><div class="value">${escapeHtml(data.payPeriod.basis.salaryBasis)}</div></div>
                 </div>
               </div>
             </div>
@@ -3514,7 +3924,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr><td>Basic Pay</td><td>${peso(data.earnings.basicPay)}</td></tr>
+                    <tr><td>${escapeHtml(data.payPeriod.basis.label)}</td><td>${peso(data.earnings.basicPay)}</td></tr>
                     <tr><td>Overtime Pay</td><td>${peso(data.earnings.overtimePay)}</td></tr>
                     <tr><td>Bonuses</td><td>${peso(data.earnings.bonuses)}</td></tr>
                     <tr><td>Allowances</td><td>${peso(data.earnings.allowances)}</td></tr>
@@ -3562,14 +3972,14 @@
           </div>
 
           <div class="slip-footer">
-            <div class="slip-ref">Ref: ${escapeHtml((data.employee.employeeId || data.employee.name || "—") + " / " + (data.payPeriod.paymentDate || ""))}</div>
+            <div class="slip-ref">Ref: ${escapeHtml(data.reference)}</div>
             <div>Generated electronically · Philippine Peso (PHP)</div>
           </div>
         </div>
       `;
     }
 
-    function downloadPdf() {
+    async function downloadPdf(options = {}) {
       const missing = [];
       if (!textValue("employeeName")) missing.push("Employee Name");
       if (cleanAmount("basicPay") <= 0) missing.push("Basic Pay");
@@ -3580,14 +3990,31 @@
         });
         updateDownloadState();
         showToast(`Missing: ${missing.join(", ")}`, "error");
-        return;
+        return false;
       }
 
-      // Auto-fill payment date with today if empty
+      const validationErrors = getValidationErrors();
+      if (validationErrors.length) {
+        validationErrors.forEach((err) => {
+          const el = document.getElementById(err.field);
+          if (el) el.dataset.touched = "1";
+        });
+        applyValidationState();
+        updateDownloadState();
+        showToast(validationErrors[0].message, "error");
+        return false;
+      }
+
+      // Auto-fill payment date only after validating user-entered dates.
       const paymentEl = document.getElementById("paymentDate");
       if (paymentEl && !paymentEl.value) {
         const t = new Date();
         paymentEl.value = `${t.getFullYear()}-${pad(t.getMonth() + 1)}-${pad(t.getDate())}`;
+      }
+
+      if (typeof html2pdf !== "function") {
+        showToast("PDF library did not load. Check your connection and reload the page.", "error");
+        return false;
       }
 
       renderPayslip();
@@ -3596,14 +4023,16 @@
 
       if (!source) {
         showToast("Fill out the payslip form first", "error");
-        return;
+        return false;
       }
 
+      const dataForFile = getPayslipData();
       const employeeName = textValue("employeeName") || "employee";
       const periodEnd = textValue("periodEnd") || new Date().toISOString().slice(0, 10);
-      const filename = `payslip-${employeeName.replace(/\s+/g, "-").toLowerCase()}-${periodEnd}.pdf`;
+      const filename = `${dataForFile.reference || `payslip-${employeeName.replace(/\s+/g, "-").toLowerCase()}-${periodEnd}`}.pdf`;
 
-      const PDF_WIDTH_MM = 115;
+      const mode = getPdfMode();
+      const PDF_WIDTH_MM = mode === "formal" ? 210 : 115;
       const PX_PER_MM = 96 / 25.4; // CSS px per mm at 96 DPI
 
       const printWrapper = document.createElement("div");
@@ -3622,6 +4051,7 @@
       clone.style.minHeight = "auto";
       clone.style.margin = "0";
       clone.style.boxShadow = "none";
+      preparePdfCloneAssets(clone);
 
       printWrapper.appendChild(clone);
       document.body.appendChild(printWrapper);
@@ -3648,20 +4078,21 @@
         }
       };
 
-      html2pdf()
-        .set(opt)
-        .from(clone)
-        .save()
-        .then(() => {
-          document.body.removeChild(printWrapper);
+      try {
+        await html2pdf().set(opt).from(clone).save();
+        document.body.removeChild(printWrapper);
+        if (options.archive !== false) {
           try { archiveSnapshot(getPayslipData()); } catch (e) { console.warn(e); }
-          showToast("PDF downloaded · saved to history", "success");
-        })
-        .catch((error) => {
-          document.body.removeChild(printWrapper);
-          console.error(error);
-          showToast("Could not generate the PDF", "error");
-        });
+        }
+        if (!options.silent) showToast("PDF downloaded · saved to history", "success");
+        return true;
+      } catch (error) {
+        document.body.removeChild(printWrapper);
+        console.error(error);
+        const detail = error && error.message ? `: ${error.message}` : "";
+        showToast(`Could not generate the PDF${detail}`, "error");
+        return false;
+      }
     }
   </script>
 </body>
