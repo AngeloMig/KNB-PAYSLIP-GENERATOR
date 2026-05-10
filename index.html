@@ -12,6 +12,7 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   ></script>
+  <script src="assets/vendor/qrcode.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
@@ -36,6 +37,7 @@
       --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
       --shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.5);
       --shadow-lg: 0 25px 50px -20px rgba(0, 0, 0, 0.6);
+      --focus-ring: rgba(255, 255, 255, 0.12);
       --radius: 14px;
       --radius-sm: 10px;
     }
@@ -59,6 +61,7 @@
       --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
       --shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.12);
       --shadow-lg: 0 25px 50px -20px rgba(0, 0, 0, 0.18);
+      --focus-ring: rgba(10, 10, 11, 0.08);
     }
 
     * { box-sizing: border-box; }
@@ -129,6 +132,16 @@
       color: var(--text);
     }
 
+    .brand-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      object-fit: contain;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      padding: 3px;
+    }
+
     .theme-toggle {
       background: var(--soft);
       color: var(--text);
@@ -168,44 +181,54 @@
       top: 16px;
     }
 
-    /* Toasts */
+    /* Toasts — subtle, clean, compact */
     .toast-stack {
       position: fixed;
-      top: 20px;
-      right: 20px;
+      bottom: 16px;
+      right: 16px;
       z-index: 9999;
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      flex-direction: column-reverse;
+      gap: 6px;
       pointer-events: none;
+      max-width: calc(100% - 32px);
     }
 
     .toast {
       pointer-events: auto;
-      min-width: 240px;
-      max-width: 360px;
+      min-width: 0;
+      max-width: 320px;
       background: var(--card);
       color: var(--text);
       border: 1px solid var(--line);
-      border-left: 4px solid var(--primary);
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 14px;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 13px;
       font-weight: 500;
-      box-shadow: 0 18px 40px -12px rgba(15, 23, 42, 0.25);
+      line-height: 1.35;
+      box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.18);
       display: flex;
       align-items: center;
-      gap: 10px;
-      transform: translateX(120%);
+      gap: 8px;
+      transform: translateY(8px);
       opacity: 0;
-      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s;
+      transition: transform 0.18s ease, opacity 0.18s ease;
     }
 
-    .toast.show { transform: translateX(0); opacity: 1; }
-    .toast.success { border-left-color: #10b981; }
-    .toast.error { border-left-color: var(--danger); }
-    .toast.info { border-left-color: var(--primary); }
-    .toast .toast-icon { font-size: 18px; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast .toast-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      color: var(--muted);
+    }
+    .toast .toast-icon svg { width: 14px; height: 14px; }
+    .toast.success .toast-icon { color: var(--success); }
+    .toast.error .toast-icon { color: var(--danger); }
+    .toast.info .toast-icon { color: var(--muted); }
 
     /* Validation */
     input.invalid, textarea.invalid, select.invalid {
@@ -316,7 +339,7 @@
     /* Pay-schedule row */
     .schedule-row {
       display: grid;
-      grid-template-columns: minmax(200px, 1fr) minmax(150px, 0.72fr) auto;
+      grid-template-columns: minmax(290px, 1.3fr) minmax(140px, 0.7fr) auto;
       gap: 10px;
       padding: 14px 0 16px;
       margin: 0 0 18px;
@@ -361,6 +384,8 @@
       font-size: 12px;
       font-weight: 600;
       width: fit-content;
+      white-space: nowrap;
+      align-self: end;
     }
 
     .schedule-applied[hidden] { display: none !important; }
@@ -370,7 +395,9 @@
       display: flex;
       gap: 8px;
       align-self: end;
+      align-items: flex-end;
     }
+    .schedule-extras .btn-secondary { height: 42px; }
 
     .schedule-extras .btn-secondary {
       background: transparent;
@@ -446,10 +473,27 @@
       text-align: right;
     }
 
-    .archive-actions { display: flex; gap: 4px; }
+    .archive-actions {
+      display: flex;
+      gap: 4px;
+      opacity: 0;
+      transform: translateX(4px);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      pointer-events: none;
+    }
+    .archive-item:hover .archive-actions,
+    .archive-item:focus-within .archive-actions {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+    /* Touch / no-hover devices: keep actions visible */
+    @media (hover: none) {
+      .archive-actions { opacity: 1; transform: none; pointer-events: auto; }
+    }
     .archive-actions button {
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       padding: 0;
       background: transparent;
       border: 1px solid var(--line);
@@ -460,12 +504,36 @@
     .archive-actions button.danger:hover { color: var(--danger); border-color: var(--danger); background: rgba(248, 113, 113, 0.08); }
 
     .archive-empty {
-      padding: 32px 16px;
+      padding: 28px 16px;
       text-align: center;
       color: var(--muted);
       font-size: 13px;
       border: 1px dashed var(--line);
       border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .archive-empty .archive-empty-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--soft);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+    }
+    .archive-empty strong { color: var(--text); font-weight: 600; font-size: 13.5px; }
+    .archive-empty .archive-empty-sub { font-size: 12px; opacity: 0.85; }
+    .archive-empty .archive-empty-query {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      color: var(--text);
+      background: var(--soft);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 11.5px;
     }
 
     @media (max-width: 760px) {
@@ -511,14 +579,17 @@
     .slip-verify {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
-      font-size: 10.5px;
+      margin-top: 6px;
+      font-size: 9px;
       color: #6b7280;
+      text-align: left;
     }
 
     .slip-verify-mark {
-      width: 44px;
-      height: 44px;
+      width: 60px;
+      height: 60px;
       border: 1px solid #e4e4e7;
       border-radius: 6px;
       padding: 4px;
@@ -530,6 +601,24 @@
       display: block;
       width: 100%;
       height: 100%;
+    }
+
+    .slip-verify-copy {
+      max-width: 220px;
+      line-height: 1.35;
+    }
+
+    .slip-verify-copy strong {
+      display: block;
+      color: #18181c;
+      font-size: 9px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .slip-verify-copy span {
+      display: block;
+      overflow-wrap: anywhere;
     }
 
     /* Custom date/month input picker icon */
@@ -643,32 +732,135 @@
     .save-indicator {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: 12px;
+      gap: 7px;
+      font-size: 11.5px;
+      font-weight: 500;
       color: var(--muted);
-      padding: 6px 10px;
+      padding: 5px 10px 5px 9px;
       border-radius: 999px;
       background: var(--soft);
       border: 1px solid var(--line);
       margin-left: auto;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
     }
 
     .save-indicator .dot {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+      background: var(--muted);
+      flex-shrink: 0;
+      transition: background 0.25s, box-shadow 0.25s;
     }
 
+    /* Idle (default): gray dot */
+    /* Saving: amber pulsing */
+    .save-indicator.saving { color: var(--warning); border-color: rgba(245, 158, 11, 0.35); }
+    [data-theme="light"] .save-indicator.saving { background: rgba(217, 119, 6, 0.06); border-color: rgba(217, 119, 6, 0.3); }
+    [data-theme="light"] .save-indicator.saved { background: rgba(4, 120, 87, 0.06); border-color: rgba(4, 120, 87, 0.28); }
     .save-indicator.saving .dot {
       background: var(--warning);
-      animation: pulse 1.2s ease-in-out infinite;
+      animation: pulse-amber 1.2s ease-in-out infinite;
+    }
+    /* Saved: green steady */
+    .save-indicator.saved { color: var(--success); border-color: rgba(16, 185, 129, 0.3); background: var(--success-bg); }
+    .save-indicator.saved .dot {
+      background: var(--success);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.14);
     }
 
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5); }
-      50% { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+    @keyframes pulse-amber {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.55); }
+      50% { box-shadow: 0 0 0 5px rgba(245, 158, 11, 0); }
+    }
+
+    /* Segmented control (replaces selects with few options) */
+    .segmented {
+      display: inline-flex;
+      gap: 2px;
+      padding: 3px;
+      border-radius: 10px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      width: 100%;
+      overflow: hidden;
+    }
+    .seg-option {
+      flex: 1 1 0;
+      padding: 7px 8px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 500;
+      line-height: 1.25;
+      cursor: pointer;
+      border-radius: 7px;
+      transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .seg-option:hover { color: var(--text); }
+    .seg-option.active {
+      background: var(--card);
+      color: var(--text);
+      border-color: var(--line);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+      /* keep weight subtle — heavier weight changes glyph metrics and shifts layout */
+      font-weight: 600;
+    }
+    [data-theme="light"] .seg-option.active {
+      border-color: var(--line-dark);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    .seg-hidden { position: absolute; left: -10000px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+    /* PDF generating spinner + busy state */
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .pdf-spinner {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid currentColor;
+      border-top-color: transparent;
+      animation: spin 0.6s linear infinite;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    button.is-busy {
+      pointer-events: none;
+      opacity: 0.85;
+      cursor: progress !important;
+    }
+    button.is-busy > :not(.pdf-spinner):not(.busy-label) { display: none; }
+
+    /* Dirty-state badge dot on action buttons */
+    button.has-dirty {
+      position: relative;
+    }
+    button.has-dirty::after {
+      content: "";
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--warning);
+      box-shadow: 0 0 0 2px var(--card);
+      animation: dirty-pulse 2s ease-in-out infinite;
+    }
+    @keyframes dirty-pulse {
+      0%, 100% { box-shadow: 0 0 0 2px var(--card), 0 0 0 0 rgba(245, 158, 11, 0.4); }
+      50% { box-shadow: 0 0 0 2px var(--card), 0 0 0 4px rgba(245, 158, 11, 0); }
     }
 
     /* Drop zone for logo */
@@ -782,6 +974,7 @@
       pointer-events: none;
       transition: opacity 0.2s;
     }
+    [data-theme="light"] .modal-backdrop { background: rgba(15, 23, 42, 0.32); }
     .modal-backdrop.show { opacity: 1; pointer-events: auto; }
 
     .modal {
@@ -816,6 +1009,136 @@
       justify-content: flex-end;
     }
 
+    /* Prompt modal — year picker style */
+    .modal-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .modal-eyebrow .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--text);
+    }
+    .modal .prompt-subject {
+      margin: 0 0 16px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .modal .prompt-subject strong { color: var(--text); font-weight: 600; }
+    .year-stepper {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--soft);
+      margin-bottom: 12px;
+    }
+    .year-stepper button {
+      width: 40px;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+      padding: 0;
+    }
+    .year-stepper button:hover { background: var(--card-2); }
+    .year-stepper input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      padding: 12px 0;
+      box-shadow: none !important;
+    }
+    .year-stepper input:focus { outline: none; background: var(--card); }
+    .year-quick {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .year-chip {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .year-chip:hover { border-color: var(--line-dark); color: var(--text); }
+    .year-chip.active {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+    }
+
+    /* Rich confirm body */
+    .confirm-body { margin: 0 0 18px; }
+    .confirm-stats {
+      display: grid;
+      gap: 8px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--soft);
+      margin-bottom: 12px;
+    }
+    .confirm-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      font-size: 13px;
+    }
+    .confirm-stat .label { color: var(--muted); }
+    .confirm-stat .value {
+      font-weight: 600;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+    }
+    .confirm-stat.divider {
+      border-top: 1px dashed var(--line);
+      padding-top: 8px;
+      margin-top: 2px;
+    }
+    .confirm-stat.highlight .label { color: var(--text); font-weight: 600; }
+    .confirm-stat.highlight .value {
+      font-size: 18px;
+      color: var(--success);
+    }
+    .confirm-formula {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      text-align: center;
+      padding-top: 4px;
+    }
+    .confirm-note {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
     .panel {
       background: var(--card);
       border: 1px solid var(--line);
@@ -835,9 +1158,26 @@
     }
 
     /* Tabular numerics across the app */
-    .tnum, .summary-card strong, .save-indicator {
+    .tnum, .summary-card strong, .save-indicator,
+    .archive-amount, .net-hero-amount,
+    .mini-table td, .mini-table th,
+    input[inputmode="decimal"] {
       font-variant-numeric: tabular-nums;
       font-feature-settings: "tnum", "lnum";
+    }
+
+    /* Display-style money figures use mono for crisper alignment */
+    .summary-card strong,
+    .net-hero-amount,
+    .archive-amount {
+      font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    }
+
+    /* Mini-table amount columns: tabular-only (Inter), right-aligned, slight letter-spacing */
+    .mini-table tbody td:last-child,
+    .mini-table tfoot td:last-child {
+      font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 12.5px;
     }
 
     .summary-card strong {
@@ -931,6 +1271,27 @@
       line-height: 1.55;
     }
 
+    /* Subsection header inside a panel */
+    .form-subhead {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 8px 0 -4px;
+    }
+    .form-subhead::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+    .form-subhead:first-child { margin-top: 0; }
+
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -978,9 +1339,21 @@
     select:focus,
     textarea:focus {
       border-color: var(--text);
-      box-shadow: 0 0 0 3px var(--primary-soft);
+      box-shadow: 0 0 0 3px var(--focus-ring);
       background-color: var(--card);
     }
+
+    /* Accessible focus rings for all interactive elements (keyboard only) */
+    button:focus-visible,
+    a:focus-visible,
+    [role="button"]:focus-visible,
+    .switch input:focus-visible + .switch-track,
+    summary:focus-visible {
+      outline: 2px solid var(--text);
+      outline-offset: 2px;
+      box-shadow: 0 0 0 4px var(--focus-ring);
+    }
+    button:focus:not(:focus-visible) { outline: none; }
 
     /* Custom dropdown styling */
     select {
@@ -1237,7 +1610,7 @@
       text-align: center;
       gap: 8px;
       padding-bottom: 10px;
-      border-bottom: 1px dashed #18181c;
+      border-bottom: 1px solid #d4d4d8;
     }
 
     .slip-company {
@@ -1296,7 +1669,7 @@
 
     .slip-badge {
       display: inline-block;
-      border: 1px dashed #18181c;
+      border: 1px solid #d4d4d8;
       background: transparent;
       color: #18181c;
       padding: 3px 10px;
@@ -1333,8 +1706,8 @@
       text-align: center;
       padding: 3px 0;
       margin-bottom: 6px;
-      border-top: 1px dashed #18181c;
-      border-bottom: 1px dashed #18181c;
+      border-top: 1px solid #d4d4d8;
+      border-bottom: 1px solid #d4d4d8;
     }
 
     .line-grid {
@@ -1460,7 +1833,7 @@
       letter-spacing: 0.16em;
       color: #71717a;
       font-weight: 700;
-      border-bottom: 1px dashed #a1a1aa;
+      border-bottom: 1px solid #e4e4e7;
       background: transparent;
     }
 
@@ -1478,7 +1851,7 @@
 
     .mini-table tfoot td {
       padding: 7px 0;
-      border-top: 1px dashed #18181c !important;
+      border-top: 1px solid #d4d4d8 !important;
       border-bottom: 0 !important;
       font-weight: 700;
       font-size: 10.5px;
@@ -1555,7 +1928,7 @@
 
     .notes-block {
       margin-top: 12px;
-      border-top: 1px dashed #18181c;
+      border-top: 1px solid #d4d4d8;
       padding-top: 8px;
     }
 
@@ -1574,7 +1947,7 @@
     }
 
     .signature-line {
-      border-top: 1px dashed #71717a;
+      border-top: 1px solid #e4e4e7;
       padding-top: 4px;
       font-size: 9px;
       color: #71717a;
@@ -1584,7 +1957,7 @@
     .slip-footer {
       margin-top: 12px;
       padding-top: 6px;
-      border-top: 1px dashed #18181c;
+      border-top: 1px solid #d4d4d8;
       display: flex;
       flex-direction: column;
       gap: 3px;
@@ -1677,7 +2050,7 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      border-bottom: 1px dashed #000;
+      border-bottom: 1px solid #d4d4d8;
       padding-bottom: 10px;
       margin-bottom: 12px;
     }
@@ -1708,7 +2081,7 @@
     }
 
     .slip-sheet.receipt .slip-badge {
-      border: 1px dashed #000;
+      border: 1px solid #d4d4d8;
       background: transparent;
       color: #000;
       border-radius: 0;
@@ -1722,8 +2095,8 @@
 
     .slip-sheet.receipt .slip-section-title {
       text-align: center;
-      border-top: 1px dashed #000;
-      border-bottom: 1px dashed #000;
+      border-top: 1px solid #d4d4d8;
+      border-bottom: 1px solid #d4d4d8;
       padding: 3px 0;
       margin: 0 0 7px;
       letter-spacing: 0.18em;
@@ -1749,14 +2122,14 @@
     .slip-sheet.receipt .line-list,
     .slip-sheet.receipt .mini-table {
       border-top: 0;
-      border-bottom: 1px dashed #000;
+      border-bottom: 1px solid #d4d4d8;
     }
 
     .slip-sheet.receipt .line-item,
     .slip-sheet.receipt .mini-table tbody td,
     .slip-sheet.receipt .mini-table thead th,
     .slip-sheet.receipt .totals-row {
-      border-bottom: 1px dashed #94a3b8;
+      border-bottom: 1px solid #e4e4e7;
       color: #000;
     }
 
@@ -1777,7 +2150,7 @@
     }
 
     .slip-sheet.receipt .mini-table tfoot td {
-      border-top: 1px dashed #000;
+      border-top: 1px solid #d4d4d8;
       padding: 7px 0 2px;
       font-weight: 700;
     }
@@ -1792,7 +2165,7 @@
 
     .slip-sheet.receipt .totals-row.net {
       background: transparent;
-      border: 2px dashed #000;
+      border: 1.5px solid #c4c4c8;
       border-radius: 0;
       margin: 10px 0;
       padding: 8px 10px;
@@ -1808,24 +2181,24 @@
 
     .slip-sheet.receipt .slip-logo-placeholder {
       background: transparent;
-      border: 1px dashed #000;
+      border: 1px solid #d4d4d8;
       color: #000;
       border-radius: 0;
     }
 
     .slip-sheet.receipt .slip-logo {
-      border: 1px dashed #000;
+      border: 1px solid #d4d4d8;
       border-radius: 0;
       filter: grayscale(1) contrast(1.1);
     }
 
     .slip-sheet.receipt .signature-line {
-      border-top: 1px dashed #000;
+      border-top: 1px solid #d4d4d8;
       color: #000;
     }
 
     .slip-sheet.receipt .slip-footer {
-      border-top: 1px dashed #000;
+      border-top: 1px solid #d4d4d8;
       color: #000;
       justify-content: center;
       flex-direction: column;
@@ -1841,7 +2214,7 @@
     }
 
     .slip-sheet.receipt .notes-block {
-      border-top: 1px dashed #000;
+      border-top: 1px solid #d4d4d8;
     }
 
     .slip-sheet.formal,
@@ -1969,8 +2342,8 @@
   <header class="app-header">
     <div class="header-bar">
       <div class="brand">
-        <span class="brand-mark">₱</span>
-        <span>PaySlip PH</span>
+        <img src="assets/logo/knb-logo.png" alt="KNB" class="brand-logo" />
+        <span>KNB</span>
       </div>
       <div style="display:flex;gap:8px;align-items:center">
         <button type="button" class="theme-toggle" id="exportBtn" aria-label="Export data" title="Export data backup">
@@ -2107,7 +2480,7 @@
             <button class="btn-icon" type="button" onclick="deleteEmployee()" aria-label="Delete employee" title="Delete employee">
               <svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg>
             </button>
-            <span class="save-indicator" id="saveIndicator"><span class="dot"></span><span id="saveIndicatorText">Idle</span></span>
+            <span class="save-indicator" id="saveIndicator" title="Draft autosaves to this browser"><span class="dot"></span><span id="saveIndicatorText">Not saved yet</span></span>
           </div>
           </div>
         </section>
@@ -2135,6 +2508,10 @@
               </button>
             </div>
             <div class="schedule-extras">
+              <button class="btn-secondary" type="button" id="ytdReportBtn" title="Download Year-to-Date PDF report">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                YTD Report
+              </button>
               <button class="btn-secondary" type="button" id="thirteenthMonthBtn" title="Compute 13th Month Pay from archived payslips">
                 <svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h2"/><path d="M14 14h2"/><path d="M8 18h2"/><path d="M14 18h2"/></svg>
                 13th Month Pay
@@ -2147,6 +2524,7 @@
           </div>
 
           <div class="form-grid">
+            <div class="form-subhead">Period</div>
             <div class="form-group">
               <label for="periodStart">Pay Period Start</label>
               <input id="periodStart" type="date" />
@@ -2162,6 +2540,7 @@
               <input id="paymentDate" type="date" />
             </div>
 
+            <div class="form-subhead">Earnings</div>
             <div class="form-group">
               <label for="basicPay">Basic Pay</label>
               <input id="basicPay" type="text" inputmode="decimal" placeholder="0.00" />
@@ -2204,6 +2583,7 @@
               </select>
             </div>
 
+            <div class="form-subhead">Deductions</div>
             <div class="form-group">
               <label for="withholdingTax">Withholding Tax</label>
               <input id="withholdingTax" type="text" inputmode="decimal" placeholder="0.00" />
@@ -2239,6 +2619,7 @@
               <input id="otherDeductions" type="text" inputmode="decimal" placeholder="0.00" />
             </div>
 
+            <div class="form-subhead">Notes</div>
             <div class="form-group full">
               <label for="notes">Notes</label>
               <textarea id="notes" placeholder="Optional notes for this payslip"></textarea>
@@ -2336,10 +2717,30 @@
 
   <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
 
-  <div class="modal-backdrop" id="confirmModal" role="dialog" aria-modal="true">
+  <div class="modal-backdrop" id="yearPromptModal" role="dialog" aria-modal="true" aria-labelledby="yearPromptTitle">
     <div class="modal">
+      <div class="modal-eyebrow"><span class="dot"></span><span id="yearPromptEyebrow">Select Year</span></div>
+      <h3 id="yearPromptTitle">Choose a year</h3>
+      <p class="prompt-subject" id="yearPromptSubject"></p>
+      <div class="year-stepper">
+        <button type="button" id="yearStepDown" aria-label="Previous year">−</button>
+        <input id="yearPromptInput" type="number" inputmode="numeric" min="2000" max="2100" />
+        <button type="button" id="yearStepUp" aria-label="Next year">+</button>
+      </div>
+      <div class="year-quick" id="yearQuickRow"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="yearPromptCancel">Cancel</button>
+        <button type="button" class="btn-primary" id="yearPromptOk">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmMessage">
+    <div class="modal">
+      <div class="modal-eyebrow" id="confirmEyebrow" hidden><span class="dot"></span><span id="confirmEyebrowText"></span></div>
       <h3 id="confirmTitle">Are you sure?</h3>
       <p id="confirmMessage">This action cannot be undone.</p>
+      <div id="confirmBody" class="confirm-body" hidden></div>
       <div class="modal-actions">
         <button type="button" class="btn-secondary" id="confirmCancel">Cancel</button>
         <button type="button" class="btn-danger" id="confirmOk">Delete</button>
@@ -2356,6 +2757,7 @@
 
     const COMPANY_NAME = "KNB Web Solutions Incorporated";
     const COMPANY_LOGO_SRC = "assets/logo/knb-logo.png";
+    const VERIFY_PAGE_PATH = "verify.html";
 
     let companyLogoDataUrl = COMPANY_LOGO_SRC;
 
@@ -2435,8 +2837,12 @@
       attachBackupButtons();
       attachArchive();
       attach13thMonth();
+      attachYtdReport();
+      attachSegmentedControls();
+      attachDirtyTracking();
       attachPdfMode();
       attachBatchDownload();
+      attachModalA11y();
       loadDraft();
       setInterval(tickSaveLabel, 1000);
       MONEY_FIELDS.forEach((id) => {
@@ -2508,21 +2914,62 @@
       }, 2600);
     }
 
-    function showConfirm(title, message, okLabel = "Delete") {
+    function showConfirm(title, message, okLabel = "Delete", opts = {}) {
+      // Backwards-compatible: showConfirm(title, message, okLabel) OR
+      // showConfirm({ title, message, okLabel, bodyHtml, eyebrow, tone })
+      if (typeof title === "object" && title !== null) {
+        opts = title;
+        title = opts.title;
+        message = opts.message;
+        okLabel = opts.okLabel || "Delete";
+      }
+      const tone = opts.tone || "danger";
+      const bodyHtml = opts.bodyHtml || "";
+      const eyebrow = opts.eyebrow || "";
+
       return new Promise((resolve) => {
         const modal = document.getElementById("confirmModal");
         document.getElementById("confirmTitle").textContent = title;
-        document.getElementById("confirmMessage").textContent = message;
+        const messageEl = document.getElementById("confirmMessage");
+        messageEl.textContent = message || "";
+        messageEl.style.display = message ? "" : "none";
+        const eyebrowWrap = document.getElementById("confirmEyebrow");
+        const eyebrowText = document.getElementById("confirmEyebrowText");
+        if (eyebrow) { eyebrowText.textContent = eyebrow; eyebrowWrap.hidden = false; }
+        else { eyebrowWrap.hidden = true; }
+        const bodyEl = document.getElementById("confirmBody");
+        if (bodyHtml) { bodyEl.innerHTML = bodyHtml; bodyEl.hidden = false; }
+        else { bodyEl.innerHTML = ""; bodyEl.hidden = true; }
         const okBtn = document.getElementById("confirmOk");
         const cancelBtn = document.getElementById("confirmCancel");
         okBtn.textContent = okLabel;
+        okBtn.classList.remove("btn-danger", "btn-primary", "btn-success");
+        okBtn.classList.add(tone === "primary" ? "btn-primary" : tone === "success" ? "btn-success" : "btn-danger");
+        const previouslyFocused = document.activeElement;
         modal.classList.add("show");
+        // Focus trap setup — focus the cancel button by default (safer choice)
+        setTimeout(() => cancelBtn.focus(), 0);
+
+        const onKeydown = (e) => {
+          if (e.key === "Escape") { e.preventDefault(); cleanup(false); return; }
+          if (e.key === "Tab") {
+            const focusable = [cancelBtn, okBtn];
+            const idx = focusable.indexOf(document.activeElement);
+            if (e.shiftKey && idx <= 0) { e.preventDefault(); focusable[focusable.length - 1].focus(); }
+            else if (!e.shiftKey && idx === focusable.length - 1) { e.preventDefault(); focusable[0].focus(); }
+            else if (idx === -1) { e.preventDefault(); focusable[0].focus(); }
+          }
+        };
 
         const cleanup = (result) => {
           modal.classList.remove("show");
           okBtn.removeEventListener("click", onOk);
           cancelBtn.removeEventListener("click", onCancel);
           modal.removeEventListener("click", onBackdrop);
+          document.removeEventListener("keydown", onKeydown);
+          if (previouslyFocused && typeof previouslyFocused.focus === "function") {
+            previouslyFocused.focus();
+          }
           resolve(result);
         };
         const onOk = () => cleanup(true);
@@ -2532,7 +2979,238 @@
         okBtn.addEventListener("click", onOk);
         cancelBtn.addEventListener("click", onCancel);
         modal.addEventListener("click", onBackdrop);
+        document.addEventListener("keydown", onKeydown);
       });
+    }
+
+    function showYearPrompt({ title, subject, eyebrow = "Select Year", okLabel = "Continue", defaultYear } = {}) {
+      return new Promise((resolve) => {
+        const modal = document.getElementById("yearPromptModal");
+        const titleEl = document.getElementById("yearPromptTitle");
+        const subjectEl = document.getElementById("yearPromptSubject");
+        const eyebrowEl = document.getElementById("yearPromptEyebrow");
+        const input = document.getElementById("yearPromptInput");
+        const stepUp = document.getElementById("yearStepUp");
+        const stepDown = document.getElementById("yearStepDown");
+        const quick = document.getElementById("yearQuickRow");
+        const okBtn = document.getElementById("yearPromptOk");
+        const cancelBtn = document.getElementById("yearPromptCancel");
+
+        const now = new Date().getFullYear();
+        const initial = Number(defaultYear) || now;
+        titleEl.textContent = title || "Choose a year";
+        subjectEl.innerHTML = subject || "";
+        subjectEl.style.display = subject ? "" : "none";
+        eyebrowEl.textContent = eyebrow;
+        okBtn.textContent = okLabel;
+        input.value = String(initial);
+
+        const years = [now - 1, now, now + 1];
+        quick.innerHTML = years.map((y) => `<button type="button" class="year-chip" data-year="${y}">${y === now ? "This year · " : y === now - 1 ? "Last year · " : ""}${y}</button>`).join("");
+        const renderActive = () => {
+          const v = Number(input.value);
+          quick.querySelectorAll(".year-chip").forEach((c) => {
+            c.classList.toggle("active", Number(c.dataset.year) === v);
+          });
+        };
+        renderActive();
+
+        const previouslyFocused = document.activeElement;
+        modal.classList.add("show");
+        setTimeout(() => { input.focus(); input.select(); }, 0);
+
+        const clamp = (v) => Math.min(2100, Math.max(2000, Number(v) || now));
+        const onUp = () => { input.value = String(clamp(Number(input.value) + 1)); renderActive(); };
+        const onDown = () => { input.value = String(clamp(Number(input.value) - 1)); renderActive(); };
+        const onChipClick = (e) => {
+          const chip = e.target.closest(".year-chip");
+          if (!chip) return;
+          input.value = chip.dataset.year;
+          renderActive();
+          input.focus();
+        };
+        const onInput = () => renderActive();
+        const onKeydown = (e) => {
+          if (e.key === "Escape") { e.preventDefault(); cleanup(null); return; }
+          if (e.key === "Enter") { e.preventDefault(); onOk(); return; }
+          if (e.key === "ArrowUp") { e.preventDefault(); onUp(); }
+          if (e.key === "ArrowDown") { e.preventDefault(); onDown(); }
+          if (e.key === "Tab") {
+            const f = [cancelBtn, okBtn, input, stepDown, stepUp];
+            // basic trap: keep focus inside modal
+            if (!modal.contains(document.activeElement)) { e.preventDefault(); input.focus(); }
+          }
+        };
+        const onBackdrop = (e) => { if (e.target === modal) cleanup(null); };
+
+        function cleanup(value) {
+          modal.classList.remove("show");
+          stepUp.removeEventListener("click", onUp);
+          stepDown.removeEventListener("click", onDown);
+          quick.removeEventListener("click", onChipClick);
+          input.removeEventListener("input", onInput);
+          okBtn.removeEventListener("click", onOk);
+          cancelBtn.removeEventListener("click", onCancel);
+          modal.removeEventListener("click", onBackdrop);
+          document.removeEventListener("keydown", onKeydown);
+          if (previouslyFocused && typeof previouslyFocused.focus === "function") previouslyFocused.focus();
+          resolve(value);
+        }
+        const onOk = () => {
+          const v = clamp(Number(input.value));
+          if (!v || v < 2000 || v > 2100) { showToast("Enter a year between 2000 and 2100", "error"); return; }
+          cleanup(v);
+        };
+        const onCancel = () => cleanup(null);
+
+        stepUp.addEventListener("click", onUp);
+        stepDown.addEventListener("click", onDown);
+        quick.addEventListener("click", onChipClick);
+        input.addEventListener("input", onInput);
+        okBtn.addEventListener("click", onOk);
+        cancelBtn.addEventListener("click", onCancel);
+        modal.addEventListener("click", onBackdrop);
+        document.addEventListener("keydown", onKeydown);
+      });
+    }
+
+    /* Enhance a <select> as a segmented control */
+    function enhanceSelectAsSegmented(selectId, labelOverrides = {}) {
+      const select = document.getElementById(selectId);
+      if (!select || select.dataset.segmented === "1") return;
+      const seg = document.createElement("div");
+      seg.className = "segmented";
+      seg.setAttribute("role", "radiogroup");
+      seg.setAttribute("aria-label", select.getAttribute("aria-label") ||
+        (document.querySelector(`label[for="${selectId}"]`)?.textContent.trim() || selectId));
+
+      Array.from(select.options).forEach((opt) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "seg-option";
+        btn.dataset.value = opt.value;
+        btn.setAttribute("role", "radio");
+        btn.title = opt.textContent.trim();
+        btn.textContent = labelOverrides[opt.value] != null ? labelOverrides[opt.value] : opt.textContent.trim();
+        btn.addEventListener("click", () => {
+          if (select.value === opt.value) return;
+          select.value = opt.value;
+          select.dispatchEvent(new Event("change", { bubbles: true }));
+          select.dispatchEvent(new Event("input", { bubbles: true }));
+        });
+        seg.appendChild(btn);
+      });
+
+      const sync = () => {
+        seg.querySelectorAll(".seg-option").forEach((b) => {
+          const active = b.dataset.value === select.value;
+          b.classList.toggle("active", active);
+          b.setAttribute("aria-checked", active ? "true" : "false");
+          b.tabIndex = active ? 0 : -1;
+        });
+      };
+      sync();
+
+      // Keep visually-hidden select for a11y/legacy reads
+      select.classList.add("seg-hidden");
+      select.dataset.segmented = "1";
+      select.parentNode.insertBefore(seg, select);
+
+      select.addEventListener("change", sync);
+
+      // Arrow-key navigation
+      seg.addEventListener("keydown", (e) => {
+        if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
+        const buttons = Array.from(seg.querySelectorAll(".seg-option"));
+        const idx = buttons.findIndex((b) => b === document.activeElement);
+        let next = idx;
+        if (e.key === "ArrowLeft") next = idx <= 0 ? buttons.length - 1 : idx - 1;
+        else if (e.key === "ArrowRight") next = (idx + 1) % buttons.length;
+        else if (e.key === "Home") next = 0;
+        else if (e.key === "End") next = buttons.length - 1;
+        e.preventDefault();
+        buttons[next].focus();
+        buttons[next].click();
+      });
+    }
+
+    /* Dirty-state indicator on 13th Month button (loading the result overwrites the form) */
+    function isFormDirty() {
+      const fields = ["basicPay", "overtimePay", "bonuses", "allowances",
+        "withholdingTax", "sssDeduction", "philhealthDeduction", "pagibigDeduction",
+        "taxDeduction", "lateDeduction", "otherDeductions", "notes"];
+      return fields.some((id) => {
+        const el = document.getElementById(id);
+        return el && String(el.value || "").trim() !== "";
+      });
+    }
+    function refreshDirtyBadges() {
+      const btn = document.getElementById("thirteenthMonthBtn");
+      if (!btn) return;
+      const dirty = isFormDirty();
+      btn.classList.toggle("has-dirty", dirty);
+      btn.title = dirty
+        ? "Compute 13th Month — heads up, this will overwrite the current form"
+        : "Compute 13th Month Pay from archived payslips";
+    }
+    function attachDirtyTracking() {
+      ["basicPay", "overtimePay", "bonuses", "allowances",
+       "withholdingTax", "sssDeduction", "philhealthDeduction", "pagibigDeduction",
+       "taxDeduction", "lateDeduction", "otherDeductions", "notes"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("input", refreshDirtyBadges);
+      });
+      refreshDirtyBadges();
+    }
+
+    /* Toggle a button's busy state with a spinner + custom label */
+    function setButtonBusy(btn, busy, label) {
+      if (!btn) return;
+      if (busy) {
+        if (btn.dataset.busy === "1") return;
+        btn.dataset.busy = "1";
+        btn.dataset.origHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.classList.add("is-busy");
+        btn.setAttribute("aria-busy", "true");
+        btn.innerHTML = `<span class="pdf-spinner" aria-hidden="true"></span><span class="busy-label">${label || "Generating…"}</span>`;
+      } else {
+        if (btn.dataset.busy !== "1") return;
+        btn.disabled = false;
+        btn.classList.remove("is-busy");
+        btn.removeAttribute("aria-busy");
+        if (btn.dataset.origHtml) btn.innerHTML = btn.dataset.origHtml;
+        delete btn.dataset.busy;
+        delete btn.dataset.origHtml;
+      }
+    }
+
+    function setPdfButtonsBusy(busy, label = "Generating…") {
+      const buttons = new Set();
+      document.querySelectorAll('button[onclick="downloadPdf()"]').forEach((b) => buttons.add(b));
+      const ids = ["batchDownloadBtn", "ytdReportBtn"];
+      ids.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) buttons.add(el);
+      });
+      buttons.forEach((b) => setButtonBusy(b, busy, label));
+    }
+
+    function attachSegmentedControls() {
+      enhanceSelectAsSegmented("payCutoff", {
+        "": "Custom",
+        "first": "1st Cutoff",
+        "second": "2nd Cutoff"
+      });
+      enhanceSelectAsSegmented("pdfMode", {
+        "receipt": "Receipt",
+        "formal": "Formal A4"
+      });
+    }
+
+    function attachModalA11y() {
+      // Placeholder hook (modal focus trap is set up per-call in showConfirm).
+      // Kept so future enhancements (e.g. multiple modals) have a single attach point.
     }
 
     function formatMoneyInput(value) {
@@ -2736,7 +3414,9 @@
       const ind = document.getElementById("saveIndicator");
       const txt = document.getElementById("saveIndicatorText");
       if (!ind || !txt) return;
-      ind.classList.toggle("saving", state === "saving");
+      ind.classList.remove("saving", "saved");
+      if (state === "saving") ind.classList.add("saving");
+      else if (state === "saved") ind.classList.add("saved");
       txt.textContent = text;
     }
 
@@ -3102,12 +3782,18 @@
       }
 
       const snapshot = snapshotForm();
-      const btn = document.getElementById("batchDownloadBtn");
-      if (btn) btn.disabled = true;
       let completed = 0;
+      const total = employees.length;
+      setPdfButtonsBusy(true, `Generating 1 / ${total}…`);
 
       try {
-        for (const employee of employees) {
+        for (let i = 0; i < employees.length; i++) {
+          const employee = employees[i];
+          const btn = document.getElementById("batchDownloadBtn");
+          if (btn) {
+            const label = btn.querySelector(".busy-label");
+            if (label) label.textContent = `Generating ${i + 1} / ${total}…`;
+          }
           fillEmployeeFields(employee);
           if (document.getElementById("autoDeductions")?.checked) recomputeAutoDeductions();
           renderPayslip();
@@ -3118,7 +3804,7 @@
         }
       } finally {
         restoreForm(snapshot);
-        if (btn) btn.disabled = false;
+        setPdfButtonsBusy(false);
       }
 
       if (completed > 0) {
@@ -3143,7 +3829,21 @@
       }
 
       if (archive.length === 0) {
-        list.innerHTML = `<div class="archive-empty">${search ? "No matches for that search." : "Generated payslips are auto-saved here for re-download."}</div>`;
+        const iconSearch = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`;
+        const iconArchive = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11h4"/></svg>`;
+        if (search) {
+          list.innerHTML = `<div class="archive-empty">
+            <div class="archive-empty-icon">${iconSearch}</div>
+            <strong>No payslips match</strong>
+            <div class="archive-empty-sub">Nothing found for <span class="archive-empty-query">${escapeHtml(search)}</span></div>
+          </div>`;
+        } else {
+          list.innerHTML = `<div class="archive-empty">
+            <div class="archive-empty-icon">${iconArchive}</div>
+            <strong>No archived payslips yet</strong>
+            <div class="archive-empty-sub">Downloaded PDFs are saved here for quick re-download.</div>
+          </div>`;
+        }
         return;
       }
 
@@ -3160,13 +3860,13 @@
           </div>
           <div class="archive-amount">${peso(d.totals.netPay)}</div>
           <div class="archive-actions">
-            <button type="button" title="Re-download PDF" data-act="redown" data-id="${e.id}">
-              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <button type="button" aria-label="Re-download PDF" title="Re-download PDF" data-act="redown" data-id="${e.id}">
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             </button>
-            <button type="button" title="Load into form" data-act="load" data-id="${e.id}">
-              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><polygon points="18.5 2.5 21.5 5.5 12 15 9 15 9 12 18.5 2.5"/></svg>
+            <button type="button" aria-label="Load into form" title="Load into form" data-act="load" data-id="${e.id}">
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><polygon points="18.5 2.5 21.5 5.5 12 15 9 15 9 12 18.5 2.5"/></svg>
             </button>
-            <button type="button" class="danger" title="Delete" data-act="delete" data-id="${e.id}">
+            <button type="button" class="danger" aria-label="Delete archived payslip" title="Delete" data-act="delete" data-id="${e.id}">
               <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
             </button>
           </div>
@@ -3213,22 +3913,27 @@
         return;
       }
 
-      const yearInput = prompt(`Compute 13th Month Pay for ${employeeName}\n\nEnter the year (e.g., ${new Date().getFullYear()}):`, String(new Date().getFullYear()));
-      if (!yearInput) return;
-      const year = parseInt(yearInput, 10);
-      if (!year || year < 2000 || year > 2100) {
-        showToast("Invalid year", "error");
-        return;
-      }
+      const year = await showYearPrompt({
+        eyebrow: "13th Month Pay",
+        title: "Compute 13th Month Pay",
+        subject: `For <strong>${escapeHtml(employeeName)}</strong> · annualized basic pay ÷ 12`,
+        okLabel: "Compute"
+      });
+      if (!year) return;
 
       const archive = getArchive();
       const empKey = (textValue("employeeId") || employeeName).toLowerCase();
       const matches = archive.filter((e) => {
         const sameEmp = ((e.data.employee.employeeId || e.data.employee.name || "").toLowerCase() === empKey)
           || ((e.data.employee.name || "").toLowerCase() === employeeName.toLowerCase());
+        if (!sameEmp) return false;
+        // Exclude prior 13th-month payouts (DOLE rule: based on basic pay only)
+        if (e.data.isThirteenthMonth) return false;
+        const notes = (e.data.notes || "").toLowerCase();
+        if (notes.includes("13th month")) return false;
         const period = e.data.payPeriod.paymentDate || e.data.payPeriod.end || e.data.archivedAt;
         const yr = period ? new Date(period).getFullYear() : null;
-        return sameEmp && yr === year;
+        return yr === year;
       });
 
       if (matches.length === 0) {
@@ -3236,14 +3941,37 @@
         return;
       }
 
+      // Per DOLE: 13th month = total basic salary earned in the year ÷ 12.
+      // Excludes overtime, holiday pay, allowances, bonuses, and leave conversion.
+      // basicPay already reflects amount earned (LWOP days reduce basic pay paid out).
       const totalBasic = matches.reduce((sum, e) => sum + (Number(e.data.earnings.basicPay) || 0), 0);
       const thirteenth = totalBasic / 12;
 
-      const ok = await showConfirm(
-        `13th Month Pay for ${year}`,
-        `Found ${matches.length} payslip${matches.length === 1 ? "" : "s"} totaling ${peso(totalBasic)} in basic pay.\n\n13th Month Pay = ${peso(thirteenth)}\n\nLoad this into the form as a new payslip?`,
-        "Load"
-      );
+      const ok = await showConfirm({
+        eyebrow: "13th Month Pay",
+        title: `${escapeHtml(employeeName)} · ${year}`,
+        message: "",
+        okLabel: "Load into form",
+        tone: "primary",
+        bodyHtml: `
+          <div class="confirm-stats">
+            <div class="confirm-stat">
+              <span class="label">Payslips found</span>
+              <span class="value">${matches.length}</span>
+            </div>
+            <div class="confirm-stat">
+              <span class="label">Total Basic Pay</span>
+              <span class="value">${peso(totalBasic)}</span>
+            </div>
+            <div class="confirm-stat divider highlight">
+              <span class="label">13th Month Pay</span>
+              <span class="value">${peso(thirteenth)}</span>
+            </div>
+            <div class="confirm-formula">${peso(totalBasic)} ÷ 12 = ${peso(thirteenth)}</div>
+          </div>
+          <div class="confirm-note">Basic pay only — excludes OT, holiday pay, allowances, and bonuses (DOLE rule).</div>
+        `
+      });
       if (!ok) return;
 
       // Clear earnings and deductions, set bonuses to 13th month
@@ -3272,6 +4000,218 @@
     function attach13thMonth() {
       const btn = document.getElementById("thirteenthMonthBtn");
       if (btn) btn.addEventListener("click", compute13thMonth);
+    }
+
+    /* === YTD Report (on-demand PDF) === */
+    async function downloadYtdReport() {
+      const employeeName = textValue("employeeName");
+      if (!employeeName) {
+        showToast("Enter or load an employee first", "error");
+        return;
+      }
+
+      const year = await showYearPrompt({
+        eyebrow: "YTD Report",
+        title: "Year-to-Date Report",
+        subject: `For <strong>${escapeHtml(employeeName)}</strong> · summarizes archived payslips`,
+        okLabel: "Generate PDF"
+      });
+      if (!year) return;
+
+      const empKey = (textValue("employeeId") || employeeName).toLowerCase();
+      const archive = getArchive();
+      const matches = archive.filter((e) => {
+        const d = e.data;
+        const k = (d.employee.employeeId || d.employee.name || "").toLowerCase();
+        const sameEmp = k === empKey || (d.employee.name || "").toLowerCase() === employeeName.toLowerCase();
+        if (!sameEmp) return false;
+        const period = d.payPeriod.paymentDate || d.payPeriod.end || e.archivedAt;
+        if (!period) return false;
+        return new Date(period).getFullYear() === year;
+      });
+
+      if (matches.length === 0) {
+        showToast(`No archived payslips for ${employeeName} in ${year}`, "error");
+        return;
+      }
+
+      const acc = {
+        basicPay: 0, overtimePay: 0, bonuses: 0, allowances: 0,
+        withholdingTax: 0, sssDeduction: 0, philhealthDeduction: 0, pagibigDeduction: 0,
+        taxDeduction: 0, lateDeduction: 0, otherDeductions: 0,
+        grossPay: 0, totalDeductions: 0, netPay: 0
+      };
+      matches.forEach((m) => {
+        Object.keys(acc).forEach((k) => {
+          const v = (m.data.earnings && m.data.earnings[k] != null) ? m.data.earnings[k]
+                  : (m.data.deductions && m.data.deductions[k] != null) ? m.data.deductions[k]
+                  : (m.data.totals && m.data.totals[k] != null) ? m.data.totals[k] : 0;
+          acc[k] += Number(v) || 0;
+        });
+      });
+
+      if (typeof html2pdf !== "function") {
+        showToast("PDF library did not load. Check your connection and reload the page.", "error");
+        return;
+      }
+
+      const empData = {
+        name: employeeName,
+        employeeId: textValue("employeeId"),
+        position: textValue("position"),
+        department: textValue("department"),
+        email: textValue("employeeEmail")
+      };
+      const companyAddress = textValue("companyAddress");
+      const companyContact = textValue("companyContact");
+      const companyTin = textValue("companyTin");
+      const logoHtml = COMPANY_LOGO_SRC
+        ? `<img class="slip-logo" src="${COMPANY_LOGO_SRC}" alt="Company Logo">`
+        : `<div class="slip-logo-placeholder">${escapeHtml(getInitials(COMPANY_NAME))}</div>`;
+
+      const reportHtml = `
+        <div class="slip-sheet formal" id="ytdReportContent">
+          <div class="slip-header">
+            <div class="slip-company">
+              ${logoHtml}
+              <div>
+                <h3>${escapeHtml(COMPANY_NAME)}</h3>
+                <p>${escapeHtml(companyAddress) || "Company address"}</p>
+                <p>${escapeHtml(companyContact) || "Company contact"}</p>
+                ${companyTin ? `<p>TIN / Registration No: ${escapeHtml(companyTin)}</p>` : ""}
+              </div>
+            </div>
+            <div class="slip-meta">
+              <div class="slip-badge">YTD REPORT</div>
+              <h3>${year}</h3>
+              <p>Generated: ${formatDate(new Date().toISOString().slice(0, 10))}</p>
+            </div>
+          </div>
+
+          <div class="net-hero">
+            <div>
+              <div class="net-hero-label">YTD Net Pay</div>
+              <div class="net-hero-period">${matches.length} payslip${matches.length === 1 ? "" : "s"} · ${year}</div>
+            </div>
+            <div class="net-hero-amount">${peso(acc.netPay)}</div>
+          </div>
+
+          <div class="slip-section">
+            <div class="slip-section-title">Employee</div>
+            <div class="line-list">
+              <div class="line-item"><div class="label">Name</div><div class="value">${escapeHtml(empData.name) || "—"}</div></div>
+              <div class="line-item"><div class="label">Employee ID</div><div class="value">${escapeHtml(empData.employeeId) || "—"}</div></div>
+              <div class="line-item"><div class="label">Position</div><div class="value">${escapeHtml(empData.position) || "—"}</div></div>
+              <div class="line-item"><div class="label">Department</div><div class="value">${escapeHtml(empData.department) || "—"}</div></div>
+            </div>
+          </div>
+
+          <div class="slip-section">
+            <div class="pay-grid">
+              <div>
+                <div class="slip-section-title">YTD Earnings</div>
+                <table class="mini-table">
+                  <thead><tr><th>Description</th><th>Amount</th></tr></thead>
+                  <tbody>
+                    <tr><td>Basic Pay</td><td>${peso(acc.basicPay)}</td></tr>
+                    <tr><td>Overtime Pay</td><td>${peso(acc.overtimePay)}</td></tr>
+                    <tr><td>Bonuses</td><td>${peso(acc.bonuses)}</td></tr>
+                    <tr><td>Allowances</td><td>${peso(acc.allowances)}</td></tr>
+                  </tbody>
+                  <tfoot><tr><td>YTD Gross</td><td>${peso(acc.grossPay)}</td></tr></tfoot>
+                </table>
+              </div>
+              <div>
+                <div class="slip-section-title">YTD Deductions</div>
+                <table class="mini-table">
+                  <thead><tr><th>Description</th><th>Amount</th></tr></thead>
+                  <tbody>
+                    <tr><td>Withholding Tax</td><td>${peso(acc.withholdingTax)}</td></tr>
+                    <tr><td>SSS</td><td>${peso(acc.sssDeduction)}</td></tr>
+                    <tr><td>PhilHealth</td><td>${peso(acc.philhealthDeduction)}</td></tr>
+                    <tr><td>Pag-IBIG</td><td>${peso(acc.pagibigDeduction)}</td></tr>
+                    <tr><td>Other Tax Deduction</td><td>${peso(acc.taxDeduction)}</td></tr>
+                    <tr><td>Late / Absence</td><td>${peso(acc.lateDeduction)}</td></tr>
+                    <tr><td>Other Deductions</td><td>${peso(acc.otherDeductions)}</td></tr>
+                  </tbody>
+                  <tfoot><tr><td>YTD Total Deductions</td><td>${peso(acc.totalDeductions)}</td></tr></tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="slip-section">
+            <div class="slip-section-title">Payslips Included</div>
+            <table class="mini-table">
+              <thead><tr><th>Period</th><th>Payment Date</th><th>Net Pay</th></tr></thead>
+              <tbody>
+                ${matches
+                  .slice()
+                  .sort((a, b) => {
+                    const da = a.data.payPeriod.paymentDate || a.data.payPeriod.end || "";
+                    const db = b.data.payPeriod.paymentDate || b.data.payPeriod.end || "";
+                    return da.localeCompare(db);
+                  })
+                  .map((m) => `<tr>
+                    <td>${formatDate(m.data.payPeriod.start)} – ${formatDate(m.data.payPeriod.end)}</td>
+                    <td>${formatDate(m.data.payPeriod.paymentDate)}</td>
+                    <td>${peso((m.data.totals && m.data.totals.netPay) || 0)}</td>
+                  </tr>`).join("")}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="slip-footer">
+            <div>YTD summary · ${year}</div>
+            <div>Generated electronically · Philippine Peso (PHP)</div>
+          </div>
+        </div>`;
+
+      const PDF_WIDTH_MM = 210;
+      const PX_PER_MM = 96 / 25.4;
+      const printWrapper = document.createElement("div");
+      printWrapper.style.position = "fixed";
+      printWrapper.style.left = "-10000px";
+      printWrapper.style.top = "0";
+      printWrapper.style.width = PDF_WIDTH_MM + "mm";
+      printWrapper.style.background = "#ffffff";
+      printWrapper.innerHTML = reportHtml;
+      const clone = printWrapper.firstElementChild;
+      clone.style.width = PDF_WIDTH_MM + "mm";
+      clone.style.maxWidth = PDF_WIDTH_MM + "mm";
+      clone.style.margin = "0";
+      clone.style.boxShadow = "none";
+      preparePdfCloneAssets(clone);
+      document.body.appendChild(printWrapper);
+
+      const heightPx = clone.getBoundingClientRect().height;
+      const heightMm = Math.max(80, Math.ceil(heightPx / PX_PER_MM) + 4);
+      const filename = `ytd-${employeeName.replace(/\s+/g, "-").toLowerCase()}-${year}.pdf`;
+      const opt = {
+        margin: [0, 0, 0, 0],
+        filename,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff", scrollX: 0, scrollY: 0 },
+        jsPDF: { unit: "mm", format: [PDF_WIDTH_MM, heightMm], orientation: "portrait" }
+      };
+
+      setPdfButtonsBusy(true, "Generating YTD…");
+      try {
+        await html2pdf().set(opt).from(clone).save();
+        document.body.removeChild(printWrapper);
+        showToast(`YTD report downloaded · ${matches.length} payslip${matches.length === 1 ? "" : "s"}`, "success");
+      } catch (error) {
+        document.body.removeChild(printWrapper);
+        const detail = error && error.message ? `: ${error.message}` : "";
+        showToast(`Could not generate the YTD PDF${detail}`, "error");
+      } finally {
+        setPdfButtonsBusy(false);
+      }
+    }
+
+    function attachYtdReport() {
+      const btn = document.getElementById("ytdReportBtn");
+      if (btn) btn.addEventListener("click", downloadYtdReport);
     }
 
     /* === Collapsible panels === */
@@ -3355,8 +4295,8 @@
         showToast("Backup restored — reloading…", "success");
         setTimeout(() => location.reload(), 800);
       } catch (e) {
-        console.error(e);
-        showToast("Could not read backup file", "error");
+        const detail = e && e.message ? `: ${e.message}` : "";
+        showToast(`Could not read backup file${detail}`, "error");
       }
     }
 
@@ -3509,6 +4449,85 @@
       const endDay = Number(String(data.payPeriod.end || "").slice(-2));
       const cutoff = startDay >= 16 ? "02" : endDay > 0 && endDay <= 15 ? "01" : "00";
       return `KNB-${compactDate}-${employeeKey}-${cutoff}`;
+    }
+
+    function stableStringify(value) {
+      if (Array.isArray(value)) return `[${value.map(stableStringify).join(",")}]`;
+      if (value && typeof value === "object") {
+        return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableStringify(value[key])}`).join(",")}}`;
+      }
+      return JSON.stringify(value);
+    }
+
+    function checksum(text) {
+      let hash = 0x811c9dc5;
+      for (let i = 0; i < text.length; i += 1) {
+        hash ^= text.charCodeAt(i);
+        hash = Math.imul(hash, 0x01000193);
+      }
+      return (hash >>> 0).toString(16).padStart(8, "0").toUpperCase();
+    }
+
+    function toBase64Url(text) {
+      return btoa(unescape(encodeURIComponent(text)))
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=+$/g, "");
+    }
+
+    function moneyValue(value) {
+      return +(Number(value || 0).toFixed(2));
+    }
+
+    function verificationPayload(data) {
+      const payload = {
+        v: 1,
+        i: COMPANY_NAME,
+        r: data.reference,
+        e: {
+          n: data.employee.name,
+          id: data.employee.employeeId
+        },
+        p: {
+          s: data.payPeriod.start,
+          e: data.payPeriod.end,
+          pd: data.payPeriod.paymentDate
+        },
+        t: {
+          g: moneyValue(data.totals.grossPay),
+          d: moneyValue(data.totals.totalDeductions),
+          n: moneyValue(data.totals.netPay)
+        },
+        c: "PHP",
+        io: data.payPeriod.paymentDate || new Date().toISOString().slice(0, 10)
+      };
+      payload.k = checksum(stableStringify(payload));
+      return payload;
+    }
+
+    function verificationToken(data) {
+      return toBase64Url(stableStringify(verificationPayload(data)));
+    }
+
+    function verificationUrl(data) {
+      const base = new URL(VERIFY_PAGE_PATH, window.location.href);
+      base.hash = verificationToken(data);
+      return base.href;
+    }
+
+    function qrSvg(text) {
+      if (typeof qrcode !== "function") {
+        return verifyGlyphSvg(text);
+      }
+      try {
+        const qr = qrcode(0, "M");
+        qr.addData(text);
+        qr.make();
+        return qr.createSvgTag(2, 0);
+      } catch (error) {
+        console.warn(error);
+        return verifyGlyphSvg(text);
+      }
     }
 
     function escapeHtml(value) {
@@ -3812,6 +4831,7 @@
           lateDeduction,
           otherDeductions
         },
+        isThirteenthMonth: !!(bonuses > 0 && basicPay === 0 && (textValue("notes") || "").toLowerCase().includes("13th month")),
         totals: {
           grossPay,
           totalDeductions,
@@ -3820,8 +4840,59 @@
         notes: textValue("notes")
       };
       data.reference = generatePayslipRef(data);
+      data.ytd = computeYtdTotals(data);
       return data;
     }
+
+    /* === Year-to-Date totals === */
+    function computeYtdTotals(currentData) {
+      const empKey = (currentData.employee.employeeId || currentData.employee.name || "").toLowerCase();
+      if (!empKey) return null;
+
+      const refDate = currentData.payPeriod.paymentDate || currentData.payPeriod.end;
+      if (!refDate) return null;
+      const year = new Date(refDate).getFullYear();
+      if (!year) return null;
+
+      const archive = getArchive();
+      const matches = archive.filter((e) => {
+        const d = e.data;
+        const k = (d.employee.employeeId || d.employee.name || "").toLowerCase();
+        if (k !== empKey) return null;
+        const period = d.payPeriod.paymentDate || d.payPeriod.end || e.archivedAt;
+        if (!period) return false;
+        const dt = new Date(period);
+        if (dt.getFullYear() !== year) return false;
+        return dt <= new Date(refDate);
+      });
+
+      const sigKey = (currentData.employee.employeeId || currentData.employee.name || "?") +
+        "|" + (currentData.payPeriod.start || "") + "|" + (currentData.payPeriod.end || "");
+      const includesCurrent = matches.some((m) => m.sigKey === sigKey);
+
+      const acc = {
+        basicPay: 0, overtimePay: 0, bonuses: 0, allowances: 0,
+        withholdingTax: 0, sssDeduction: 0, philhealthDeduction: 0, pagibigDeduction: 0,
+        taxDeduction: 0, lateDeduction: 0, otherDeductions: 0,
+        grossPay: 0, totalDeductions: 0, netPay: 0,
+        count: 0
+      };
+      const add = (src) => {
+        Object.keys(acc).forEach((k) => {
+          if (k === "count") return;
+          const v = (src.earnings && src.earnings[k] != null) ? src.earnings[k]
+                  : (src.deductions && src.deductions[k] != null) ? src.deductions[k]
+                  : (src.totals && src.totals[k] != null) ? src.totals[k] : 0;
+          acc[k] += Number(v) || 0;
+        });
+        acc.count += 1;
+      };
+      matches.forEach((m) => add(m.data));
+      if (!includesCurrent) add(currentData);
+
+      return { year, ...acc };
+    }
+
 
     function renderPayslip() {
       const data = getPayslipData();
@@ -3829,6 +4900,7 @@
       animateMoney("grossPayText", data.totals.grossPay);
       animateMoney("deductionsText", data.totals.totalDeductions);
       animateMoney("netPayText", data.totals.netPay);
+      refreshDirtyBadges();
 
       const hasContent =
         data.employee.name ||
@@ -3856,6 +4928,9 @@
       const periodLabel = data.payPeriod.start && data.payPeriod.end
         ? `${formatDate(data.payPeriod.start)} – ${formatDate(data.payPeriod.end)}`
         : "Pay period";
+      const verifyPayload = verificationPayload(data);
+      const verifyUrl = verificationUrl(data);
+      const verifyQr = qrSvg(verifyUrl);
 
       document.getElementById("payslipPreview").innerHTML = `
         <div class="slip-sheet ${getPdfMode()}" id="payslipContent">
@@ -3961,6 +5036,7 @@
             </div>
           </div>
 
+
           <div class="notes-block">
             <div class="slip-section-title">Notes</div>
             <p>${escapeHtml(data.notes) || "No notes provided."}</p>
@@ -3974,6 +5050,13 @@
           <div class="slip-footer">
             <div class="slip-ref">Ref: ${escapeHtml(data.reference)}</div>
             <div>Generated electronically · Philippine Peso (PHP)</div>
+            <div class="slip-verify">
+              <div class="slip-verify-mark" aria-label="Verification QR code">${verifyQr}</div>
+              <div class="slip-verify-copy">
+                <strong>Scan to verify</strong>
+                <span>Net ${peso(data.totals.netPay)} · Check ${escapeHtml(verifyPayload.k)}</span>
+              </div>
+            </div>
           </div>
         </div>
       `;
@@ -4078,20 +5161,24 @@
         }
       };
 
+      const showBusy = !options.silent;
+      if (showBusy) setPdfButtonsBusy(true, "Generating…");
       try {
         await html2pdf().set(opt).from(clone).save();
         document.body.removeChild(printWrapper);
         if (options.archive !== false) {
-          try { archiveSnapshot(getPayslipData()); } catch (e) { console.warn(e); }
+          try { archiveSnapshot(getPayslipData()); }
+          catch (e) { showToast("Saved PDF, but could not archive it", "info"); }
         }
         if (!options.silent) showToast("PDF downloaded · saved to history", "success");
         return true;
       } catch (error) {
         document.body.removeChild(printWrapper);
-        console.error(error);
         const detail = error && error.message ? `: ${error.message}` : "";
         showToast(`Could not generate the PDF${detail}`, "error");
         return false;
+      } finally {
+        if (showBusy) setPdfButtonsBusy(false);
       }
     }
   </script>

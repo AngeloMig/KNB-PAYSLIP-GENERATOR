@@ -1,0 +1,3508 @@
+{
+  "version": 1,
+  "exportedAt": "2026-05-10T13:48:21.604Z",
+  "company": {
+    "name": "KNB Web Solutions Incorporated",
+    "address": "",
+    "contact": "",
+    "tin": "",
+    "logo": "assets/logo/knb-logo.png"
+  },
+  "employees": [
+    {
+      "key": "angelo",
+      "name": "ANGELO",
+      "employeeId": "EMP-001",
+      "position": "OPERATION MANAGER",
+      "department": "SHOPIFY",
+      "email": "",
+      "basicSalary": 100000
+    },
+    {
+      "key": "kajebe",
+      "name": "KAJEBE",
+      "employeeId": "EMP-002",
+      "position": "SENIOR DEVELOPER",
+      "department": "SHOPIFY & WORDPRESS",
+      "email": "",
+      "basicSalary": 30000
+    },
+    {
+      "key": "noel",
+      "name": "NOEL",
+      "employeeId": "EMP-003",
+      "position": "TEAM LEAD",
+      "department": "SHOPIFY",
+      "email": "",
+      "basicSalary": 50000
+    },
+    {
+      "key": "kier",
+      "name": "KIER",
+      "employeeId": "EMP-004",
+      "position": "SENIOR DEVELOPER",
+      "department": "SHOPIFY",
+      "email": "",
+      "basicSalary": 30000
+    },
+    {
+      "key": "alo",
+      "name": "ALO",
+      "employeeId": "EMP-005",
+      "position": "MID-LEVEL DEVELOPER",
+      "department": "SHOPIFY",
+      "email": "",
+      "basicSalary": 20000
+    },
+    {
+      "key": "macky",
+      "name": "MACKY",
+      "employeeId": "EMP-006",
+      "position": "MID-LEVEL DEVELOPER",
+      "department": "SHOPIFY",
+      "email": "",
+      "basicSalary": 16000
+    },
+    {
+      "key": "poks",
+      "name": "POKS",
+      "employeeId": "EMP-007",
+      "position": "JUNIOR DEVELOPER",
+      "department": "SHOPIFY",
+      "email": "",
+      "basicSalary": 12000
+    },
+    {
+      "key": "phia",
+      "name": "PHIA",
+      "employeeId": "EMP-008",
+      "position": "JUNIOR DEVELOPER",
+      "department": "SHOPIFY",
+      "email": "",
+      "basicSalary": 12000
+    }
+  ],
+  "archive": [
+    {
+      "id": "knb-202605-emp003-02-1",
+      "archivedAt": "2026-05-05T08:00:00.000Z",
+      "sigKey": "EMP-003|2026-04-16|2026-04-30",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "NOEL",
+          "employeeId": "EMP-003",
+          "position": "TEAM LEAD",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 50000
+        },
+        "payPeriod": {
+          "start": "2026-04-16",
+          "end": "2026-04-30",
+          "paymentDate": "2026-05-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 25000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 25000,
+          "totalDeductions": 0,
+          "netPay": 25000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202605-EMP003-02"
+      }
+    },
+    {
+      "id": "knb-202605-emp001-02-2",
+      "archivedAt": "2026-05-05T08:00:00.000Z",
+      "sigKey": "EMP-001|2026-04-16|2026-04-30",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "ANGELO",
+          "employeeId": "EMP-001",
+          "position": "OPERATION MANAGER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 100000
+        },
+        "payPeriod": {
+          "start": "2026-04-16",
+          "end": "2026-04-30",
+          "paymentDate": "2026-05-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 50000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 50000,
+          "totalDeductions": 0,
+          "netPay": 50000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202605-EMP001-02"
+      }
+    },
+    {
+      "id": "knb-202605-emp002-02-3",
+      "archivedAt": "2026-05-05T08:00:00.000Z",
+      "sigKey": "EMP-002|2026-04-16|2026-04-30",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "KAJEBE",
+          "employeeId": "EMP-002",
+          "position": "SENIOR DEVELOPER",
+          "department": "SHOPIFY & WORDPRESS",
+          "email": "",
+          "basicSalary": 30000
+        },
+        "payPeriod": {
+          "start": "2026-04-16",
+          "end": "2026-04-30",
+          "paymentDate": "2026-05-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 15000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 15000,
+          "totalDeductions": 0,
+          "netPay": 15000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202605-EMP002-02"
+      }
+    },
+    {
+      "id": "knb-202605-emp004-02-4",
+      "archivedAt": "2026-05-05T08:00:00.000Z",
+      "sigKey": "EMP-004|2026-04-16|2026-04-30",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "KIER",
+          "employeeId": "EMP-004",
+          "position": "SENIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 30000
+        },
+        "payPeriod": {
+          "start": "2026-04-16",
+          "end": "2026-04-30",
+          "paymentDate": "2026-05-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 15000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 15000,
+          "totalDeductions": 0,
+          "netPay": 15000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202605-EMP004-02"
+      }
+    },
+    {
+      "id": "knb-202605-emp005-02-5",
+      "archivedAt": "2026-05-05T08:00:00.000Z",
+      "sigKey": "EMP-005|2026-04-16|2026-04-30",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "ALO",
+          "employeeId": "EMP-005",
+          "position": "MID-LEVEL DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 20000
+        },
+        "payPeriod": {
+          "start": "2026-04-16",
+          "end": "2026-04-30",
+          "paymentDate": "2026-05-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 10000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 10000,
+          "totalDeductions": 0,
+          "netPay": 10000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202605-EMP005-02"
+      }
+    },
+    {
+      "id": "knb-202605-emp006-02-6",
+      "archivedAt": "2026-05-05T08:00:00.000Z",
+      "sigKey": "EMP-006|2026-04-16|2026-04-30",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "MACKY",
+          "employeeId": "EMP-006",
+          "position": "MID-LEVEL DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 16000
+        },
+        "payPeriod": {
+          "start": "2026-04-16",
+          "end": "2026-04-30",
+          "paymentDate": "2026-05-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 8000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 8000,
+          "totalDeductions": 0,
+          "netPay": 8000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202605-EMP006-02"
+      }
+    },
+    {
+      "id": "knb-202605-emp007-02-7",
+      "archivedAt": "2026-05-05T08:00:00.000Z",
+      "sigKey": "EMP-007|2026-04-16|2026-04-30",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "POKS",
+          "employeeId": "EMP-007",
+          "position": "JUNIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-04-16",
+          "end": "2026-04-30",
+          "paymentDate": "2026-05-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 6000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 6000,
+          "totalDeductions": 0,
+          "netPay": 6000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202605-EMP007-02"
+      }
+    },
+    {
+      "id": "knb-202605-emp008-02-8",
+      "archivedAt": "2026-05-05T08:00:00.000Z",
+      "sigKey": "EMP-008|2026-04-16|2026-04-30",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "PHIA",
+          "employeeId": "EMP-008",
+          "position": "JUNIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-04-16",
+          "end": "2026-04-30",
+          "paymentDate": "2026-05-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 6000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 6000,
+          "totalDeductions": 0,
+          "netPay": 6000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202605-EMP008-02"
+      }
+    },
+    {
+      "id": "knb-202604-emp003-01-9",
+      "archivedAt": "2026-04-20T08:00:00.000Z",
+      "sigKey": "EMP-003|2026-04-01|2026-04-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "NOEL",
+          "employeeId": "EMP-003",
+          "position": "TEAM LEAD",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 50000
+        },
+        "payPeriod": {
+          "start": "2026-04-01",
+          "end": "2026-04-15",
+          "paymentDate": "2026-04-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 25000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 25000,
+          "totalDeductions": 0,
+          "netPay": 25000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202604-EMP003-01"
+      }
+    },
+    {
+      "id": "knb-202604-emp001-01-10",
+      "archivedAt": "2026-04-20T08:00:00.000Z",
+      "sigKey": "EMP-001|2026-04-01|2026-04-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "ANGELO",
+          "employeeId": "EMP-001",
+          "position": "OPERATION MANAGER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 100000
+        },
+        "payPeriod": {
+          "start": "2026-04-01",
+          "end": "2026-04-15",
+          "paymentDate": "2026-04-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 50000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 50000,
+          "totalDeductions": 0,
+          "netPay": 50000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202604-EMP001-01"
+      }
+    },
+    {
+      "id": "knb-202604-emp002-01-11",
+      "archivedAt": "2026-04-20T08:00:00.000Z",
+      "sigKey": "EMP-002|2026-04-01|2026-04-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "KAJEBE",
+          "employeeId": "EMP-002",
+          "position": "SENIOR DEVELOPER",
+          "department": "SHOPIFY & WORDPRESS",
+          "email": "",
+          "basicSalary": 30000
+        },
+        "payPeriod": {
+          "start": "2026-04-01",
+          "end": "2026-04-15",
+          "paymentDate": "2026-04-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 15000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 15000,
+          "totalDeductions": 0,
+          "netPay": 15000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202604-EMP002-01"
+      }
+    },
+    {
+      "id": "knb-202604-emp004-01-12",
+      "archivedAt": "2026-04-20T08:00:00.000Z",
+      "sigKey": "EMP-004|2026-04-01|2026-04-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "KIER",
+          "employeeId": "EMP-004",
+          "position": "SENIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 30000
+        },
+        "payPeriod": {
+          "start": "2026-04-01",
+          "end": "2026-04-15",
+          "paymentDate": "2026-04-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 15000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 15000,
+          "totalDeductions": 0,
+          "netPay": 15000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202604-EMP004-01"
+      }
+    },
+    {
+      "id": "knb-202604-emp005-01-13",
+      "archivedAt": "2026-04-20T08:00:00.000Z",
+      "sigKey": "EMP-005|2026-04-01|2026-04-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "ALO",
+          "employeeId": "EMP-005",
+          "position": "MID-LEVEL DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 20000
+        },
+        "payPeriod": {
+          "start": "2026-04-01",
+          "end": "2026-04-15",
+          "paymentDate": "2026-04-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 10000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 10000,
+          "totalDeductions": 0,
+          "netPay": 10000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202604-EMP005-01"
+      }
+    },
+    {
+      "id": "knb-202604-emp006-01-14",
+      "archivedAt": "2026-04-20T08:00:00.000Z",
+      "sigKey": "EMP-006|2026-04-01|2026-04-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "MACKY",
+          "employeeId": "EMP-006",
+          "position": "MID-LEVEL DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 16000
+        },
+        "payPeriod": {
+          "start": "2026-04-01",
+          "end": "2026-04-15",
+          "paymentDate": "2026-04-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 8000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 8000,
+          "totalDeductions": 0,
+          "netPay": 8000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202604-EMP006-01"
+      }
+    },
+    {
+      "id": "knb-202604-emp007-01-15",
+      "archivedAt": "2026-04-20T08:00:00.000Z",
+      "sigKey": "EMP-007|2026-04-01|2026-04-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "POKS",
+          "employeeId": "EMP-007",
+          "position": "JUNIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-04-01",
+          "end": "2026-04-15",
+          "paymentDate": "2026-04-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 6000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 6000,
+          "totalDeductions": 0,
+          "netPay": 6000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202604-EMP007-01"
+      }
+    },
+    {
+      "id": "knb-202604-emp008-01-16",
+      "archivedAt": "2026-04-20T08:00:00.000Z",
+      "sigKey": "EMP-008|2026-04-01|2026-04-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "PHIA",
+          "employeeId": "EMP-008",
+          "position": "JUNIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-04-01",
+          "end": "2026-04-15",
+          "paymentDate": "2026-04-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 6000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 6000,
+          "totalDeductions": 0,
+          "netPay": 6000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202604-EMP008-01"
+      }
+    },
+    {
+      "id": "knb-202604-emp003-02-17",
+      "archivedAt": "2026-04-05T08:00:00.000Z",
+      "sigKey": "EMP-003|2026-03-16|2026-03-31",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "NOEL",
+          "employeeId": "EMP-003",
+          "position": "TEAM LEAD",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 50000
+        },
+        "payPeriod": {
+          "start": "2026-03-16",
+          "end": "2026-03-31",
+          "paymentDate": "2026-04-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 25000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 25000,
+          "totalDeductions": 0,
+          "netPay": 25000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202604-EMP003-02"
+      }
+    },
+    {
+      "id": "knb-202604-emp001-02-18",
+      "archivedAt": "2026-04-05T08:00:00.000Z",
+      "sigKey": "EMP-001|2026-03-16|2026-03-31",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "ANGELO",
+          "employeeId": "EMP-001",
+          "position": "OPERATION MANAGER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 100000
+        },
+        "payPeriod": {
+          "start": "2026-03-16",
+          "end": "2026-03-31",
+          "paymentDate": "2026-04-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 50000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 50000,
+          "totalDeductions": 0,
+          "netPay": 50000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202604-EMP001-02"
+      }
+    },
+    {
+      "id": "knb-202604-emp002-02-19",
+      "archivedAt": "2026-04-05T08:00:00.000Z",
+      "sigKey": "EMP-002|2026-03-16|2026-03-31",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "KAJEBE",
+          "employeeId": "EMP-002",
+          "position": "SENIOR DEVELOPER",
+          "department": "SHOPIFY & WORDPRESS",
+          "email": "",
+          "basicSalary": 30000
+        },
+        "payPeriod": {
+          "start": "2026-03-16",
+          "end": "2026-03-31",
+          "paymentDate": "2026-04-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 15000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 15000,
+          "totalDeductions": 0,
+          "netPay": 15000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202604-EMP002-02"
+      }
+    },
+    {
+      "id": "knb-202604-emp004-02-20",
+      "archivedAt": "2026-04-05T08:00:00.000Z",
+      "sigKey": "EMP-004|2026-03-16|2026-03-31",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "KIER",
+          "employeeId": "EMP-004",
+          "position": "SENIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 30000
+        },
+        "payPeriod": {
+          "start": "2026-03-16",
+          "end": "2026-03-31",
+          "paymentDate": "2026-04-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 15000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 15000,
+          "totalDeductions": 0,
+          "netPay": 15000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202604-EMP004-02"
+      }
+    },
+    {
+      "id": "knb-202604-emp005-02-21",
+      "archivedAt": "2026-04-05T08:00:00.000Z",
+      "sigKey": "EMP-005|2026-03-16|2026-03-31",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "ALO",
+          "employeeId": "EMP-005",
+          "position": "MID-LEVEL DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 20000
+        },
+        "payPeriod": {
+          "start": "2026-03-16",
+          "end": "2026-03-31",
+          "paymentDate": "2026-04-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 10000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 10000,
+          "totalDeductions": 0,
+          "netPay": 10000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202604-EMP005-02"
+      }
+    },
+    {
+      "id": "knb-202604-emp006-02-22",
+      "archivedAt": "2026-04-05T08:00:00.000Z",
+      "sigKey": "EMP-006|2026-03-16|2026-03-31",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "MACKY",
+          "employeeId": "EMP-006",
+          "position": "MID-LEVEL DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 16000
+        },
+        "payPeriod": {
+          "start": "2026-03-16",
+          "end": "2026-03-31",
+          "paymentDate": "2026-04-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 8000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 8000,
+          "totalDeductions": 0,
+          "netPay": 8000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202604-EMP006-02"
+      }
+    },
+    {
+      "id": "knb-202604-emp007-02-23",
+      "archivedAt": "2026-04-05T08:00:00.000Z",
+      "sigKey": "EMP-007|2026-03-16|2026-03-31",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "POKS",
+          "employeeId": "EMP-007",
+          "position": "JUNIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-03-16",
+          "end": "2026-03-31",
+          "paymentDate": "2026-04-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 6000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 6000,
+          "totalDeductions": 0,
+          "netPay": 6000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202604-EMP007-02"
+      }
+    },
+    {
+      "id": "knb-202604-emp008-02-24",
+      "archivedAt": "2026-04-05T08:00:00.000Z",
+      "sigKey": "EMP-008|2026-03-16|2026-03-31",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "PHIA",
+          "employeeId": "EMP-008",
+          "position": "JUNIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-03-16",
+          "end": "2026-03-31",
+          "paymentDate": "2026-04-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 6000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 6000,
+          "totalDeductions": 0,
+          "netPay": 6000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202604-EMP008-02"
+      }
+    },
+    {
+      "id": "knb-202603-emp003-01-25",
+      "archivedAt": "2026-03-20T08:00:00.000Z",
+      "sigKey": "EMP-003|2026-03-01|2026-03-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "NOEL",
+          "employeeId": "EMP-003",
+          "position": "TEAM LEAD",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 50000
+        },
+        "payPeriod": {
+          "start": "2026-03-01",
+          "end": "2026-03-15",
+          "paymentDate": "2026-03-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 25000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 25000,
+          "totalDeductions": 0,
+          "netPay": 25000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202603-EMP003-01"
+      }
+    },
+    {
+      "id": "knb-202603-emp001-01-26",
+      "archivedAt": "2026-03-20T08:00:00.000Z",
+      "sigKey": "EMP-001|2026-03-01|2026-03-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "ANGELO",
+          "employeeId": "EMP-001",
+          "position": "OPERATION MANAGER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 100000
+        },
+        "payPeriod": {
+          "start": "2026-03-01",
+          "end": "2026-03-15",
+          "paymentDate": "2026-03-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 50000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 50000,
+          "totalDeductions": 0,
+          "netPay": 50000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202603-EMP001-01"
+      }
+    },
+    {
+      "id": "knb-202603-emp002-01-27",
+      "archivedAt": "2026-03-20T08:00:00.000Z",
+      "sigKey": "EMP-002|2026-03-01|2026-03-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "KAJEBE",
+          "employeeId": "EMP-002",
+          "position": "SENIOR DEVELOPER",
+          "department": "SHOPIFY & WORDPRESS",
+          "email": "",
+          "basicSalary": 30000
+        },
+        "payPeriod": {
+          "start": "2026-03-01",
+          "end": "2026-03-15",
+          "paymentDate": "2026-03-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 15000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 15000,
+          "totalDeductions": 0,
+          "netPay": 15000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202603-EMP002-01"
+      }
+    },
+    {
+      "id": "knb-202603-emp004-01-28",
+      "archivedAt": "2026-03-20T08:00:00.000Z",
+      "sigKey": "EMP-004|2026-03-01|2026-03-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "KIER",
+          "employeeId": "EMP-004",
+          "position": "SENIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 30000
+        },
+        "payPeriod": {
+          "start": "2026-03-01",
+          "end": "2026-03-15",
+          "paymentDate": "2026-03-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 15000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 15000,
+          "totalDeductions": 0,
+          "netPay": 15000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202603-EMP004-01"
+      }
+    },
+    {
+      "id": "knb-202603-emp005-01-29",
+      "archivedAt": "2026-03-20T08:00:00.000Z",
+      "sigKey": "EMP-005|2026-03-01|2026-03-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "ALO",
+          "employeeId": "EMP-005",
+          "position": "MID-LEVEL DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 20000
+        },
+        "payPeriod": {
+          "start": "2026-03-01",
+          "end": "2026-03-15",
+          "paymentDate": "2026-03-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 10000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 10000,
+          "totalDeductions": 0,
+          "netPay": 10000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202603-EMP005-01"
+      }
+    },
+    {
+      "id": "knb-202603-emp006-01-30",
+      "archivedAt": "2026-03-20T08:00:00.000Z",
+      "sigKey": "EMP-006|2026-03-01|2026-03-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "MACKY",
+          "employeeId": "EMP-006",
+          "position": "MID-LEVEL DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 16000
+        },
+        "payPeriod": {
+          "start": "2026-03-01",
+          "end": "2026-03-15",
+          "paymentDate": "2026-03-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 8000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 8000,
+          "totalDeductions": 0,
+          "netPay": 8000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202603-EMP006-01"
+      }
+    },
+    {
+      "id": "knb-202603-emp007-01-31",
+      "archivedAt": "2026-03-20T08:00:00.000Z",
+      "sigKey": "EMP-007|2026-03-01|2026-03-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "POKS",
+          "employeeId": "EMP-007",
+          "position": "JUNIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-03-01",
+          "end": "2026-03-15",
+          "paymentDate": "2026-03-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 6000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 6000,
+          "totalDeductions": 0,
+          "netPay": 6000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202603-EMP007-01"
+      }
+    },
+    {
+      "id": "knb-202603-emp008-01-32",
+      "archivedAt": "2026-03-20T08:00:00.000Z",
+      "sigKey": "EMP-008|2026-03-01|2026-03-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "PHIA",
+          "employeeId": "EMP-008",
+          "position": "JUNIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-03-01",
+          "end": "2026-03-15",
+          "paymentDate": "2026-03-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 6000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 6000,
+          "totalDeductions": 0,
+          "netPay": 6000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202603-EMP008-01"
+      }
+    },
+    {
+      "id": "knb-202603-emp003-02-33",
+      "archivedAt": "2026-03-05T08:00:00.000Z",
+      "sigKey": "EMP-003|2026-02-16|2026-02-28",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "NOEL",
+          "employeeId": "EMP-003",
+          "position": "TEAM LEAD",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 50000
+        },
+        "payPeriod": {
+          "start": "2026-02-16",
+          "end": "2026-02-28",
+          "paymentDate": "2026-03-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 25000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 25000,
+          "totalDeductions": 0,
+          "netPay": 25000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202603-EMP003-02"
+      }
+    },
+    {
+      "id": "knb-202603-emp001-02-34",
+      "archivedAt": "2026-03-05T08:00:00.000Z",
+      "sigKey": "EMP-001|2026-02-16|2026-02-28",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "ANGELO",
+          "employeeId": "EMP-001",
+          "position": "OPERATION MANAGER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 100000
+        },
+        "payPeriod": {
+          "start": "2026-02-16",
+          "end": "2026-02-28",
+          "paymentDate": "2026-03-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 50000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 50000,
+          "totalDeductions": 0,
+          "netPay": 50000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202603-EMP001-02"
+      }
+    },
+    {
+      "id": "knb-202603-emp002-02-35",
+      "archivedAt": "2026-03-05T08:00:00.000Z",
+      "sigKey": "EMP-002|2026-02-16|2026-02-28",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "KAJEBE",
+          "employeeId": "EMP-002",
+          "position": "SENIOR DEVELOPER",
+          "department": "SHOPIFY & WORDPRESS",
+          "email": "",
+          "basicSalary": 30000
+        },
+        "payPeriod": {
+          "start": "2026-02-16",
+          "end": "2026-02-28",
+          "paymentDate": "2026-03-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 15000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 15000,
+          "totalDeductions": 0,
+          "netPay": 15000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202603-EMP002-02"
+      }
+    },
+    {
+      "id": "knb-202603-emp004-02-36",
+      "archivedAt": "2026-03-05T08:00:00.000Z",
+      "sigKey": "EMP-004|2026-02-16|2026-02-28",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "KIER",
+          "employeeId": "EMP-004",
+          "position": "SENIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 30000
+        },
+        "payPeriod": {
+          "start": "2026-02-16",
+          "end": "2026-02-28",
+          "paymentDate": "2026-03-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 15000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 15000,
+          "totalDeductions": 0,
+          "netPay": 15000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202603-EMP004-02"
+      }
+    },
+    {
+      "id": "knb-202603-emp005-02-37",
+      "archivedAt": "2026-03-05T08:00:00.000Z",
+      "sigKey": "EMP-005|2026-02-16|2026-02-28",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "ALO",
+          "employeeId": "EMP-005",
+          "position": "MID-LEVEL DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 20000
+        },
+        "payPeriod": {
+          "start": "2026-02-16",
+          "end": "2026-02-28",
+          "paymentDate": "2026-03-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 10000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 10000,
+          "totalDeductions": 0,
+          "netPay": 10000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202603-EMP005-02"
+      }
+    },
+    {
+      "id": "knb-202603-emp006-02-38",
+      "archivedAt": "2026-03-05T08:00:00.000Z",
+      "sigKey": "EMP-006|2026-02-16|2026-02-28",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "MACKY",
+          "employeeId": "EMP-006",
+          "position": "MID-LEVEL DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 16000
+        },
+        "payPeriod": {
+          "start": "2026-02-16",
+          "end": "2026-02-28",
+          "paymentDate": "2026-03-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 8000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 8000,
+          "totalDeductions": 0,
+          "netPay": 8000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202603-EMP006-02"
+      }
+    },
+    {
+      "id": "knb-202603-emp007-02-39",
+      "archivedAt": "2026-03-05T08:00:00.000Z",
+      "sigKey": "EMP-007|2026-02-16|2026-02-28",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "POKS",
+          "employeeId": "EMP-007",
+          "position": "JUNIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-02-16",
+          "end": "2026-02-28",
+          "paymentDate": "2026-03-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 6000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 6000,
+          "totalDeductions": 0,
+          "netPay": 6000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202603-EMP007-02"
+      }
+    },
+    {
+      "id": "knb-202603-emp008-02-40",
+      "archivedAt": "2026-03-05T08:00:00.000Z",
+      "sigKey": "EMP-008|2026-02-16|2026-02-28",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "PHIA",
+          "employeeId": "EMP-008",
+          "position": "JUNIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-02-16",
+          "end": "2026-02-28",
+          "paymentDate": "2026-03-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 6000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 6000,
+          "totalDeductions": 0,
+          "netPay": 6000
+        },
+        "notes": "Salary increase applied starting Feb 16, 2026 pay period, paid Mar 5, 2026.",
+        "reference": "KNB-202603-EMP008-02"
+      }
+    },
+    {
+      "id": "knb-202602-emp003-01-41",
+      "archivedAt": "2026-02-20T08:00:00.000Z",
+      "sigKey": "EMP-003|2026-02-01|2026-02-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "NOEL",
+          "employeeId": "EMP-003",
+          "position": "TEAM LEAD",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 40000
+        },
+        "payPeriod": {
+          "start": "2026-02-01",
+          "end": "2026-02-15",
+          "paymentDate": "2026-02-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 20000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 20000,
+          "totalDeductions": 0,
+          "netPay": 20000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202602-EMP003-01"
+      }
+    },
+    {
+      "id": "knb-202602-emp001-01-42",
+      "archivedAt": "2026-02-20T08:00:00.000Z",
+      "sigKey": "EMP-001|2026-02-01|2026-02-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "ANGELO",
+          "employeeId": "EMP-001",
+          "position": "OPERATION MANAGER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 50000
+        },
+        "payPeriod": {
+          "start": "2026-02-01",
+          "end": "2026-02-15",
+          "paymentDate": "2026-02-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 25000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 25000,
+          "totalDeductions": 0,
+          "netPay": 25000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202602-EMP001-01"
+      }
+    },
+    {
+      "id": "knb-202602-emp002-01-43",
+      "archivedAt": "2026-02-20T08:00:00.000Z",
+      "sigKey": "EMP-002|2026-02-01|2026-02-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "KAJEBE",
+          "employeeId": "EMP-002",
+          "position": "SENIOR DEVELOPER",
+          "department": "SHOPIFY & WORDPRESS",
+          "email": "",
+          "basicSalary": 20000
+        },
+        "payPeriod": {
+          "start": "2026-02-01",
+          "end": "2026-02-15",
+          "paymentDate": "2026-02-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 10000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 10000,
+          "totalDeductions": 0,
+          "netPay": 10000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202602-EMP002-01"
+      }
+    },
+    {
+      "id": "knb-202602-emp004-01-44",
+      "archivedAt": "2026-02-20T08:00:00.000Z",
+      "sigKey": "EMP-004|2026-02-01|2026-02-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "KIER",
+          "employeeId": "EMP-004",
+          "position": "SENIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 20000
+        },
+        "payPeriod": {
+          "start": "2026-02-01",
+          "end": "2026-02-15",
+          "paymentDate": "2026-02-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 10000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 10000,
+          "totalDeductions": 0,
+          "netPay": 10000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202602-EMP004-01"
+      }
+    },
+    {
+      "id": "knb-202602-emp005-01-45",
+      "archivedAt": "2026-02-20T08:00:00.000Z",
+      "sigKey": "EMP-005|2026-02-01|2026-02-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "ALO",
+          "employeeId": "EMP-005",
+          "position": "MID-LEVEL DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-02-01",
+          "end": "2026-02-15",
+          "paymentDate": "2026-02-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 6000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 6000,
+          "totalDeductions": 0,
+          "netPay": 6000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202602-EMP005-01"
+      }
+    },
+    {
+      "id": "knb-202602-emp006-01-46",
+      "archivedAt": "2026-02-20T08:00:00.000Z",
+      "sigKey": "EMP-006|2026-02-01|2026-02-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "MACKY",
+          "employeeId": "EMP-006",
+          "position": "MID-LEVEL DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 16000
+        },
+        "payPeriod": {
+          "start": "2026-02-01",
+          "end": "2026-02-15",
+          "paymentDate": "2026-02-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 8000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 8000,
+          "totalDeductions": 0,
+          "netPay": 8000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202602-EMP006-01"
+      }
+    },
+    {
+      "id": "knb-202602-emp007-01-47",
+      "archivedAt": "2026-02-20T08:00:00.000Z",
+      "sigKey": "EMP-007|2026-02-01|2026-02-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "POKS",
+          "employeeId": "EMP-007",
+          "position": "JUNIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-02-01",
+          "end": "2026-02-15",
+          "paymentDate": "2026-02-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 6000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 6000,
+          "totalDeductions": 0,
+          "netPay": 6000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202602-EMP007-01"
+      }
+    },
+    {
+      "id": "knb-202602-emp008-01-48",
+      "archivedAt": "2026-02-20T08:00:00.000Z",
+      "sigKey": "EMP-008|2026-02-01|2026-02-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "PHIA",
+          "employeeId": "EMP-008",
+          "position": "JUNIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-02-01",
+          "end": "2026-02-15",
+          "paymentDate": "2026-02-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 1600,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 1600,
+          "totalDeductions": 0,
+          "netPay": 1600
+        },
+        "notes": "Prorated from first day 2026-02-12: 4 of 15 cutoff days.",
+        "reference": "KNB-202602-EMP008-01"
+      }
+    },
+    {
+      "id": "knb-202602-emp003-02-49",
+      "archivedAt": "2026-02-05T08:00:00.000Z",
+      "sigKey": "EMP-003|2026-01-16|2026-01-31",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "NOEL",
+          "employeeId": "EMP-003",
+          "position": "TEAM LEAD",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 40000
+        },
+        "payPeriod": {
+          "start": "2026-01-16",
+          "end": "2026-01-31",
+          "paymentDate": "2026-02-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 20000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 20000,
+          "totalDeductions": 0,
+          "netPay": 20000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202602-EMP003-02"
+      }
+    },
+    {
+      "id": "knb-202602-emp001-02-50",
+      "archivedAt": "2026-02-05T08:00:00.000Z",
+      "sigKey": "EMP-001|2026-01-16|2026-01-31",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "ANGELO",
+          "employeeId": "EMP-001",
+          "position": "OPERATION MANAGER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 50000
+        },
+        "payPeriod": {
+          "start": "2026-01-16",
+          "end": "2026-01-31",
+          "paymentDate": "2026-02-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 25000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 25000,
+          "totalDeductions": 0,
+          "netPay": 25000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202602-EMP001-02"
+      }
+    },
+    {
+      "id": "knb-202602-emp002-02-51",
+      "archivedAt": "2026-02-05T08:00:00.000Z",
+      "sigKey": "EMP-002|2026-01-16|2026-01-31",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "KAJEBE",
+          "employeeId": "EMP-002",
+          "position": "SENIOR DEVELOPER",
+          "department": "SHOPIFY & WORDPRESS",
+          "email": "",
+          "basicSalary": 20000
+        },
+        "payPeriod": {
+          "start": "2026-01-16",
+          "end": "2026-01-31",
+          "paymentDate": "2026-02-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 10000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 10000,
+          "totalDeductions": 0,
+          "netPay": 10000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202602-EMP002-02"
+      }
+    },
+    {
+      "id": "knb-202602-emp004-02-52",
+      "archivedAt": "2026-02-05T08:00:00.000Z",
+      "sigKey": "EMP-004|2026-01-16|2026-01-31",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "KIER",
+          "employeeId": "EMP-004",
+          "position": "SENIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 20000
+        },
+        "payPeriod": {
+          "start": "2026-01-16",
+          "end": "2026-01-31",
+          "paymentDate": "2026-02-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 10000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 10000,
+          "totalDeductions": 0,
+          "netPay": 10000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202602-EMP004-02"
+      }
+    },
+    {
+      "id": "knb-202602-emp005-02-53",
+      "archivedAt": "2026-02-05T08:00:00.000Z",
+      "sigKey": "EMP-005|2026-01-16|2026-01-31",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "ALO",
+          "employeeId": "EMP-005",
+          "position": "MID-LEVEL DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-01-16",
+          "end": "2026-01-31",
+          "paymentDate": "2026-02-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 6000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 6000,
+          "totalDeductions": 0,
+          "netPay": 6000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202602-EMP005-02"
+      }
+    },
+    {
+      "id": "knb-202602-emp006-02-54",
+      "archivedAt": "2026-02-05T08:00:00.000Z",
+      "sigKey": "EMP-006|2026-01-16|2026-01-31",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "MACKY",
+          "employeeId": "EMP-006",
+          "position": "MID-LEVEL DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 16000
+        },
+        "payPeriod": {
+          "start": "2026-01-16",
+          "end": "2026-01-31",
+          "paymentDate": "2026-02-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 8000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 8000,
+          "totalDeductions": 0,
+          "netPay": 8000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202602-EMP006-02"
+      }
+    },
+    {
+      "id": "knb-202602-emp007-02-55",
+      "archivedAt": "2026-02-05T08:00:00.000Z",
+      "sigKey": "EMP-007|2026-01-16|2026-01-31",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "POKS",
+          "employeeId": "EMP-007",
+          "position": "JUNIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-01-16",
+          "end": "2026-01-31",
+          "paymentDate": "2026-02-05",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 2nd cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 6000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 6000,
+          "totalDeductions": 0,
+          "netPay": 6000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202602-EMP007-02"
+      }
+    },
+    {
+      "id": "knb-202601-emp003-01-56",
+      "archivedAt": "2026-01-20T08:00:00.000Z",
+      "sigKey": "EMP-003|2026-01-01|2026-01-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "NOEL",
+          "employeeId": "EMP-003",
+          "position": "TEAM LEAD",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 40000
+        },
+        "payPeriod": {
+          "start": "2026-01-01",
+          "end": "2026-01-15",
+          "paymentDate": "2026-01-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 20000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 20000,
+          "totalDeductions": 0,
+          "netPay": 20000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202601-EMP003-01"
+      }
+    },
+    {
+      "id": "knb-202601-emp001-01-57",
+      "archivedAt": "2026-01-20T08:00:00.000Z",
+      "sigKey": "EMP-001|2026-01-01|2026-01-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "ANGELO",
+          "employeeId": "EMP-001",
+          "position": "OPERATION MANAGER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 50000
+        },
+        "payPeriod": {
+          "start": "2026-01-01",
+          "end": "2026-01-15",
+          "paymentDate": "2026-01-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 25000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 25000,
+          "totalDeductions": 0,
+          "netPay": 25000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202601-EMP001-01"
+      }
+    },
+    {
+      "id": "knb-202601-emp002-01-58",
+      "archivedAt": "2026-01-20T08:00:00.000Z",
+      "sigKey": "EMP-002|2026-01-01|2026-01-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "KAJEBE",
+          "employeeId": "EMP-002",
+          "position": "SENIOR DEVELOPER",
+          "department": "SHOPIFY & WORDPRESS",
+          "email": "",
+          "basicSalary": 20000
+        },
+        "payPeriod": {
+          "start": "2026-01-01",
+          "end": "2026-01-15",
+          "paymentDate": "2026-01-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 10000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 10000,
+          "totalDeductions": 0,
+          "netPay": 10000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202601-EMP002-01"
+      }
+    },
+    {
+      "id": "knb-202601-emp004-01-59",
+      "archivedAt": "2026-01-20T08:00:00.000Z",
+      "sigKey": "EMP-004|2026-01-01|2026-01-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "KIER",
+          "employeeId": "EMP-004",
+          "position": "SENIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 20000
+        },
+        "payPeriod": {
+          "start": "2026-01-01",
+          "end": "2026-01-15",
+          "paymentDate": "2026-01-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 10000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 10000,
+          "totalDeductions": 0,
+          "netPay": 10000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202601-EMP004-01"
+      }
+    },
+    {
+      "id": "knb-202601-emp005-01-60",
+      "archivedAt": "2026-01-20T08:00:00.000Z",
+      "sigKey": "EMP-005|2026-01-01|2026-01-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "ALO",
+          "employeeId": "EMP-005",
+          "position": "MID-LEVEL DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-01-01",
+          "end": "2026-01-15",
+          "paymentDate": "2026-01-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 6000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 6000,
+          "totalDeductions": 0,
+          "netPay": 6000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202601-EMP005-01"
+      }
+    },
+    {
+      "id": "knb-202601-emp006-01-61",
+      "archivedAt": "2026-01-20T08:00:00.000Z",
+      "sigKey": "EMP-006|2026-01-01|2026-01-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "MACKY",
+          "employeeId": "EMP-006",
+          "position": "MID-LEVEL DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 16000
+        },
+        "payPeriod": {
+          "start": "2026-01-01",
+          "end": "2026-01-15",
+          "paymentDate": "2026-01-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 8000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 8000,
+          "totalDeductions": 0,
+          "netPay": 8000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202601-EMP006-01"
+      }
+    },
+    {
+      "id": "knb-202601-emp007-01-62",
+      "archivedAt": "2026-01-20T08:00:00.000Z",
+      "sigKey": "EMP-007|2026-01-01|2026-01-15",
+      "data": {
+        "company": {
+          "name": "KNB Web Solutions Incorporated",
+          "address": "",
+          "contact": "",
+          "tin": "",
+          "logo": "assets/logo/knb-logo.png"
+        },
+        "employee": {
+          "name": "POKS",
+          "employeeId": "EMP-007",
+          "position": "JUNIOR DEVELOPER",
+          "department": "SHOPIFY",
+          "email": "",
+          "basicSalary": 12000
+        },
+        "payPeriod": {
+          "start": "2026-01-01",
+          "end": "2026-01-15",
+          "paymentDate": "2026-01-20",
+          "basis": {
+            "type": "semi-monthly",
+            "label": "Semi-Monthly Basic Pay",
+            "schedule": "Semi-monthly - 1st cutoff",
+            "salaryBasis": "Monthly salary divided by 2"
+          }
+        },
+        "earnings": {
+          "basicPay": 6000,
+          "overtimePay": 0,
+          "bonuses": 0,
+          "allowances": 0
+        },
+        "deductions": {
+          "withholdingTax": 0,
+          "sssDeduction": 0,
+          "philhealthDeduction": 0,
+          "pagibigDeduction": 0,
+          "taxDeduction": 0,
+          "lateDeduction": 0,
+          "otherDeductions": 0
+        },
+        "totals": {
+          "grossPay": 6000,
+          "totalDeductions": 0,
+          "netPay": 6000
+        },
+        "notes": "Salary before Mar 5, 2026 increase.",
+        "reference": "KNB-202601-EMP007-01"
+      }
+    }
+  ],
+  "draft": null,
+  "theme": "dark",
+  "autoDeductions": "0",
+  "notes": [
+    "Generated by Codex on 2026-05-10 for KNB Payslip Generator import.",
+    "Completed semi-monthly cutoffs only: Jan 1-15 through Apr 16-30, with Apr 16-30 paid May 5.",
+    "Raises are applied starting the Feb 16-28 period paid Mar 5.",
+    "PHIA starts Feb 12, so Feb 1-15 is prorated as 4/15 of the semi-monthly pay.",
+    "Deductions are set to zero because actual deduction amounts were not provided.",
+    "Employee IDs and roles added on 2026-05-10. Missing IDs were assigned sequentially: KIER EMP-004, ALO EMP-005, MACKY EMP-006, POKS EMP-007, PHIA EMP-008."
+  ]
+}

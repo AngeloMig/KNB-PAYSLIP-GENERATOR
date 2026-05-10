@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify KNB Payslip</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f4f5;
+      --card: #ffffff;
+      --text: #18181c;
+      --muted: #71717a;
+      --line: #e4e4e7;
+      --ok: #047857;
+      --bad: #b91c1c;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      width: min(100%, 560px);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 20px 50px rgba(24, 24, 28, 0.08);
+      overflow: hidden;
+    }
+
+    header {
+      padding: 22px 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .status {
+      margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      background: #ecfdf5;
+      color: var(--ok);
+    }
+
+    .status.bad {
+      background: #fef2f2;
+      color: var(--bad);
+    }
+
+    section {
+      padding: 20px 24px 24px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+      min-width: 0;
+    }
+
+    .row:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .value {
+      font-size: 14px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+      text-align: right;
+    }
+
+    .net {
+      font-size: 22px;
+      color: var(--ok);
+    }
+
+    .note {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 520px) {
+      body { padding: 14px; place-items: start center; }
+      .row { grid-template-columns: 1fr; gap: 3px; }
+      .value { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>KNB Payslip Verification</h1>
+      <div class="status bad" id="status">No verification data</div>
+    </header>
+    <section>
+      <div class="grid" id="details"></div>
+      <p class="note" id="note">Scan the QR code printed on a KNB payslip to show the canonical values encoded at issue time.</p>
+    </section>
+  </main>
+
+  <script>
+    function stableStringify(value) {
+      if (Array.isArray(value)) return `[${value.map(stableStringify).join(",")}]`;
+      if (value && typeof value === "object") {
+        return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableStringify(value[key])}`).join(",")}}`;
+      }
+      return JSON.stringify(value);
+    }
+
+    function checksum(text) {
+      let hash = 0x811c9dc5;
+      for (let i = 0; i < text.length; i += 1) {
+        hash ^= text.charCodeAt(i);
+        hash = Math.imul(hash, 0x01000193);
+      }
+      return (hash >>> 0).toString(16).padStart(8, "0").toUpperCase();
+    }
+
+    function fromBase64Url(value) {
+      const base64 = value.replace(/-/g, "+").replace(/_/g, "/") + "===".slice((value.length + 3) % 4);
+      return decodeURIComponent(escape(atob(base64)));
+    }
+
+    function peso(value) {
+      return new Intl.NumberFormat("en-PH", {
+        style: "currency",
+        currency: "PHP",
+        minimumFractionDigits: 2
+      }).format(Number(value) || 0);
+    }
+
+    function formatDate(value) {
+      if (!value) return "-";
+      return new Date(value + "T00:00:00").toLocaleDateString("en-PH", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function row(label, value, className = "") {
+      return `<div class="row"><div class="label">${escapeHtml(label)}</div><div class="value ${className}">${escapeHtml(value)}</div></div>`;
+    }
+
+    function verify() {
+      const status = document.getElementById("status");
+      const details = document.getElementById("details");
+      const note = document.getElementById("note");
+      const token = location.hash.slice(1).trim();
+
+      if (!token) return;
+
+      try {
+        const payload = JSON.parse(fromBase64Url(token));
+        const expected = payload.k;
+        const copy = { ...payload };
+        delete copy.k;
+        const actual = checksum(stableStringify(copy));
+        const valid = expected && expected === actual;
+
+        status.textContent = valid ? "Checksum valid" : "Checksum mismatch";
+        status.classList.toggle("bad", !valid);
+
+        details.innerHTML = [
+          row("Issuer", payload.i),
+          row("Reference", payload.r),
+          row("Employee", `${payload.e?.n || "-"}${payload.e?.id ? " (" + payload.e.id + ")" : ""}`),
+          row("Pay Period", `${formatDate(payload.p?.s)} to ${formatDate(payload.p?.e)}`),
+          row("Payment Date", formatDate(payload.p?.pd)),
+          row("Gross Pay", peso(payload.t?.g)),
+          row("Deductions", peso(payload.t?.d)),
+          row("Net Pay", peso(payload.t?.n), "net"),
+          row("Checksum", payload.k || "-")
+        ].join("");
+
+        note.textContent = valid
+          ? "Compare these values against the printed PDF. If the PDF text differs from this page, the PDF was changed after issue."
+          : "This QR payload is damaged or has been edited. Do not rely on the payslip values.";
+      } catch (error) {
+        status.textContent = "Invalid verification data";
+        status.classList.add("bad");
+        details.innerHTML = "";
+        note.textContent = "The QR code did not contain a readable KNB verification payload.";
+      }
+    }
+
+    verify();
+  </script>
+</body>
+</html>
