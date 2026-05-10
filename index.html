@@ -1,0 +1,3714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KNB Payslip Generator</title>
+
+  <!-- PDF Generator CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0a0a0b;
+      --card: #131316;
+      --card-2: #18181c;
+      --text: #ededee;
+      --muted: #8a8a92;
+      --line: #25252a;
+      --line-dark: #34343a;
+      --primary: #ededee;
+      --primary-soft: #1f1f24;
+      --soft: #18181c;
+      --accent: #ededee;
+      --success: #34d399;
+      --success-bg: rgba(52, 211, 153, 0.08);
+      --danger: #f87171;
+      --warning: #fbbf24;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+      --shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.5);
+      --shadow-lg: 0 25px 50px -20px rgba(0, 0, 0, 0.6);
+      --radius: 14px;
+      --radius-sm: 10px;
+    }
+
+    [data-theme="light"] {
+      --bg: #fafafa;
+      --card: #ffffff;
+      --card-2: #f5f5f7;
+      --text: #0a0a0b;
+      --muted: #6b6b74;
+      --line: #ebebed;
+      --line-dark: #d4d4d8;
+      --primary: #0a0a0b;
+      --primary-soft: #f0f0f2;
+      --soft: #f5f5f7;
+      --accent: #0a0a0b;
+      --success: #047857;
+      --success-bg: rgba(4, 120, 87, 0.08);
+      --danger: #dc2626;
+      --warning: #d97706;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+      --shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.12);
+      --shadow-lg: 0 25px 50px -20px rgba(0, 0, 0, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    .app-header {
+      position: relative;
+      padding: 32px 20px 28px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+      background: var(--card);
+    }
+
+    .app-header { color: var(--text); }
+
+    .app-header h1 {
+      margin: 0 0 8px;
+      font-size: clamp(26px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .app-header p {
+      margin: 0;
+      opacity: 0.92;
+      font-size: 15px;
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      max-width: 1200px;
+      margin: 0 auto 14px;
+      padding: 0 8px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .theme-toggle {
+      background: var(--soft);
+      color: var(--text);
+      border: 1px solid var(--line);
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .theme-toggle:hover { border-color: var(--line-dark); background: var(--card-2); transform: none; opacity: 1; }
+
+    .container {
+      width: min(1200px, calc(100% - 32px));
+      margin: 24px auto 60px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+      transition: grid-template-columns 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .layout.typing {
+      grid-template-columns: 0.82fr 1.18fr;
+    }
+
+    .right-column {
+      position: sticky;
+      top: 16px;
+    }
+
+    /* Toasts */
+    .toast-stack {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast {
+      pointer-events: auto;
+      min-width: 240px;
+      max-width: 360px;
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--primary);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 18px 40px -12px rgba(15, 23, 42, 0.25);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateX(120%);
+      opacity: 0;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s;
+    }
+
+    .toast.show { transform: translateX(0); opacity: 1; }
+    .toast.success { border-left-color: #10b981; }
+    .toast.error { border-left-color: var(--danger); }
+    .toast.info { border-left-color: var(--primary); }
+    .toast .toast-icon { font-size: 18px; }
+
+    /* Validation */
+    input.invalid, textarea.invalid, select.invalid {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.12);
+    }
+
+    .field-hint {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .field-hint.auto-filled {
+      color: var(--success);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      filter: grayscale(0.4);
+    }
+
+    button:disabled:hover { transform: none; box-shadow: var(--shadow-sm); }
+
+    /* Hide spinners on number inputs */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type="number"] { -moz-appearance: textfield; }
+
+    /* Auto-deductions toggle */
+    .deductions-toggle-row { margin: 4px 0 4px; }
+
+    .deductions-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+    }
+
+    .dt-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .dt-sub {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .switch { position: relative; display: inline-block; cursor: pointer; flex-shrink: 0; }
+    .switch input { position: absolute; opacity: 0; pointer-events: none; }
+
+    .switch-track {
+      display: inline-block;
+      width: 38px;
+      height: 22px;
+      border-radius: 999px;
+      background: var(--line-dark);
+      position: relative;
+      transition: background 0.2s ease;
+    }
+
+    .switch-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+      transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .switch input:checked + .switch-track { background: var(--text); }
+    .switch input:checked + .switch-track .switch-thumb { transform: translateX(16px); }
+
+    [data-theme="light"] .switch input:checked + .switch-track .switch-thumb { background: var(--bg); }
+
+    input.auto-locked {
+      cursor: not-allowed;
+      background: var(--card-2);
+      color: var(--muted);
+      padding-right: 32px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%238a8a92' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='11' width='18' height='11' rx='2' ry='2'/><path d='M7 11V7a5 5 0 0 1 10 0v4'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 12px;
+    }
+
+    [data-theme="light"] input.auto-locked {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%236b6b74' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='11' width='18' height='11' rx='2' ry='2'/><path d='M7 11V7a5 5 0 0 1 10 0v4'/></svg>");
+    }
+
+    /* Pay-schedule row */
+    .schedule-row {
+      display: grid;
+      grid-template-columns: minmax(200px, 1fr) 160px auto;
+      gap: 12px;
+      padding: 14px;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      align-items: end;
+    }
+
+    .schedule-row .form-group { gap: 6px; min-width: 0; }
+    .schedule-row select, .schedule-row input { min-width: 0; }
+    .schedule-row label { white-space: nowrap; }
+    .schedule-row button { white-space: nowrap; height: 42px; padding: 0 18px; }
+    .schedule-row input[type="month"] { padding-right: 34px; }
+
+    .schedule-applied {
+      grid-column: 1 / -1;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: var(--success-bg);
+      color: var(--success);
+      font-size: 12px;
+      font-weight: 500;
+      width: fit-content;
+    }
+
+    .schedule-extras {
+      grid-column: 1 / -1;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Archive panel */
+    .archive-toolbar {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+      margin-bottom: 12px;
+    }
+
+    .archive-toolbar .form-group { gap: 0; }
+    .archive-toolbar button { flex-shrink: 0; }
+
+    .archive-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 480px;
+      overflow-y: auto;
+    }
+
+    .archive-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      transition: border-color 0.18s, background 0.18s;
+    }
+
+    .archive-item:hover { border-color: var(--line-dark); background: var(--card-2); }
+
+    .archive-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--text);
+      color: var(--bg);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .archive-meta { min-width: 0; }
+    .archive-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .archive-period {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .archive-amount {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    .archive-actions { display: flex; gap: 4px; }
+    .archive-actions button {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      box-shadow: none;
+    }
+    .archive-actions button:hover { color: var(--text); border-color: var(--line-dark); background: var(--card-2); }
+    .archive-actions button.danger:hover { color: var(--danger); border-color: var(--danger); background: rgba(248, 113, 113, 0.08); }
+
+    .archive-empty {
+      padding: 32px 16px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+    }
+
+    @media (max-width: 760px) {
+      .archive-item { grid-template-columns: auto 1fr; grid-template-rows: auto auto; }
+      .archive-amount, .archive-actions { grid-column: 2; }
+      .archive-amount { text-align: left; }
+    }
+
+    @media (max-width: 760px) {
+      .schedule-row { grid-template-columns: 1fr; }
+    }
+
+    /* Keyboard shortcut hint kbd */
+    .kbd-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      margin-left: 6px;
+      padding: 2px 5px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.12);
+      color: inherit;
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      opacity: 0.85;
+    }
+
+    .btn-secondary .kbd-hint, [data-theme="light"] .btn-primary .kbd-hint, [data-theme="light"] .btn-success .kbd-hint {
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    /* Subtle row striping in slip tables */
+    .mini-table tbody tr:nth-child(even) td {
+      background: rgba(0, 0, 0, 0.018);
+    }
+
+    /* QR / verification mark in slip footer */
+    .slip-verify {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 10.5px;
+      color: #6b7280;
+    }
+
+    .slip-verify-mark {
+      width: 44px;
+      height: 44px;
+      border: 1px solid #e4e4e7;
+      border-radius: 6px;
+      padding: 4px;
+      background: #fff;
+      flex-shrink: 0;
+    }
+
+    .slip-verify-mark canvas, .slip-verify-mark svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Custom date/month input picker icon */
+    input[type="date"]::-webkit-calendar-picker-indicator,
+    input[type="month"]::-webkit-calendar-picker-indicator {
+      background: none;
+      color: transparent;
+      opacity: 0;
+      cursor: pointer;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 38px;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+    input[type="date"]::-webkit-inner-spin-button,
+    input[type="month"]::-webkit-inner-spin-button,
+    input[type="date"]::-webkit-clear-button,
+    input[type="month"]::-webkit-clear-button {
+      display: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="date"],
+    input[type="month"] {
+      position: relative;
+      padding-right: 38px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238a8a92' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='4' width='18' height='18' rx='2' ry='2'/><line x1='16' y1='2' x2='16' y2='6'/><line x1='8' y1='2' x2='8' y2='6'/><line x1='3' y1='10' x2='21' y2='10'/></svg>") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 12px center !important;
+      background-size: 14px 14px !important;
+      cursor: pointer;
+    }
+
+    [data-theme="light"] input[type="date"],
+    [data-theme="light"] input[type="month"] {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b6b74' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='4' width='18' height='18' rx='2' ry='2'/><line x1='16' y1='2' x2='16' y2='6'/><line x1='8' y1='2' x2='8' y2='6'/><line x1='3' y1='10' x2='21' y2='10'/></svg>") !important;
+    }
+
+    /* Inline icons */
+    .icon {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    .icon-sm { width: 14px; height: 14px; }
+    .icon-lg { width: 24px; height: 24px; }
+
+    /* Refined empty state */
+    .empty-state {
+      padding: 64px 24px;
+      text-align: center;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .empty-state .empty-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+    }
+
+    .empty-state .empty-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .empty-state p {
+      margin: 0;
+      font-size: 13px;
+      max-width: 260px;
+      line-height: 1.5;
+    }
+
+    /* Icon-only button (for destructive secondary actions) */
+    .btn-icon {
+      width: 40px;
+      padding: 0;
+      background: transparent;
+      color: var(--danger);
+      border: 1px solid var(--line);
+      box-shadow: none;
+      font-size: 16px;
+    }
+
+    .btn-icon:hover {
+      background: rgba(225, 29, 72, 0.08);
+      border-color: var(--danger);
+    }
+
+    /* Autosave indicator */
+    .save-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      margin-left: auto;
+    }
+
+    .save-indicator .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+    }
+
+    .save-indicator.saving .dot {
+      background: var(--warning);
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5); }
+      50% { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+    }
+
+    /* Drop zone for logo */
+    .drop-zone {
+      position: relative;
+      border: 2px dashed var(--line-dark);
+      border-radius: 14px;
+      padding: 18px 14px;
+      text-align: center;
+      background: var(--soft);
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+
+    .drop-zone:hover { border-color: var(--primary); background: var(--primary-soft); }
+    .drop-zone.dragover { border-color: var(--primary); background: var(--primary-soft); transform: scale(1.01); }
+
+    .drop-zone-inner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      justify-content: center;
+    }
+
+    .drop-zone .drop-icon {
+      font-size: 24px;
+      opacity: 0.7;
+    }
+
+    .drop-zone p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .drop-zone strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .drop-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .drop-zone .remove-logo {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      border-radius: 50%;
+      background: var(--card);
+      color: var(--danger);
+      border: 1px solid var(--line);
+      font-size: 14px;
+      box-shadow: var(--shadow-sm);
+      display: none;
+      z-index: 2;
+    }
+
+    .drop-zone.has-logo .remove-logo { display: inline-flex; align-items: center; justify-content: center; }
+
+    /* Mobile sticky action bar */
+    .mobile-action-bar {
+      display: none;
+    }
+
+    @media (max-width: 980px) {
+      .right-column { position: static; }
+
+      .mobile-action-bar {
+        display: flex;
+        position: fixed;
+        bottom: 12px;
+        left: 12px;
+        right: 12px;
+        z-index: 90;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 10px;
+        box-shadow: 0 18px 40px -10px rgba(15, 23, 42, 0.25);
+        gap: 8px;
+        backdrop-filter: blur(12px);
+      }
+
+      .mobile-action-bar button { flex: 1; }
+
+      main.container { padding-bottom: 90px; }
+
+      .layout.typing { grid-template-columns: 1fr; }
+    }
+
+    /* Confirmation modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .modal-backdrop.show { opacity: 1; pointer-events: auto; }
+
+    .modal {
+      background: var(--card);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 22px;
+      max-width: 380px;
+      width: calc(100% - 32px);
+      box-shadow: 0 30px 60px -20px rgba(15, 23, 42, 0.5);
+      transform: scale(0.94);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .modal-backdrop.show .modal { transform: scale(1); }
+
+    .modal h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .modal p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      padding: 22px;
+      margin-bottom: 20px;
+      transition: border-color 0.25s ease;
+    }
+
+    [data-theme="light"] .panel {
+      box-shadow: var(--shadow);
+    }
+
+    .panel:hover {
+      border-color: var(--line-dark);
+    }
+
+    /* Tabular numerics across the app */
+    .tnum, .summary-card strong, .save-indicator {
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum", "lnum";
+    }
+
+    .summary-card strong {
+      letter-spacing: -0.03em;
+      font-weight: 600;
+    }
+
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel.collapsible h2 {
+      cursor: pointer;
+      user-select: none;
+      margin-bottom: 0;
+      border-bottom: 0;
+      padding-bottom: 0;
+      transition: margin 0.25s ease, padding 0.25s ease, border-color 0.25s ease;
+    }
+
+    .panel.collapsible.expanded h2 {
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-summary {
+      flex: 1;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+
+    .panel.collapsible.expanded .panel-summary { display: none; }
+
+    .panel-chevron {
+      width: 16px;
+      height: 16px;
+      color: var(--muted);
+      transition: transform 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .panel.collapsible.expanded .panel-chevron { transform: rotate(180deg); }
+
+    .panel-body {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.3s ease, opacity 0.2s ease;
+    }
+
+    .panel.collapsible.expanded .panel-body {
+      max-height: 4000px;
+      opacity: 1;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .section-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: -6px;
+      margin-bottom: 14px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text);
+      opacity: 0.85;
+      letter-spacing: 0.01em;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 14px;
+      background: var(--soft);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+    }
+
+    input::placeholder, textarea::placeholder { color: var(--muted); opacity: 0.7; }
+
+    input:hover, select:hover, textarea:hover { border-color: var(--line-dark); }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--text);
+      box-shadow: 0 0 0 3px var(--primary-soft);
+      background: var(--card);
+    }
+
+    /* Custom dropdown styling */
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      padding-right: 38px;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a8a92' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 13px center;
+      background-size: 12px;
+      font-weight: 500;
+    }
+
+    [data-theme="light"] select {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6b74' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    }
+
+    select:hover {
+      background-color: var(--card-2);
+    }
+
+    select:focus {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ededee' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    }
+
+    [data-theme="light"] select:focus {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%230a0a0b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    }
+
+    select option {
+      background: var(--card);
+      color: var(--text);
+      padding: 10px;
+    }
+
+    input[type="number"]:focus { background: var(--card); }
+
+    input[type="file"] {
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    button {
+      border: 0;
+      border-radius: var(--radius-sm);
+      padding: 11px 16px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      letter-spacing: 0.01em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, opacity 0.15s;
+      box-shadow: var(--shadow-sm);
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      background: var(--text);
+      color: var(--bg);
+      border: 1px solid var(--text);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-secondary {
+      background: var(--soft);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .btn-secondary:hover { border-color: var(--line-dark); background: var(--card-2); }
+
+    .btn-danger {
+      background: transparent;
+      color: var(--danger);
+      border: 1px solid var(--line);
+    }
+
+    .btn-danger:hover { border-color: var(--danger); background: rgba(248, 113, 113, 0.08); }
+
+    .btn-success {
+      background: var(--text);
+      color: var(--bg);
+      border: 1px solid var(--text);
+    }
+
+    .btn-success:hover { opacity: 0.9; }
+
+    .logo-preview-wrap {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .logo-preview {
+      width: 82px;
+      height: 82px;
+      border: 1.5px dashed var(--line-dark);
+      border-radius: 14px;
+      background: var(--soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .logo-preview:hover { border-color: var(--primary); }
+
+    .logo-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .summary-card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 16px;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .summary-card:hover {
+      border-color: var(--line-dark);
+    }
+
+    .summary-card span {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .summary-card strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+      color: var(--text);
+    }
+
+    .summary-card.net {
+      background: var(--text);
+      border-color: var(--text);
+    }
+
+    .summary-card.net span { color: rgba(10, 10, 11, 0.55); }
+    .summary-card.net strong { color: var(--bg); }
+
+    [data-theme="light"] .summary-card.net {
+      background: var(--text);
+      border-color: var(--text);
+    }
+    [data-theme="light"] .summary-card.net span { color: rgba(255, 255, 255, 0.55); }
+    [data-theme="light"] .summary-card.net strong { color: #fff; }
+
+    .preview-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .preview-actions h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .preview-actions h2::before {
+      content: "";
+      width: 3px;
+      height: 18px;
+      border-radius: 2px;
+      background: var(--text);
+    }
+
+    #payslipPreview {
+      background: var(--soft);
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      padding: 22px;
+      overflow: auto;
+    }
+
+    .slip-sheet {
+      width: 115mm;
+      min-height: auto;
+      max-width: 100%;
+      margin: 0 auto;
+      background: white;
+      color: #18181c;
+      padding: 10mm 9mm;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+      font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+      font-size: 10.5px;
+      line-height: 1.45;
+    }
+
+    .slip-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #18181c;
+    }
+
+    .slip-company {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .slip-logo {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      border: 1px solid #e4e4e7;
+      border-radius: 4px;
+      padding: 3px;
+      flex-shrink: 0;
+    }
+
+    .slip-logo-placeholder {
+      width: 38px;
+      height: 38px;
+      border-radius: 4px;
+      background: #f4f4f5;
+      color: #18181c;
+      border: 1px solid #e4e4e7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .slip-company h3 {
+      margin: 4px 0 0;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .slip-company p {
+      margin: 1px 0;
+      color: #52525b;
+      font-size: 10px;
+    }
+
+    .slip-meta {
+      text-align: center;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .slip-badge {
+      display: inline-block;
+      border: 1px dashed #18181c;
+      background: transparent;
+      color: #18181c;
+      padding: 3px 10px;
+      border-radius: 0;
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .slip-meta h3 {
+      margin: 0 0 2px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .slip-meta p {
+      margin: 0;
+      color: #71717a;
+      font-size: 9.5px;
+    }
+
+    .slip-section {
+      margin-top: 10px;
+    }
+
+    .slip-section-title {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: #18181c;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      text-align: center;
+      padding: 3px 0;
+      margin-bottom: 6px;
+      border-top: 1px dashed #18181c;
+      border-bottom: 1px dashed #18181c;
+    }
+
+    .line-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .line-list {
+      border-top: 0;
+      border-bottom: 0;
+    }
+
+    .line-item {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 8px;
+      padding: 3px 0;
+      border-bottom: 0;
+      font-size: 10.5px;
+    }
+
+    .line-item:last-child {
+      border-bottom: 0;
+    }
+
+    .line-item .label {
+      color: #52525b;
+    }
+
+    .line-item .value {
+      text-align: right;
+      font-weight: 600;
+      color: #18181c;
+      overflow-wrap: anywhere;
+    }
+
+    .pay-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    /* NET PAY hero block on the slip — compact receipt style */
+    .net-hero {
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-radius: 0;
+      background: #18181c;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .net-hero-label {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.65);
+      font-weight: 700;
+      margin-bottom: 1px;
+    }
+
+    .net-hero-period {
+      font-size: 9.5px;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .net-hero-amount {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum", "lnum";
+    }
+
+    /* Employee monogram avatar on the slip */
+    .slip-avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #18181c;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0;
+      flex-shrink: 0;
+    }
+
+    .slip-employee-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mini-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10.5px;
+      border-top: 0;
+      border-bottom: 0;
+    }
+
+    .mini-table thead th {
+      text-align: left;
+      padding: 4px 0;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #71717a;
+      font-weight: 700;
+      border-bottom: 1px dashed #a1a1aa;
+      background: transparent;
+    }
+
+    .mini-table tbody td {
+      padding: 3px 0;
+      color: #18181c;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum", "lnum";
+      border-bottom: 0;
+    }
+
+    .mini-table tbody tr td:last-child {
+      font-weight: 600;
+    }
+
+    .mini-table tfoot td {
+      padding: 4px 0;
+      border-top: 1px dashed #18181c !important;
+      border-bottom: 0 !important;
+      font-weight: 700;
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .mini-table thead th:last-child,
+    .mini-table tbody td:last-child,
+    .mini-table tfoot td:last-child {
+      text-align: right;
+    }
+
+    .mini-table tbody td,
+    .mini-table tfoot td {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .mini-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .mini-table tfoot td {
+      font-weight: 800;
+      border-top: 1px solid var(--line-dark);
+      border-bottom: 0;
+      padding-top: 10px;
+    }
+
+    .totals-strip {
+      margin-top: 16px;
+      border-top: 1px solid var(--line-dark);
+      border-bottom: 1px solid var(--line-dark);
+    }
+
+    .totals-row {
+      display: grid;
+      grid-template-columns: 1fr 180px;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+    }
+
+    .totals-row:last-child {
+      border-bottom: 0;
+    }
+
+    .totals-row .label {
+      color: #111827;
+      font-weight: 700;
+    }
+
+    .totals-row .value {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    .totals-row.net {
+      background: var(--success-bg);
+      padding-left: 10px;
+      padding-right: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border-bottom: 0;
+    }
+
+    .totals-row.net .label,
+    .totals-row.net .value {
+      color: var(--success);
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .notes-block {
+      margin-top: 10px;
+      border-top: 1px dashed #18181c;
+      padding-top: 6px;
+    }
+
+    .notes-block p {
+      margin: 4px 0 0;
+      font-size: 10px;
+      color: #18181c;
+      white-space: pre-wrap;
+    }
+
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .signature-line {
+      border-top: 1px dashed #71717a;
+      padding-top: 4px;
+      font-size: 9px;
+      color: #71717a;
+      text-align: center;
+    }
+
+    .slip-footer {
+      margin-top: 12px;
+      padding-top: 6px;
+      border-top: 1px dashed #18181c;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 9px;
+      color: #71717a;
+      text-align: center;
+    }
+
+    .slip-footer .slip-ref {
+      color: #18181c;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .slip-footer::before {
+      content: "* * * THANK YOU * * *";
+      color: #18181c;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      margin-bottom: 4px;
+    }
+
+    .empty-state {
+      padding: 32px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .container {
+        width: min(100% - 20px, 1200px);
+      }
+
+      .form-grid,
+      .summary-cards,
+      .line-grid,
+      .pay-grid,
+      .signature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .slip-sheet {
+        width: 100%;
+        min-height: auto;
+        padding: 20px 16px;
+      }
+
+      .slip-header {
+        flex-direction: column;
+      }
+
+      .slip-meta {
+        text-align: left;
+      }
+
+      .line-item,
+      .totals-row {
+        grid-template-columns: 1fr;
+      }
+
+      .line-item .value,
+      .totals-row .value {
+        text-align: left;
+      }
+
+      .slip-footer {
+        flex-direction: column;
+      }
+    }
+
+    /* Receipt-style PDF look */
+    .slip-sheet.receipt,
+    .slip-sheet.receipt * {
+      font-family: "JetBrains Mono", "Courier New", Courier, monospace !important;
+      letter-spacing: 0.01em;
+    }
+
+    .slip-sheet.receipt {
+      color: #000;
+      padding: 16mm 14mm;
+    }
+
+    .slip-sheet.receipt .slip-header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      border-bottom: 2px dashed #000;
+      padding-bottom: 12px;
+    }
+
+    .slip-sheet.receipt .slip-company {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+    }
+
+    .slip-sheet.receipt .slip-company h3 {
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .slip-sheet.receipt .slip-company p,
+    .slip-sheet.receipt .slip-meta p {
+      font-size: 11.5px;
+      color: #000;
+    }
+
+    .slip-sheet.receipt .slip-meta {
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .slip-sheet.receipt .slip-badge {
+      border: 1px dashed #000;
+      background: transparent;
+      color: #000;
+      border-radius: 0;
+      letter-spacing: 0.2em;
+    }
+
+    .slip-sheet.receipt .slip-meta h3 {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .slip-sheet.receipt .slip-section-title {
+      text-align: center;
+      border-top: 1px dashed #000;
+      border-bottom: 1px dashed #000;
+      padding: 4px 0;
+      margin-bottom: 8px;
+      letter-spacing: 0.18em;
+    }
+
+    .slip-sheet.receipt .line-list,
+    .slip-sheet.receipt .mini-table,
+    .slip-sheet.receipt .totals-strip {
+      border-top: 1px dashed #000;
+      border-bottom: 1px dashed #000;
+    }
+
+    .slip-sheet.receipt .line-item,
+    .slip-sheet.receipt .mini-table tbody td,
+    .slip-sheet.receipt .mini-table thead th,
+    .slip-sheet.receipt .totals-row {
+      border-bottom: 1px dashed #94a3b8;
+      color: #000;
+    }
+
+    .slip-sheet.receipt .mini-table tfoot td {
+      border-top: 1px dashed #000;
+      font-weight: 700;
+    }
+
+    .slip-sheet.receipt .line-item .label,
+    .slip-sheet.receipt .line-item .value,
+    .slip-sheet.receipt .totals-row .label,
+    .slip-sheet.receipt .totals-row .value {
+      color: #000;
+      font-weight: 500;
+    }
+
+    .slip-sheet.receipt .totals-row.net {
+      background: transparent;
+      border: 2px dashed #000;
+      border-radius: 0;
+      margin: 10px 0;
+      padding: 8px 10px;
+    }
+
+    .slip-sheet.receipt .totals-row.net .label,
+    .slip-sheet.receipt .totals-row.net .value {
+      color: #000;
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .slip-sheet.receipt .slip-logo-placeholder {
+      background: transparent;
+      border: 1px dashed #000;
+      color: #000;
+      border-radius: 0;
+    }
+
+    .slip-sheet.receipt .slip-logo {
+      border: 1px dashed #000;
+      border-radius: 0;
+      filter: grayscale(1) contrast(1.1);
+    }
+
+    .slip-sheet.receipt .signature-line {
+      border-top: 1px dashed #000;
+      color: #000;
+    }
+
+    .slip-sheet.receipt .slip-footer {
+      border-top: 1px dashed #000;
+      color: #000;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      gap: 4px;
+    }
+
+    .slip-sheet.receipt .slip-footer::before {
+      content: "* * * THANK YOU * * *";
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      margin-bottom: 6px;
+    }
+
+    .slip-sheet.receipt .notes-block {
+      border-top: 1px dashed #000;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .app-header,
+      .left-column,
+      .preview-actions {
+        display: none !important;
+      }
+
+      .container,
+      .layout {
+        width: 100%;
+        margin: 0;
+        display: block;
+      }
+
+      .panel {
+        box-shadow: none;
+        border: 0;
+        padding: 0;
+        margin: 0;
+      }
+
+      #payslipPreview {
+        background: white;
+        border: 0;
+        padding: 0;
+        overflow: visible;
+      }
+
+      .slip-sheet {
+        width: 210mm;
+        min-height: 297mm;
+        box-shadow: none;
+        margin: 0;
+        padding: 12mm 12mm 10mm;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="header-bar">
+      <div class="brand">
+        <span class="brand-mark">₱</span>
+        <span>PaySlip PH</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button type="button" class="theme-toggle" id="exportBtn" aria-label="Export data" title="Export data backup">
+          <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <span>Export</span>
+        </button>
+        <label class="theme-toggle" for="importInput" title="Import data backup">
+          <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Import</span>
+        </label>
+        <input type="file" id="importInput" accept="application/json" style="display:none" />
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span id="themeIcon" class="icon-slot"></span>
+          <span id="themeLabel">Dark</span>
+        </button>
+      </div>
+    </div>
+    <h1>KNB Payslip Generator</h1>
+    <p>Create employee profiles, calculate deductions, and download a clean PDF payslip.</p>
+  </header>
+
+  <main class="container">
+    <div class="layout">
+      <div class="left-column">
+        <section class="panel collapsible expanded" data-panel="company">
+          <h2>
+            <span class="step-num">1</span>
+            <span>Company Profile</span>
+            <span class="panel-summary" id="companySummary"></span>
+            <svg class="panel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </h2>
+          <div class="panel-body">
+          <p class="section-note">Saved in this browser only using localStorage.</p>
+
+          <div class="form-grid">
+            <div class="form-group full">
+              <label for="companyName">Company Name</label>
+              <input id="companyName" type="text" placeholder="Example: KNB" />
+            </div>
+
+            <div class="form-group full">
+              <label for="companyAddress">Company Address</label>
+              <textarea id="companyAddress" placeholder="Street, City, Province, Philippines"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="companyContact">Email / Phone</label>
+              <input id="companyContact" type="text" placeholder="example@email.com / 0917 000 0000" />
+            </div>
+
+            <div class="form-group">
+              <label for="companyTin">TIN / Registration No. Optional</label>
+              <input id="companyTin" type="text" placeholder="000-000-000-000" />
+            </div>
+
+            <div class="form-group full">
+              <label>Company Logo <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+              <div class="drop-zone" id="logoDropZone">
+                <button type="button" class="remove-logo" id="removeLogoBtn" aria-label="Remove logo">
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+                <input id="companyLogo" type="file" accept="image/*" />
+                <div class="drop-zone-inner">
+                  <div class="logo-preview" id="logoPreview">
+                    <svg class="icon icon-lg" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  </div>
+                  <div style="text-align:left">
+                    <p><strong>Click or drag</strong> to upload a logo</p>
+                    <p>PNG, JPG, or SVG · small file works best</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="btn-primary" type="button" onclick="saveCompany()">Save Company</button>
+            <button class="btn-secondary" type="button" onclick="clearCompany()">Clear Company</button>
+          </div>
+          </div>
+        </section>
+
+        <section class="panel collapsible expanded" data-panel="employee">
+          <h2>
+            <span class="step-num">2</span>
+            <span>Employee Profile</span>
+            <span class="panel-summary" id="employeeSummary"></span>
+            <svg class="panel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </h2>
+          <div class="panel-body">
+
+          <div class="form-grid">
+            <div class="form-group full">
+              <label for="employeeSelect">Select Saved Employee</label>
+              <select id="employeeSelect">
+                <option value="">Choose employee...</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="employeeName">Employee Name</label>
+              <input id="employeeName" type="text" placeholder="ANGELO MIGUEL" />
+            </div>
+
+            <div class="form-group">
+              <label for="employeeId">Employee ID</label>
+              <input id="employeeId" type="text" placeholder="EMP-001" />
+            </div>
+
+            <div class="form-group">
+              <label for="position">Position</label>
+              <input id="position" type="text" placeholder="Manager" />
+            </div>
+
+            <div class="form-group">
+              <label for="department">Department</label>
+              <input id="department" type="text" placeholder="Dev Theme" />
+            </div>
+
+            <div class="form-group">
+              <label for="employeeEmail">Email</label>
+              <input id="employeeEmail" type="email" placeholder="employee@email.com" />
+            </div>
+
+            <div class="form-group">
+              <label for="basicSalary">Basic Salary</label>
+              <input id="basicSalary" type="text" inputmode="decimal" placeholder="0.00" />
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="btn-primary" type="button" onclick="saveEmployee()">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Save Employee
+              <span class="kbd-hint" id="saveShortcut">⌘S</span>
+            </button>
+            <button class="btn-secondary" type="button" onclick="loadEmployee()">Load</button>
+            <button class="btn-icon" type="button" onclick="deleteEmployee()" aria-label="Delete employee" title="Delete employee">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg>
+            </button>
+            <span class="save-indicator" id="saveIndicator"><span class="dot"></span><span id="saveIndicatorText">Idle</span></span>
+          </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2><span class="step-num">3</span> Payslip Details</h2>
+
+          <div class="schedule-row">
+            <div class="form-group">
+              <label for="payCutoff">Pay Schedule</label>
+              <select id="payCutoff">
+                <option value="">Custom period</option>
+                <option value="first">1st Cutoff (1 to 15), paid on the 20th</option>
+                <option value="second">2nd Cutoff (16 to end), paid 5th next month</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="payMonth">Month</label>
+              <input id="payMonth" type="month" />
+            </div>
+            <div class="form-group" style="align-self:end">
+              <button class="btn-secondary" type="button" id="applyScheduleBtn">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Apply
+              </button>
+            </div>
+            <div class="schedule-extras">
+              <button class="btn-secondary" type="button" id="thirteenthMonthBtn" title="Compute 13th Month Pay from archived payslips">
+                <svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h2"/><path d="M14 14h2"/><path d="M8 18h2"/><path d="M14 18h2"/></svg>
+                13th Month Pay
+              </button>
+            </div>
+            <div class="schedule-applied" id="scheduleApplied" hidden>
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span id="scheduleAppliedText"></span>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="periodStart">Pay Period Start</label>
+              <input id="periodStart" type="date" />
+            </div>
+
+            <div class="form-group">
+              <label for="periodEnd">Pay Period End</label>
+              <input id="periodEnd" type="date" />
+            </div>
+
+            <div class="form-group">
+              <label for="paymentDate">Payment Date</label>
+              <input id="paymentDate" type="date" />
+            </div>
+
+            <div class="form-group">
+              <label for="basicPay">Basic Pay</label>
+              <input id="basicPay" type="text" inputmode="decimal" placeholder="0.00" />
+              <div class="field-hint" id="basicPayHint">Auto-filled from Basic Salary — edit if needed</div>
+            </div>
+
+            <div class="form-group">
+              <label for="overtimePay">Overtime Pay</label>
+              <input id="overtimePay" type="text" inputmode="decimal" placeholder="0.00" />
+            </div>
+
+            <div class="form-group">
+              <label for="bonuses">Bonuses</label>
+              <input id="bonuses" type="text" inputmode="decimal" placeholder="0.00" />
+            </div>
+
+            <div class="form-group">
+              <label for="allowances">Allowances</label>
+              <input id="allowances" type="text" inputmode="decimal" placeholder="0.00" />
+            </div>
+
+            <div class="form-group full deductions-toggle-row">
+              <div class="deductions-toggle">
+                <div>
+                  <div class="dt-title">Auto-compute PH deductions</div>
+                  <div class="dt-sub">SSS · PhilHealth · Pag-IBIG · BIR Tax · TRAIN Law (2024)</div>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="autoDeductions" />
+                  <span class="switch-track"><span class="switch-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="withholdingTax">Withholding Tax</label>
+              <input id="withholdingTax" type="text" inputmode="decimal" placeholder="0.00" />
+            </div>
+
+            <div class="form-group">
+              <label for="sssDeduction">SSS Deduction</label>
+              <input id="sssDeduction" type="text" inputmode="decimal" placeholder="0.00" />
+            </div>
+
+            <div class="form-group">
+              <label for="philhealthDeduction">PhilHealth Deduction</label>
+              <input id="philhealthDeduction" type="text" inputmode="decimal" placeholder="0.00" />
+            </div>
+
+            <div class="form-group">
+              <label for="pagibigDeduction">Pag-IBIG Deduction</label>
+              <input id="pagibigDeduction" type="text" inputmode="decimal" placeholder="0.00" />
+            </div>
+
+            <div class="form-group">
+              <label for="taxDeduction">Other Tax Deduction</label>
+              <input id="taxDeduction" type="text" inputmode="decimal" placeholder="0.00" />
+            </div>
+
+            <div class="form-group">
+              <label for="lateDeduction">Late / Absence Deduction</label>
+              <input id="lateDeduction" type="text" inputmode="decimal" placeholder="0.00" />
+            </div>
+
+            <div class="form-group">
+              <label for="otherDeductions">Other Deductions</label>
+              <input id="otherDeductions" type="text" inputmode="decimal" placeholder="0.00" />
+            </div>
+
+            <div class="form-group full">
+              <label for="notes">Notes</label>
+              <textarea id="notes" placeholder="Optional notes for this payslip"></textarea>
+            </div>
+          </div>
+
+          <div class="summary-cards">
+            <div class="summary-card">
+              <span>Gross Pay</span>
+              <strong id="grossPayText">₱0.00</strong>
+            </div>
+            <div class="summary-card">
+              <span>Deductions</span>
+              <strong id="deductionsText">₱0.00</strong>
+            </div>
+            <div class="summary-card net">
+              <span>Net Pay</span>
+              <strong id="netPayText">₱0.00</strong>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="btn-success" type="button" onclick="downloadPdf()">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download PDF
+              <span class="kbd-hint">⌘P</span>
+            </button>
+            <button class="btn-secondary" type="button" onclick="clearPayslipForm()">Clear Form</button>
+          </div>
+        </section>
+
+        <section class="panel collapsible" data-panel="archive">
+          <h2>
+            <span class="step-num">
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+            </span>
+            <span>Payslip History</span>
+            <span class="panel-summary" id="archiveSummary"></span>
+            <svg class="panel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </h2>
+          <div class="panel-body">
+            <div class="archive-toolbar">
+              <div class="form-group" style="flex:1">
+                <input id="archiveSearch" type="text" placeholder="Search by employee name…" />
+              </div>
+              <button class="btn-secondary" type="button" id="clearArchiveBtn" title="Delete all archived payslips">
+                <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                Clear
+              </button>
+            </div>
+            <div id="archiveList" class="archive-list"></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="right-column">
+        <section class="panel">
+          <div class="preview-actions">
+            <h2>Payslip Preview</h2>
+            <button class="btn-success" type="button" onclick="downloadPdf()">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download PDF
+              <span class="kbd-hint">⌘P</span>
+            </button>
+          </div>
+
+          <div id="payslipPreview">
+            <div class="empty-state">
+              <div class="empty-icon">
+                <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+              </div>
+              <div class="empty-title">Your payslip will appear here</div>
+              <p>Fill in employee details and earnings on the left to generate a live preview.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div class="mobile-action-bar">
+    <button class="btn-secondary" type="button" onclick="document.getElementById('payslipPreview').scrollIntoView({behavior:'smooth'})">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      Preview
+    </button>
+    <button class="btn-success" type="button" onclick="downloadPdf()">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download PDF
+    </button>
+  </div>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+
+  <div class="modal-backdrop" id="confirmModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3 id="confirmTitle">Are you sure?</h3>
+      <p id="confirmMessage">This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="confirmCancel">Cancel</button>
+        <button type="button" class="btn-danger" id="confirmOk">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEYS = {
+      employees: "phPayslipEmployees",
+      company: "phPayslipCompany",
+      archive: "phPayslipArchive"
+    };
+
+    let companyLogoDataUrl = "";
+
+    const inputIds = [
+      "companyName",
+      "companyAddress",
+      "companyContact",
+      "companyTin",
+      "employeeName",
+      "employeeId",
+      "position",
+      "department",
+      "employeeEmail",
+      "basicSalary",
+      "periodStart",
+      "periodEnd",
+      "paymentDate",
+      "basicPay",
+      "overtimePay",
+      "bonuses",
+      "allowances",
+      "withholdingTax",
+      "sssDeduction",
+      "philhealthDeduction",
+      "pagibigDeduction",
+      "taxDeduction",
+      "lateDeduction",
+      "otherDeductions",
+      "notes"
+    ];
+
+    const ICONS = {
+      moon: '<svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+      sun: '<svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></svg>',
+      check: '<svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+      x: '<svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+      info: '<svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
+    };
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      const icon = document.getElementById("themeIcon");
+      const label = document.getElementById("themeLabel");
+      if (icon && label) {
+        icon.innerHTML = theme === "light" ? ICONS.moon : ICONS.sun;
+        label.textContent = theme === "light" ? "Dark" : "Light";
+      }
+      localStorage.setItem("phPayslipTheme", theme);
+    }
+
+    function initTheme() {
+      const saved = localStorage.getItem("phPayslipTheme");
+      // Default to dark (new design is dark-first)
+      applyTheme(saved || "dark");
+      const btn = document.getElementById("themeToggle");
+      if (btn) {
+        btn.addEventListener("click", function () {
+          const current = document.documentElement.getAttribute("data-theme") || "dark";
+          applyTheme(current === "light" ? "dark" : "light");
+        });
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      initTheme();
+      loadCompanyFromStorage();
+      populateEmployeeSelect();
+      attachLiveUpdateEvents();
+      attachMoneyFormatting();
+      attachValidation();
+      attachLayoutExpand();
+      attachDropZone();
+      attachPaySchedule();
+      attachKeyboardShortcuts();
+      attachAutoDeductions();
+      attachCollapsiblePanels();
+      attachBackupButtons();
+      attachArchive();
+      attach13thMonth();
+      loadDraft();
+      setInterval(tickSaveLabel, 1000);
+      MONEY_FIELDS.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el && el.value) el.value = formatMoneyInput(el.value);
+      });
+      syncBasicPayHint();
+      updateDownloadState();
+      renderPayslip();
+    });
+
+    function attachLiveUpdateEvents() {
+      inputIds.forEach(function (id) {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener("input", function () {
+            if (id === "basicSalary") {
+              const payEl = document.getElementById("basicPay");
+              if (!payEl.value || payEl.dataset.autofilled === "1") {
+                payEl.value = el.value;
+                payEl.dataset.autofilled = "1";
+              }
+            }
+            if (id === "basicPay") {
+              document.getElementById("basicPay").dataset.autofilled = "0";
+            }
+            syncBasicPayHint();
+            updateDownloadState();
+            scheduleAutosave();
+            updatePanelSummaries();
+            renderPayslip();
+          });
+        }
+      });
+
+      document.getElementById("employeeSelect").addEventListener("change", loadEmployee);
+
+      document.getElementById("companyLogo").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          companyLogoDataUrl = e.target.result;
+          updateLogoPreview();
+          renderPayslip();
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function peso(amount) {
+      const value = Number(amount) || 0;
+      return new Intl.NumberFormat("en-PH", {
+        style: "currency",
+        currency: "PHP",
+        minimumFractionDigits: 2
+      }).format(value);
+    }
+
+    const MONEY_FIELDS = [
+      "basicSalary", "basicPay", "overtimePay", "bonuses", "allowances",
+      "withholdingTax", "sssDeduction", "philhealthDeduction", "pagibigDeduction",
+      "taxDeduction", "lateDeduction", "otherDeductions"
+    ];
+
+    function showToast(message, type = "info") {
+      const stack = document.getElementById("toastStack");
+      if (!stack) return;
+      const toast = document.createElement("div");
+      toast.className = `toast ${type}`;
+      const icon = type === "success" ? ICONS.check : type === "error" ? ICONS.x : ICONS.info;
+      toast.innerHTML = `<span class="toast-icon">${icon}</span><span>${message}</span>`;
+      stack.appendChild(toast);
+      requestAnimationFrame(() => toast.classList.add("show"));
+      setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => toast.remove(), 350);
+      }, 2600);
+    }
+
+    function showConfirm(title, message, okLabel = "Delete") {
+      return new Promise((resolve) => {
+        const modal = document.getElementById("confirmModal");
+        document.getElementById("confirmTitle").textContent = title;
+        document.getElementById("confirmMessage").textContent = message;
+        const okBtn = document.getElementById("confirmOk");
+        const cancelBtn = document.getElementById("confirmCancel");
+        okBtn.textContent = okLabel;
+        modal.classList.add("show");
+
+        const cleanup = (result) => {
+          modal.classList.remove("show");
+          okBtn.removeEventListener("click", onOk);
+          cancelBtn.removeEventListener("click", onCancel);
+          modal.removeEventListener("click", onBackdrop);
+          resolve(result);
+        };
+        const onOk = () => cleanup(true);
+        const onCancel = () => cleanup(false);
+        const onBackdrop = (e) => { if (e.target === modal) cleanup(false); };
+
+        okBtn.addEventListener("click", onOk);
+        cancelBtn.addEventListener("click", onCancel);
+        modal.addEventListener("click", onBackdrop);
+      });
+    }
+
+    function formatMoneyInput(value) {
+      if (value === "" || value === null || value === undefined) return "";
+      const num = parseFloat(String(value).replace(/,/g, ""));
+      if (isNaN(num)) return "";
+      return num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function unformatMoneyInput(value) {
+      if (!value) return "";
+      return String(value).replace(/,/g, "");
+    }
+
+    function attachMoneyFormatting() {
+      MONEY_FIELDS.forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener("focus", () => {
+          el.value = unformatMoneyInput(el.value);
+        });
+        el.addEventListener("blur", () => {
+          el.value = formatMoneyInput(el.value);
+          renderPayslip();
+          updateDownloadState();
+        });
+      });
+    }
+
+    function updateDownloadState() {
+      const requiredOk =
+        textValue("employeeName").length > 0 &&
+        cleanAmount("basicPay") > 0;
+      document.querySelectorAll('button[onclick="downloadPdf()"]').forEach((btn) => {
+        btn.disabled = !requiredOk;
+        btn.title = requiredOk
+          ? "Download payslip as PDF"
+          : "Enter Employee Name and Basic Pay first";
+      });
+
+      const nameField = document.getElementById("employeeName");
+      const payField = document.getElementById("basicPay");
+      if (nameField) nameField.classList.toggle("invalid", nameField.value === "" && nameField.dataset.touched === "1");
+      if (payField) payField.classList.toggle("invalid", cleanAmount("basicPay") <= 0 && payField.dataset.touched === "1");
+    }
+
+    function attachValidation() {
+      ["employeeName", "basicPay"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener("blur", () => {
+          el.dataset.touched = "1";
+          updateDownloadState();
+        });
+      });
+    }
+
+    function syncBasicPayHint() {
+      const hint = document.getElementById("basicPayHint");
+      if (!hint) return;
+      const salary = cleanAmount("basicSalary");
+      const pay = cleanAmount("basicPay");
+      if (salary > 0 && Math.abs(salary - pay) < 0.01) {
+        hint.innerHTML = `${ICONS.check} <span>Auto-filled from Basic Salary</span>`;
+        hint.classList.add("auto-filled");
+      } else if (salary > 0) {
+        hint.textContent = "Edited — differs from Basic Salary";
+        hint.classList.remove("auto-filled");
+      } else {
+        hint.textContent = "Enter Basic Salary above to auto-fill";
+        hint.classList.remove("auto-filled");
+      }
+    }
+
+    /* Animated count-up for totals */
+    const animatedNums = {};
+    function animateMoney(elId, target) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      const start = animatedNums[elId] || 0;
+      const duration = 350;
+      const t0 = performance.now();
+      cancelAnimationFrame(el._raf);
+      const tick = (now) => {
+        const p = Math.min(1, (now - t0) / duration);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const value = start + (target - start) * eased;
+        el.textContent = peso(value);
+        if (p < 1) el._raf = requestAnimationFrame(tick);
+        else animatedNums[elId] = target;
+      };
+      el._raf = requestAnimationFrame(tick);
+    }
+
+    /* Autosave draft to localStorage */
+    const DRAFT_KEY = "phPayslipDraft";
+    let saveTimer = null;
+    let lastSaveAt = null;
+
+    function setSaveStatus(state, text) {
+      const ind = document.getElementById("saveIndicator");
+      const txt = document.getElementById("saveIndicatorText");
+      if (!ind || !txt) return;
+      ind.classList.toggle("saving", state === "saving");
+      txt.textContent = text;
+    }
+
+    function saveDraft() {
+      const draft = {};
+      inputIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) draft[id] = el.value;
+      });
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+      lastSaveAt = Date.now();
+      setSaveStatus("saved", "Saved just now");
+    }
+
+    function loadDraft() {
+      try {
+        const draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || "{}");
+        Object.keys(draft).forEach((id) => {
+          const el = document.getElementById(id);
+          if (el && !el.value) el.value = draft[id];
+        });
+      } catch (e) {}
+    }
+
+    function scheduleAutosave() {
+      setSaveStatus("saving", "Saving…");
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveDraft, 700);
+    }
+
+    function tickSaveLabel() {
+      if (!lastSaveAt) return;
+      const seconds = Math.floor((Date.now() - lastSaveAt) / 1000);
+      const txt = document.getElementById("saveIndicatorText");
+      if (!txt) return;
+      if (document.getElementById("saveIndicator").classList.contains("saving")) return;
+      if (seconds < 5) txt.textContent = "Saved just now";
+      else if (seconds < 60) txt.textContent = `Saved ${seconds}s ago`;
+      else if (seconds < 3600) txt.textContent = `Saved ${Math.floor(seconds / 60)}m ago`;
+      else txt.textContent = "Saved earlier";
+    }
+
+    /* Drop zone behavior for logo */
+    function attachDropZone() {
+      const zone = document.getElementById("logoDropZone");
+      const input = document.getElementById("companyLogo");
+      const removeBtn = document.getElementById("removeLogoBtn");
+      if (!zone || !input) return;
+
+      ["dragenter", "dragover"].forEach((ev) =>
+        zone.addEventListener(ev, (e) => { e.preventDefault(); zone.classList.add("dragover"); })
+      );
+      ["dragleave", "drop"].forEach((ev) =>
+        zone.addEventListener(ev, (e) => { e.preventDefault(); zone.classList.remove("dragover"); })
+      );
+      zone.addEventListener("drop", (e) => {
+        const file = e.dataTransfer.files && e.dataTransfer.files[0];
+        if (!file || !file.type.startsWith("image/")) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          companyLogoDataUrl = ev.target.result;
+          updateLogoPreview();
+          renderPayslip();
+          showToast("Logo uploaded", "success");
+        };
+        reader.readAsDataURL(file);
+      });
+
+      if (removeBtn) {
+        removeBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          companyLogoDataUrl = "";
+          input.value = "";
+          updateLogoPreview();
+          renderPayslip();
+          showToast("Logo removed", "info");
+        });
+      }
+    }
+
+    /* Semi-monthly pay schedule (PH) */
+    function pad(n) { return String(n).padStart(2, "0"); }
+
+    function computeSchedule(cutoff, monthValue) {
+      // monthValue format: "YYYY-MM"
+      if (!cutoff || !monthValue) return null;
+      const [y, m] = monthValue.split("-").map(Number);
+      const lastDay = new Date(y, m, 0).getDate(); // last day of month m
+      if (cutoff === "first") {
+        return {
+          start: `${y}-${pad(m)}-01`,
+          end: `${y}-${pad(m)}-15`,
+          payment: `${y}-${pad(m)}-20`
+        };
+      }
+      if (cutoff === "second") {
+        // Paid on the 5th of the NEXT month
+        const nextMonth = m === 12 ? 1 : m + 1;
+        const nextYear = m === 12 ? y + 1 : y;
+        return {
+          start: `${y}-${pad(m)}-16`,
+          end: `${y}-${pad(m)}-${pad(lastDay)}`,
+          payment: `${nextYear}-${pad(nextMonth)}-05`
+        };
+      }
+      return null;
+    }
+
+    function applyPaySchedule() {
+      const cutoff = document.getElementById("payCutoff").value;
+      const monthValue = document.getElementById("payMonth").value;
+
+      if (!cutoff) {
+        showToast("Choose a pay schedule first", "error");
+        return;
+      }
+      if (!monthValue) {
+        showToast("Select the month to pay", "error");
+        document.getElementById("payMonth").focus();
+        return;
+      }
+
+      const sched = computeSchedule(cutoff, monthValue);
+      if (!sched) return;
+
+      document.getElementById("periodStart").value = sched.start;
+      document.getElementById("periodEnd").value = sched.end;
+      document.getElementById("paymentDate").value = sched.payment;
+
+      // Auto-halve monthly Basic Salary into Basic Pay for this cutoff
+      const monthlySalary = cleanAmount("basicSalary");
+      const payEl = document.getElementById("basicPay");
+      if (monthlySalary > 0 && (payEl.dataset.autofilled === "1" || !payEl.value)) {
+        payEl.value = formatMoneyInput(monthlySalary / 2);
+        payEl.dataset.autofilled = "1";
+      }
+
+      const label = cutoff === "first" ? "1st cutoff (1–15)" : "2nd cutoff (16–end)";
+      showToast(`Applied: ${label}`, "success");
+      showAppliedBadge(cutoff, monthValue);
+
+      syncBasicPayHint();
+      updateDownloadState();
+      scheduleAutosave();
+      renderPayslip();
+    }
+
+    function showAppliedBadge(cutoff, monthValue) {
+      const badge = document.getElementById("scheduleApplied");
+      const text = document.getElementById("scheduleAppliedText");
+      if (!badge || !text || !cutoff || !monthValue) return;
+      const [y, m] = monthValue.split("-").map(Number);
+      const monthName = new Date(y, m - 1, 1).toLocaleDateString("en-PH", { month: "long", year: "numeric" });
+      const label = cutoff === "first" ? "1st cutoff" : "2nd cutoff";
+      text.textContent = `Applied ${label} for ${monthName}`;
+      badge.hidden = false;
+    }
+
+    /* === PH Statutory Deductions (2024) === */
+    function computeSSS(monthlySalary) {
+      // SSS 2024: Employee rate 4.5% of MSC. MSC steps of 500.
+      // MSC range: 4,000 to 30,000.
+      if (monthlySalary <= 0) return 0;
+      let msc = Math.round(monthlySalary / 500) * 500;
+      if (msc < 4000) msc = 4000;
+      if (msc > 30000) msc = 30000;
+      return +(msc * 0.045).toFixed(2);
+    }
+
+    function computePhilHealth(monthlySalary) {
+      // PhilHealth 2024: 5% premium, 50/50 split.
+      // Floor 10,000 (₱500 premium → ₱250 employee).
+      // Ceiling 100,000 (₱5,000 premium → ₱2,500 employee).
+      if (monthlySalary <= 0) return 0;
+      const base = Math.min(Math.max(monthlySalary, 10000), 100000);
+      const premium = base * 0.05;
+      return +(premium / 2).toFixed(2);
+    }
+
+    function computePagIbig(monthlySalary) {
+      // Pag-IBIG: 1% if salary ≤ 1500, else 2%. Capped at ₱200/month.
+      if (monthlySalary <= 0) return 0;
+      const rate = monthlySalary <= 1500 ? 0.01 : 0.02;
+      return +Math.min(monthlySalary * rate, 200).toFixed(2);
+    }
+
+    function computeWithholdingTaxMonthly(taxableMonthly) {
+      // BIR / TRAIN Law (2023+) monthly brackets.
+      if (taxableMonthly <= 20833) return 0;
+      if (taxableMonthly <= 33332) return +((taxableMonthly - 20833) * 0.15).toFixed(2);
+      if (taxableMonthly <= 66666) return +(1875 + (taxableMonthly - 33333) * 0.20).toFixed(2);
+      if (taxableMonthly <= 166666) return +(8541.80 + (taxableMonthly - 66667) * 0.25).toFixed(2);
+      if (taxableMonthly <= 666666) return +(33541.80 + (taxableMonthly - 166667) * 0.30).toFixed(2);
+      return +(183541.80 + (taxableMonthly - 666667) * 0.35).toFixed(2);
+    }
+
+    const AUTO_FIELDS = ["sssDeduction", "philhealthDeduction", "pagibigDeduction", "withholdingTax"];
+
+    function setAutoLock(locked) {
+      AUTO_FIELDS.forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.readOnly = locked;
+        el.classList.toggle("auto-locked", locked);
+      });
+    }
+
+    function recomputeAutoDeductions() {
+      const checked = document.getElementById("autoDeductions").checked;
+      if (!checked) return;
+      const monthly = cleanAmount("basicSalary") || cleanAmount("basicPay") * 2;
+      if (monthly <= 0) return;
+
+      const cutoff = document.getElementById("payCutoff").value;
+      const isHalfMonth = cutoff === "first" || cutoff === "second";
+      const factor = isHalfMonth ? 0.5 : 1;
+
+      const sssMonthly = computeSSS(monthly);
+      const phMonthly = computePhilHealth(monthly);
+      const pgMonthly = computePagIbig(monthly);
+      const taxableMonthly = Math.max(0, monthly - sssMonthly - phMonthly - pgMonthly);
+      const taxMonthly = computeWithholdingTaxMonthly(taxableMonthly);
+
+      const set = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.value = formatMoneyInput(val * factor);
+      };
+      set("sssDeduction", sssMonthly);
+      set("philhealthDeduction", phMonthly);
+      set("pagibigDeduction", pgMonthly);
+      set("withholdingTax", taxMonthly);
+
+      renderPayslip();
+      updateDownloadState();
+    }
+
+    function attachAutoDeductions() {
+      const toggle = document.getElementById("autoDeductions");
+      if (!toggle) return;
+
+      const saved = localStorage.getItem("phPayslipAutoDeductions") === "1";
+      toggle.checked = saved;
+      setAutoLock(saved);
+      if (saved) recomputeAutoDeductions();
+
+      toggle.addEventListener("change", () => {
+        const on = toggle.checked;
+        localStorage.setItem("phPayslipAutoDeductions", on ? "1" : "0");
+        setAutoLock(on);
+        if (on) {
+          recomputeAutoDeductions();
+          showToast("Auto-computed deductions", "success");
+        } else {
+          // Clear the auto-filled values so user starts fresh in manual mode
+          AUTO_FIELDS.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) el.value = "";
+          });
+          renderPayslip();
+          updateDownloadState();
+          scheduleAutosave();
+          showToast("Switched to manual — fields cleared", "info");
+        }
+      });
+
+      // Recompute when relevant fields change
+      ["basicSalary", "basicPay", "payCutoff"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("change", recomputeAutoDeductions);
+        if (el) el.addEventListener("input", recomputeAutoDeductions);
+      });
+    }
+
+    /* === Payslip archive === */
+    function getArchive() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.archive) || "[]"); }
+      catch (e) { return []; }
+    }
+    function setArchive(arr) {
+      localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(arr));
+    }
+
+    function archiveSnapshot(data) {
+      const list = getArchive();
+      const sigKey = (data.employee.employeeId || data.employee.name || "?") +
+        "|" + (data.payPeriod.start || "") + "|" + (data.payPeriod.end || "");
+      const existingIdx = list.findIndex((e) => e.sigKey === sigKey);
+      const record = {
+        id: Date.now() + "-" + Math.random().toString(36).slice(2, 8),
+        archivedAt: new Date().toISOString(),
+        sigKey,
+        data
+      };
+      if (existingIdx >= 0) list[existingIdx] = record;
+      else list.unshift(record);
+      // Cap at 200 entries
+      if (list.length > 200) list.length = 200;
+      setArchive(list);
+      renderArchive();
+    }
+
+    function deleteArchiveEntry(id) {
+      setArchive(getArchive().filter((e) => e.id !== id));
+      renderArchive();
+    }
+
+    function loadArchiveEntry(id) {
+      const entry = getArchive().find((e) => e.id === id);
+      if (!entry) return;
+      const d = entry.data;
+      const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v == null ? "" : String(v); };
+      const setMoney = (id, v) => setVal(id, v ? formatMoneyInput(v) : "");
+
+      setVal("employeeName", d.employee.name || "");
+      setVal("employeeId", d.employee.employeeId || "");
+      setVal("position", d.employee.position || "");
+      setVal("department", d.employee.department || "");
+      setVal("employeeEmail", d.employee.email || "");
+      setMoney("basicSalary", d.employee.basicSalary);
+      setVal("periodStart", d.payPeriod.start || "");
+      setVal("periodEnd", d.payPeriod.end || "");
+      setVal("paymentDate", d.payPeriod.paymentDate || "");
+      setMoney("basicPay", d.earnings.basicPay);
+      setMoney("overtimePay", d.earnings.overtimePay);
+      setMoney("bonuses", d.earnings.bonuses);
+      setMoney("allowances", d.earnings.allowances);
+      setMoney("withholdingTax", d.deductions.withholdingTax);
+      setMoney("sssDeduction", d.deductions.sssDeduction);
+      setMoney("philhealthDeduction", d.deductions.philhealthDeduction);
+      setMoney("pagibigDeduction", d.deductions.pagibigDeduction);
+      setMoney("taxDeduction", d.deductions.taxDeduction);
+      setMoney("lateDeduction", d.deductions.lateDeduction);
+      setMoney("otherDeductions", d.deductions.otherDeductions);
+      setVal("notes", d.notes || "");
+
+      syncBasicPayHint();
+      updateDownloadState();
+      updatePanelSummaries();
+      renderPayslip();
+      showToast("Loaded into form", "info");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function redownloadArchive(id) {
+      loadArchiveEntry(id);
+      setTimeout(() => downloadPdf(), 500);
+    }
+
+    function renderArchive() {
+      const list = document.getElementById("archiveList");
+      const summary = document.getElementById("archiveSummary");
+      if (!list) return;
+      const search = (document.getElementById("archiveSearch")?.value || "").toLowerCase();
+      const archive = getArchive().filter((e) => {
+        if (!search) return true;
+        return (e.data.employee.name || "").toLowerCase().includes(search);
+      });
+
+      if (summary) {
+        const total = getArchive().length;
+        summary.textContent = total === 0 ? "No payslips archived yet" :
+          total === 1 ? "1 payslip archived" : `${total} payslips archived`;
+      }
+
+      if (archive.length === 0) {
+        list.innerHTML = `<div class="archive-empty">${search ? "No matches for that search." : "Generated payslips are auto-saved here for re-download."}</div>`;
+        return;
+      }
+
+      list.innerHTML = archive.map((e) => {
+        const d = e.data;
+        const period = d.payPeriod.start && d.payPeriod.end
+          ? `${formatDate(d.payPeriod.start)} – ${formatDate(d.payPeriod.end)}`
+          : (d.payPeriod.paymentDate ? `Paid ${formatDate(d.payPeriod.paymentDate)}` : "—");
+        return `<div class="archive-item">
+          <div class="archive-avatar">${escapeHtml(getInitials(d.employee.name))}</div>
+          <div class="archive-meta">
+            <div class="archive-name">${escapeHtml(d.employee.name || "—")}${d.employee.employeeId ? ` <span style="color:var(--muted);font-weight:400">· ${escapeHtml(d.employee.employeeId)}</span>` : ""}</div>
+            <div class="archive-period">${escapeHtml(period)}</div>
+          </div>
+          <div class="archive-amount">${peso(d.totals.netPay)}</div>
+          <div class="archive-actions">
+            <button type="button" title="Re-download PDF" data-act="redown" data-id="${e.id}">
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </button>
+            <button type="button" title="Load into form" data-act="load" data-id="${e.id}">
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><polygon points="18.5 2.5 21.5 5.5 12 15 9 15 9 12 18.5 2.5"/></svg>
+            </button>
+            <button type="button" class="danger" title="Delete" data-act="delete" data-id="${e.id}">
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            </button>
+          </div>
+        </div>`;
+      }).join("");
+
+      list.querySelectorAll("button[data-act]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const id = btn.dataset.id;
+          const act = btn.dataset.act;
+          if (act === "redown") redownloadArchive(id);
+          else if (act === "load") loadArchiveEntry(id);
+          else if (act === "delete") {
+            const entry = getArchive().find((e) => e.id === id);
+            const ok = await showConfirm("Delete archived payslip?", `${entry?.data.employee.name || "This payslip"} will be removed from history.`, "Delete");
+            if (ok) { deleteArchiveEntry(id); showToast("Removed from history", "info"); }
+          }
+        });
+      });
+    }
+
+    function attachArchive() {
+      const search = document.getElementById("archiveSearch");
+      if (search) search.addEventListener("input", renderArchive);
+
+      const clearBtn = document.getElementById("clearArchiveBtn");
+      if (clearBtn) clearBtn.addEventListener("click", async () => {
+        if (getArchive().length === 0) { showToast("History is already empty", "info"); return; }
+        const ok = await showConfirm("Clear all history?", "All archived payslips will be deleted. This can't be undone.", "Clear all");
+        if (!ok) return;
+        setArchive([]);
+        renderArchive();
+        showToast("History cleared", "info");
+      });
+
+      renderArchive();
+    }
+
+    /* === 13th Month Pay === */
+    async function compute13thMonth() {
+      const employeeName = textValue("employeeName");
+      if (!employeeName) {
+        showToast("Enter or load an employee first", "error");
+        return;
+      }
+
+      const yearInput = prompt(`Compute 13th Month Pay for ${employeeName}\n\nEnter the year (e.g., ${new Date().getFullYear()}):`, String(new Date().getFullYear()));
+      if (!yearInput) return;
+      const year = parseInt(yearInput, 10);
+      if (!year || year < 2000 || year > 2100) {
+        showToast("Invalid year", "error");
+        return;
+      }
+
+      const archive = getArchive();
+      const empKey = (textValue("employeeId") || employeeName).toLowerCase();
+      const matches = archive.filter((e) => {
+        const sameEmp = ((e.data.employee.employeeId || e.data.employee.name || "").toLowerCase() === empKey)
+          || ((e.data.employee.name || "").toLowerCase() === employeeName.toLowerCase());
+        const period = e.data.payPeriod.paymentDate || e.data.payPeriod.end || e.data.archivedAt;
+        const yr = period ? new Date(period).getFullYear() : null;
+        return sameEmp && yr === year;
+      });
+
+      if (matches.length === 0) {
+        showToast(`No archived payslips for ${employeeName} in ${year}`, "error");
+        return;
+      }
+
+      const totalBasic = matches.reduce((sum, e) => sum + (Number(e.data.earnings.basicPay) || 0), 0);
+      const thirteenth = totalBasic / 12;
+
+      const ok = await showConfirm(
+        `13th Month Pay for ${year}`,
+        `Found ${matches.length} payslip${matches.length === 1 ? "" : "s"} totaling ${peso(totalBasic)} in basic pay.\n\n13th Month Pay = ${peso(thirteenth)}\n\nLoad this into the form as a new payslip?`,
+        "Load"
+      );
+      if (!ok) return;
+
+      // Clear earnings and deductions, set bonuses to 13th month
+      ["basicPay", "overtimePay", "allowances", "withholdingTax", "sssDeduction",
+       "philhealthDeduction", "pagibigDeduction", "taxDeduction", "lateDeduction",
+       "otherDeductions"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+      });
+      // Turn off auto deductions if on (13th month is generally tax-exempt up to ₱90k)
+      const auto = document.getElementById("autoDeductions");
+      if (auto && auto.checked) { auto.checked = false; setAutoLock(false); localStorage.setItem("phPayslipAutoDeductions", "0"); }
+
+      document.getElementById("bonuses").value = formatMoneyInput(thirteenth);
+      document.getElementById("periodStart").value = `${year}-01-01`;
+      document.getElementById("periodEnd").value = `${year}-12-31`;
+      document.getElementById("paymentDate").value = "";
+      document.getElementById("notes").value = `13th Month Pay for ${year} — computed from ${matches.length} archived payslip${matches.length === 1 ? "" : "s"} (total basic pay ${peso(totalBasic)}).`;
+
+      syncBasicPayHint();
+      updateDownloadState();
+      renderPayslip();
+      showToast(`13th Month: ${peso(thirteenth)}`, "success");
+    }
+
+    function attach13thMonth() {
+      const btn = document.getElementById("thirteenthMonthBtn");
+      if (btn) btn.addEventListener("click", compute13thMonth);
+    }
+
+    /* === Collapsible panels === */
+    function attachCollapsiblePanels() {
+      document.querySelectorAll(".panel.collapsible").forEach((panel) => {
+        const key = "phPayslipPanel_" + panel.dataset.panel;
+        const saved = localStorage.getItem(key);
+        if (saved === "collapsed") panel.classList.remove("expanded");
+
+        const h2 = panel.querySelector("h2");
+        h2.addEventListener("click", () => {
+          panel.classList.toggle("expanded");
+          localStorage.setItem(key, panel.classList.contains("expanded") ? "expanded" : "collapsed");
+          updatePanelSummaries();
+        });
+      });
+      updatePanelSummaries();
+    }
+
+    function updatePanelSummaries() {
+      const compS = document.getElementById("companySummary");
+      if (compS) {
+        const name = textValue("companyName");
+        const contact = textValue("companyContact");
+        compS.textContent = name ? [name, contact].filter(Boolean).join(" · ") : "Not set yet — click to set up";
+      }
+      const empS = document.getElementById("employeeSummary");
+      if (empS) {
+        const name = textValue("employeeName");
+        const pos = textValue("position");
+        const salary = cleanAmount("basicSalary");
+        const parts = [name, pos, salary > 0 ? peso(salary) + "/mo" : null].filter(Boolean);
+        empS.textContent = parts.length ? parts.join(" · ") : "No employee selected";
+      }
+    }
+
+    /* === Export / Import backup === */
+    function exportData() {
+      const payload = {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        company: JSON.parse(localStorage.getItem(STORAGE_KEYS.company) || "null"),
+        employees: JSON.parse(localStorage.getItem(STORAGE_KEYS.employees) || "[]"),
+        draft: JSON.parse(localStorage.getItem("phPayslipDraft") || "null"),
+        theme: localStorage.getItem("phPayslipTheme"),
+        autoDeductions: localStorage.getItem("phPayslipAutoDeductions")
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `payslip-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast("Backup downloaded", "success");
+    }
+
+    async function importData(file) {
+      try {
+        const text = await file.text();
+        const data = JSON.parse(text);
+        if (!data || typeof data !== "object") throw new Error("Invalid file");
+
+        const ok = await showConfirm(
+          "Restore from backup?",
+          "This will overwrite your current company, employees, draft, and theme. This can't be undone.",
+          "Restore"
+        );
+        if (!ok) return;
+
+        if (data.company) localStorage.setItem(STORAGE_KEYS.company, JSON.stringify(data.company));
+        if (Array.isArray(data.employees)) localStorage.setItem(STORAGE_KEYS.employees, JSON.stringify(data.employees));
+        if (data.draft) localStorage.setItem("phPayslipDraft", JSON.stringify(data.draft));
+        if (data.theme) localStorage.setItem("phPayslipTheme", data.theme);
+        if (data.autoDeductions != null) localStorage.setItem("phPayslipAutoDeductions", data.autoDeductions);
+
+        showToast("Backup restored — reloading…", "success");
+        setTimeout(() => location.reload(), 800);
+      } catch (e) {
+        console.error(e);
+        showToast("Could not read backup file", "error");
+      }
+    }
+
+    function attachBackupButtons() {
+      const exportBtn = document.getElementById("exportBtn");
+      const importInput = document.getElementById("importInput");
+      if (exportBtn) exportBtn.addEventListener("click", exportData);
+      if (importInput) importInput.addEventListener("change", (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (file) importData(file);
+        e.target.value = "";
+      });
+    }
+
+    function attachKeyboardShortcuts() {
+      const isMac = navigator.platform.toLowerCase().includes("mac");
+      // Update visible label to use Ctrl on non-Mac
+      if (!isMac) {
+        document.querySelectorAll(".kbd-hint").forEach((el) => {
+          el.textContent = el.textContent.replace("⌘", "Ctrl+");
+        });
+      }
+      document.addEventListener("keydown", (e) => {
+        const mod = isMac ? e.metaKey : e.ctrlKey;
+        if (!mod) return;
+        const key = e.key.toLowerCase();
+        if (key === "s") { e.preventDefault(); saveEmployee(); }
+        else if (key === "p") { e.preventDefault(); downloadPdf(); }
+        else if (key === "d") {
+          e.preventDefault();
+          const current = document.documentElement.getAttribute("data-theme") || "dark";
+          applyTheme(current === "light" ? "dark" : "light");
+        }
+      });
+    }
+
+    /* Lightweight verification glyph (deterministic 5x5 identicon) */
+    function verifyGlyphSvg(seed) {
+      const hash = Array.from(String(seed || "")).reduce((h, c) => ((h << 5) - h + c.charCodeAt(0)) | 0, 7);
+      let cells = "";
+      for (let y = 0; y < 5; y++) {
+        for (let x = 0; x < 3; x++) {
+          const bit = ((hash >> (y * 3 + x)) ^ (hash >> (y + x))) & 1;
+          if (!bit) continue;
+          [x, 4 - x].forEach((px) => {
+            cells += `<rect x="${px}" y="${y}" width="1" height="1" />`;
+          });
+        }
+      }
+      return `<svg viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg" fill="#18181c">${cells}</svg>`;
+    }
+
+    function attachPaySchedule() {
+      const btn = document.getElementById("applyScheduleBtn");
+      const monthInput = document.getElementById("payMonth");
+      const cutoffSel = document.getElementById("payCutoff");
+      if (!btn) return;
+
+      // Default month to current month
+      const now = new Date();
+      if (!monthInput.value) monthInput.value = `${now.getFullYear()}-${pad(now.getMonth() + 1)}`;
+
+      btn.addEventListener("click", applyPaySchedule);
+
+      // Auto-apply when both are chosen
+      [cutoffSel, monthInput].forEach((el) =>
+        el.addEventListener("change", () => {
+          if (cutoffSel.value && monthInput.value) applyPaySchedule();
+        })
+      );
+    }
+
+    function attachLayoutExpand() {
+      const layout = document.querySelector(".layout");
+      if (!layout) return;
+      let timer;
+      // Only trigger for actual text-typing fields — not selects, date pickers, file inputs, checkboxes
+      const formInputs = document.querySelectorAll(
+        '.left-column input[type="text"], .left-column input[type="email"], .left-column input[type="tel"], .left-column textarea'
+      );
+      formInputs.forEach((el) => {
+        el.addEventListener("focus", () => {
+          clearTimeout(timer);
+          layout.classList.add("typing");
+        });
+        el.addEventListener("blur", () => {
+          clearTimeout(timer);
+          timer = setTimeout(() => layout.classList.remove("typing"), 600);
+        });
+      });
+    }
+
+    function cleanAmount(id) {
+      const raw = String(document.getElementById(id).value || "").replace(/,/g, "");
+      return Number(raw) || 0;
+    }
+
+    function textValue(id) {
+      return document.getElementById(id).value.trim();
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return "—";
+      const date = new Date(dateString + "T00:00:00");
+      return date.toLocaleDateString("en-PH", {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      });
+    }
+
+    function getInitials(name) {
+      if (!name) return "PH";
+      return name
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(word => word[0].toUpperCase())
+        .join("");
+    }
+
+    function getEmployees() {
+      return JSON.parse(localStorage.getItem(STORAGE_KEYS.employees) || "[]");
+    }
+
+    function setEmployees(employees) {
+      localStorage.setItem(STORAGE_KEYS.employees, JSON.stringify(employees));
+    }
+
+    function saveCompany() {
+      const company = {
+        name: textValue("companyName"),
+        address: textValue("companyAddress"),
+        contact: textValue("companyContact"),
+        tin: textValue("companyTin"),
+        logo: companyLogoDataUrl
+      };
+
+      localStorage.setItem(STORAGE_KEYS.company, JSON.stringify(company));
+      showToast("Company profile saved", "success");
+      renderPayslip();
+    }
+
+    function loadCompanyFromStorage() {
+      const company = JSON.parse(localStorage.getItem(STORAGE_KEYS.company) || "{}");
+
+      document.getElementById("companyName").value = company.name || "";
+      document.getElementById("companyAddress").value = company.address || "";
+      document.getElementById("companyContact").value = company.contact || "";
+      document.getElementById("companyTin").value = company.tin || "";
+
+      companyLogoDataUrl = company.logo || "";
+      updateLogoPreview();
+    }
+
+    async function clearCompany() {
+      const ok = await showConfirm("Clear company profile?", "This removes the saved company info from this browser.", "Clear");
+      if (!ok) return;
+
+      localStorage.removeItem(STORAGE_KEYS.company);
+      document.getElementById("companyName").value = "";
+      document.getElementById("companyAddress").value = "";
+      document.getElementById("companyContact").value = "";
+      document.getElementById("companyTin").value = "";
+      document.getElementById("companyLogo").value = "";
+      companyLogoDataUrl = "";
+      updateLogoPreview();
+      renderPayslip();
+      showToast("Company profile cleared", "info");
+    }
+
+    function updateLogoPreview() {
+      const logoPreview = document.getElementById("logoPreview");
+      const dropZone = document.getElementById("logoDropZone");
+
+      if (companyLogoDataUrl) {
+        logoPreview.innerHTML = `<img src="${companyLogoDataUrl}" alt="Company Logo">`;
+        if (dropZone) dropZone.classList.add("has-logo");
+      } else {
+        logoPreview.innerHTML = `<span class="drop-icon">🖼️</span>`;
+        if (dropZone) dropZone.classList.remove("has-logo");
+      }
+    }
+
+    function saveEmployee() {
+      const employeeName = textValue("employeeName");
+      const employeeId = textValue("employeeId");
+
+      if (!employeeName) {
+        const el = document.getElementById("employeeName");
+        el.classList.add("invalid");
+        el.focus();
+        showToast("Employee name is required", "error");
+        return;
+      }
+
+      const employee = {
+        key: employeeId || employeeName.toLowerCase().replace(/\s+/g, "-"),
+        name: employeeName,
+        employeeId: employeeId,
+        position: textValue("position"),
+        department: textValue("department"),
+        email: textValue("employeeEmail"),
+        basicSalary: cleanAmount("basicSalary")
+      };
+
+      let employees = getEmployees();
+      const existingIndex = employees.findIndex(emp => emp.key === employee.key);
+
+      if (existingIndex >= 0) {
+        employees[existingIndex] = employee;
+      } else {
+        employees.push(employee);
+      }
+
+      employees.sort((a, b) => a.name.localeCompare(b.name));
+      setEmployees(employees);
+      populateEmployeeSelect(employee.key);
+      showToast(`Saved: ${employee.name}`, "success");
+      renderPayslip();
+    }
+
+    function populateEmployeeSelect(selectedKey = "") {
+      const select = document.getElementById("employeeSelect");
+      const employees = getEmployees();
+
+      select.innerHTML = `<option value="">Choose employee...</option>`;
+
+      employees.forEach(function (employee) {
+        const option = document.createElement("option");
+        option.value = employee.key;
+        option.textContent = `${employee.name}${employee.employeeId ? " — " + employee.employeeId : ""}`;
+        select.appendChild(option);
+      });
+
+      if (selectedKey) {
+        select.value = selectedKey;
+      }
+    }
+
+    function loadEmployee() {
+      const selectedKey = document.getElementById("employeeSelect").value;
+      if (!selectedKey) return;
+
+      const employees = getEmployees();
+      const employee = employees.find(emp => emp.key === selectedKey);
+
+      if (!employee) return;
+
+      document.getElementById("employeeName").value = employee.name || "";
+      document.getElementById("employeeId").value = employee.employeeId || "";
+      document.getElementById("position").value = employee.position || "";
+      document.getElementById("department").value = employee.department || "";
+      document.getElementById("employeeEmail").value = employee.email || "";
+      document.getElementById("basicSalary").value = formatMoneyInput(employee.basicSalary || "");
+      const payEl = document.getElementById("basicPay");
+      payEl.value = formatMoneyInput(employee.basicSalary || "");
+      payEl.dataset.autofilled = "1";
+
+      syncBasicPayHint();
+      updateDownloadState();
+      renderPayslip();
+      showToast(`Loaded: ${employee.name}`, "info");
+    }
+
+    async function deleteEmployee() {
+      const selectedKey = document.getElementById("employeeSelect").value;
+
+      if (!selectedKey) {
+        showToast("Select an employee to delete", "error");
+        return;
+      }
+
+      const employees = getEmployees();
+      const target = employees.find(e => e.key === selectedKey);
+      const name = target ? target.name : "this employee";
+
+      const ok = await showConfirm(
+        `Delete ${name}?`,
+        "This permanently removes the saved profile from this browser.",
+        "Delete"
+      );
+      if (!ok) return;
+
+      const remaining = employees.filter(emp => emp.key !== selectedKey);
+      setEmployees(remaining);
+      populateEmployeeSelect();
+
+      showToast(`Deleted: ${name}`, "success");
+      renderPayslip();
+    }
+
+    function clearPayslipForm() {
+      const fieldsToClear = [
+        "employeeName",
+        "employeeId",
+        "position",
+        "department",
+        "employeeEmail",
+        "basicSalary",
+        "periodStart",
+        "periodEnd",
+        "paymentDate",
+        "basicPay",
+        "overtimePay",
+        "bonuses",
+        "allowances",
+        "withholdingTax",
+        "sssDeduction",
+        "philhealthDeduction",
+        "pagibigDeduction",
+        "taxDeduction",
+        "lateDeduction",
+        "otherDeductions",
+        "notes"
+      ];
+
+      fieldsToClear.forEach(function (id) {
+        document.getElementById(id).value = "";
+      });
+
+      document.getElementById("employeeSelect").value = "";
+      renderPayslip();
+    }
+
+    function getPayslipData() {
+      const basicPay = cleanAmount("basicPay");
+      const overtimePay = cleanAmount("overtimePay");
+      const bonuses = cleanAmount("bonuses");
+      const allowances = cleanAmount("allowances");
+
+      const withholdingTax = cleanAmount("withholdingTax");
+      const sssDeduction = cleanAmount("sssDeduction");
+      const philhealthDeduction = cleanAmount("philhealthDeduction");
+      const pagibigDeduction = cleanAmount("pagibigDeduction");
+      const taxDeduction = cleanAmount("taxDeduction");
+      const lateDeduction = cleanAmount("lateDeduction");
+      const otherDeductions = cleanAmount("otherDeductions");
+
+      const grossPay = basicPay + overtimePay + bonuses + allowances;
+      const totalDeductions =
+        withholdingTax +
+        sssDeduction +
+        philhealthDeduction +
+        pagibigDeduction +
+        taxDeduction +
+        lateDeduction +
+        otherDeductions;
+
+      const netPay = grossPay - totalDeductions;
+
+      return {
+        company: {
+          name: textValue("companyName") || "Company Name",
+          address: textValue("companyAddress"),
+          contact: textValue("companyContact"),
+          tin: textValue("companyTin"),
+          logo: companyLogoDataUrl
+        },
+        employee: {
+          name: textValue("employeeName"),
+          employeeId: textValue("employeeId"),
+          position: textValue("position"),
+          department: textValue("department"),
+          email: textValue("employeeEmail"),
+          basicSalary: cleanAmount("basicSalary")
+        },
+        payPeriod: {
+          start: textValue("periodStart"),
+          end: textValue("periodEnd"),
+          paymentDate: textValue("paymentDate")
+        },
+        earnings: {
+          basicPay,
+          overtimePay,
+          bonuses,
+          allowances
+        },
+        deductions: {
+          withholdingTax,
+          sssDeduction,
+          philhealthDeduction,
+          pagibigDeduction,
+          taxDeduction,
+          lateDeduction,
+          otherDeductions
+        },
+        totals: {
+          grossPay,
+          totalDeductions,
+          netPay
+        },
+        notes: textValue("notes")
+      };
+    }
+
+    function renderPayslip() {
+      const data = getPayslipData();
+
+      animateMoney("grossPayText", data.totals.grossPay);
+      animateMoney("deductionsText", data.totals.totalDeductions);
+      animateMoney("netPayText", data.totals.netPay);
+
+      const hasContent =
+        data.employee.name ||
+        data.employee.employeeId ||
+        data.totals.grossPay ||
+        data.totals.totalDeductions ||
+        data.company.name !== "Company Name";
+
+      if (!hasContent) {
+        document.getElementById("payslipPreview").innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">
+              <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+            </div>
+            <div class="empty-title">Your payslip will appear here</div>
+            <p>Fill in employee details and earnings on the left to generate a live preview.</p>
+          </div>`;
+        return;
+      }
+
+      const logoHtml = data.company.logo
+        ? `<img class="slip-logo" src="${data.company.logo}" alt="Company Logo">`
+        : `<div class="slip-logo-placeholder">${escapeHtml(getInitials(data.company.name))}</div>`;
+
+      const periodLabel = data.payPeriod.start && data.payPeriod.end
+        ? `${formatDate(data.payPeriod.start)} – ${formatDate(data.payPeriod.end)}`
+        : "Pay period";
+
+      document.getElementById("payslipPreview").innerHTML = `
+        <div class="slip-sheet" id="payslipContent">
+          <div class="slip-header">
+            <div class="slip-company">
+              ${logoHtml}
+              <div>
+                <h3>${escapeHtml(data.company.name)}</h3>
+                <p>${escapeHtml(data.company.address) || "Company address"}</p>
+                <p>${escapeHtml(data.company.contact) || "Company contact"}</p>
+                ${data.company.tin ? `<p>TIN / Registration No: ${escapeHtml(data.company.tin)}</p>` : ""}
+              </div>
+            </div>
+
+            <div class="slip-meta">
+              <div class="slip-badge">PAYSLIP</div>
+              <h3>${formatDate(data.payPeriod.paymentDate)}</h3>
+              <p>Generated: ${formatDate(new Date().toISOString().slice(0, 10))}</p>
+            </div>
+          </div>
+
+          <div class="net-hero">
+            <div>
+              <div class="net-hero-label">Net Pay</div>
+              <div class="net-hero-period">${periodLabel}</div>
+            </div>
+            <div class="net-hero-amount">${peso(data.totals.netPay)}</div>
+          </div>
+
+          <div class="slip-section">
+            <div class="line-grid">
+              <div>
+                <div class="slip-section-title">Employee</div>
+                <div class="line-list">
+                  <div class="line-item"><div class="label">Name</div><div class="value"><div class="slip-employee-row"><span class="slip-avatar">${escapeHtml(getInitials(data.employee.name))}</span><span>${escapeHtml(data.employee.name) || "—"}</span></div></div></div>
+                  <div class="line-item"><div class="label">Employee ID</div><div class="value">${escapeHtml(data.employee.employeeId) || "—"}</div></div>
+                  <div class="line-item"><div class="label">Position</div><div class="value">${escapeHtml(data.employee.position) || "—"}</div></div>
+                  <div class="line-item"><div class="label">Department</div><div class="value">${escapeHtml(data.employee.department) || "—"}</div></div>
+                  <div class="line-item"><div class="label">Email</div><div class="value">${escapeHtml(data.employee.email) || "—"}</div></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="slip-section-title">Pay Period</div>
+                <div class="line-list">
+                  <div class="line-item"><div class="label">Period Start</div><div class="value">${formatDate(data.payPeriod.start)}</div></div>
+                  <div class="line-item"><div class="label">Period End</div><div class="value">${formatDate(data.payPeriod.end)}</div></div>
+                  <div class="line-item"><div class="label">Payment Date</div><div class="value">${formatDate(data.payPeriod.paymentDate)}</div></div>
+                  <div class="line-item"><div class="label">Basic Salary</div><div class="value">${peso(data.employee.basicSalary)}</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slip-section">
+            <div class="pay-grid">
+              <div>
+                <div class="slip-section-title">Earnings</div>
+                <table class="mini-table">
+                  <thead>
+                    <tr>
+                      <th>Description</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Basic Pay</td><td>${peso(data.earnings.basicPay)}</td></tr>
+                    <tr><td>Overtime Pay</td><td>${peso(data.earnings.overtimePay)}</td></tr>
+                    <tr><td>Bonuses</td><td>${peso(data.earnings.bonuses)}</td></tr>
+                    <tr><td>Allowances</td><td>${peso(data.earnings.allowances)}</td></tr>
+                  </tbody>
+                  <tfoot>
+                    <tr><td>Gross Pay</td><td>${peso(data.totals.grossPay)}</td></tr>
+                  </tfoot>
+                </table>
+              </div>
+
+              <div>
+                <div class="slip-section-title">Deductions</div>
+                <table class="mini-table">
+                  <thead>
+                    <tr>
+                      <th>Description</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Withholding Tax</td><td>${peso(data.deductions.withholdingTax)}</td></tr>
+                    <tr><td>SSS</td><td>${peso(data.deductions.sssDeduction)}</td></tr>
+                    <tr><td>PhilHealth</td><td>${peso(data.deductions.philhealthDeduction)}</td></tr>
+                    <tr><td>Pag-IBIG</td><td>${peso(data.deductions.pagibigDeduction)}</td></tr>
+                    <tr><td>Other Tax Deduction</td><td>${peso(data.deductions.taxDeduction)}</td></tr>
+                    <tr><td>Late / Absence</td><td>${peso(data.deductions.lateDeduction)}</td></tr>
+                    <tr><td>Other Deductions</td><td>${peso(data.deductions.otherDeductions)}</td></tr>
+                  </tbody>
+                  <tfoot>
+                    <tr><td>Total Deductions</td><td>${peso(data.totals.totalDeductions)}</td></tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="notes-block">
+            <div class="slip-section-title">Notes</div>
+            <p>${escapeHtml(data.notes) || "No notes provided."}</p>
+          </div>
+
+          <div class="signature-grid">
+            <div class="signature-line">Prepared By / Authorized Representative</div>
+            <div class="signature-line">Employee Signature</div>
+          </div>
+
+          <div class="slip-footer">
+            <div class="slip-ref">Ref: ${escapeHtml((data.employee.employeeId || data.employee.name || "—") + " / " + (data.payPeriod.paymentDate || ""))}</div>
+            <div>Generated electronically · Philippine Peso (PHP)</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function downloadPdf() {
+      const missing = [];
+      if (!textValue("employeeName")) missing.push("Employee Name");
+      if (cleanAmount("basicPay") <= 0) missing.push("Basic Pay");
+      if (missing.length) {
+        ["employeeName", "basicPay"].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.dataset.touched = "1";
+        });
+        updateDownloadState();
+        showToast(`Missing: ${missing.join(", ")}`, "error");
+        return;
+      }
+
+      // Auto-fill payment date with today if empty
+      const paymentEl = document.getElementById("paymentDate");
+      if (paymentEl && !paymentEl.value) {
+        const t = new Date();
+        paymentEl.value = `${t.getFullYear()}-${pad(t.getMonth() + 1)}-${pad(t.getDate())}`;
+      }
+
+      renderPayslip();
+
+      const source = document.getElementById("payslipContent");
+
+      if (!source) {
+        showToast("Fill out the payslip form first", "error");
+        return;
+      }
+
+      const employeeName = textValue("employeeName") || "employee";
+      const periodEnd = textValue("periodEnd") || new Date().toISOString().slice(0, 10);
+      const filename = `payslip-${employeeName.replace(/\s+/g, "-").toLowerCase()}-${periodEnd}.pdf`;
+
+      const PDF_WIDTH_MM = 115;
+      const PX_PER_MM = 96 / 25.4; // CSS px per mm at 96 DPI
+
+      const printWrapper = document.createElement("div");
+      printWrapper.style.position = "fixed";
+      printWrapper.style.left = "-10000px";
+      printWrapper.style.top = "0";
+      printWrapper.style.width = PDF_WIDTH_MM + "mm";
+      printWrapper.style.background = "#ffffff";
+      printWrapper.style.padding = "0";
+      printWrapper.style.margin = "0";
+      printWrapper.style.zIndex = "-1";
+
+      const clone = source.cloneNode(true);
+      clone.style.width = PDF_WIDTH_MM + "mm";
+      clone.style.maxWidth = PDF_WIDTH_MM + "mm";
+      clone.style.minHeight = "auto";
+      clone.style.margin = "0";
+      clone.style.boxShadow = "none";
+
+      printWrapper.appendChild(clone);
+      document.body.appendChild(printWrapper);
+
+      // Force layout flush, then measure for exact-fit PDF page height
+      const heightPx = clone.getBoundingClientRect().height;
+      const heightMm = Math.max(80, Math.ceil(heightPx / PX_PER_MM) + 4);
+
+      const opt = {
+        margin: [0, 0, 0, 0],
+        filename: filename,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: "#ffffff",
+          scrollX: 0,
+          scrollY: 0
+        },
+        jsPDF: {
+          unit: "mm",
+          format: [PDF_WIDTH_MM, heightMm],
+          orientation: "portrait"
+        }
+      };
+
+      html2pdf()
+        .set(opt)
+        .from(clone)
+        .save()
+        .then(() => {
+          document.body.removeChild(printWrapper);
+          try { archiveSnapshot(getPayslipData()); } catch (e) { console.warn(e); }
+          showToast("PDF downloaded · saved to history", "success");
+        })
+        .catch((error) => {
+          document.body.removeChild(printWrapper);
+          console.error(error);
+          showToast("Could not generate the PDF", "error");
+        });
+    }
+  </script>
+</body>
+</html>
