@@ -1847,12 +1847,12 @@
             <svg class="panel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </h2>
           <div class="panel-body">
-          <p class="section-note">Saved in this browser only using localStorage.</p>
+          <p class="section-note">Company name and logo are fixed for KNB Web Solutions Incorporated. Other details are saved in this browser only using localStorage.</p>
 
           <div class="form-grid">
             <div class="form-group full">
               <label for="companyName">Company Name</label>
-              <input id="companyName" type="text" placeholder="Example: KNB" />
+              <input id="companyName" type="text" value="KNB Web Solutions Incorporated" readonly />
             </div>
 
             <div class="form-group full">
@@ -1871,19 +1871,15 @@
             </div>
 
             <div class="form-group full">
-              <label>Company Logo <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+              <label>Company Logo</label>
               <div class="drop-zone" id="logoDropZone">
-                <button type="button" class="remove-logo" id="removeLogoBtn" aria-label="Remove logo">
-                  <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                </button>
-                <input id="companyLogo" type="file" accept="image/*" />
                 <div class="drop-zone-inner">
                   <div class="logo-preview" id="logoPreview">
-                    <svg class="icon icon-lg" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    <img src="assets/logo/knb-logo.png" alt="Company Logo">
                   </div>
                   <div style="text-align:left">
-                    <p><strong>Click or drag</strong> to upload a logo</p>
-                    <p>PNG, JPG, or SVG · small file works best</p>
+                    <p><strong>Permanent KNB logo</strong></p>
+                    <p>Used automatically on every generated payslip</p>
                   </div>
                 </div>
               </div>
@@ -2190,7 +2186,10 @@
       archive: "phPayslipArchive"
     };
 
-    let companyLogoDataUrl = "";
+    const COMPANY_NAME = "KNB Web Solutions Incorporated";
+    const COMPANY_LOGO_SRC = "assets/logo/knb-logo.png";
+
+    let companyLogoDataUrl = COMPANY_LOGO_SRC;
 
     const inputIds = [
       "companyName",
@@ -2305,18 +2304,6 @@
 
       document.getElementById("employeeSelect").addEventListener("change", loadEmployee);
 
-      document.getElementById("companyLogo").addEventListener("change", function (event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          companyLogoDataUrl = e.target.result;
-          updateLogoPreview();
-          renderPayslip();
-        };
-        reader.readAsDataURL(file);
-      });
     }
 
     function peso(amount) {
@@ -2520,43 +2507,10 @@
       else txt.textContent = "Saved earlier";
     }
 
-    /* Drop zone behavior for logo */
+    /* Permanent logo presentation */
     function attachDropZone() {
       const zone = document.getElementById("logoDropZone");
-      const input = document.getElementById("companyLogo");
-      const removeBtn = document.getElementById("removeLogoBtn");
-      if (!zone || !input) return;
-
-      ["dragenter", "dragover"].forEach((ev) =>
-        zone.addEventListener(ev, (e) => { e.preventDefault(); zone.classList.add("dragover"); })
-      );
-      ["dragleave", "drop"].forEach((ev) =>
-        zone.addEventListener(ev, (e) => { e.preventDefault(); zone.classList.remove("dragover"); })
-      );
-      zone.addEventListener("drop", (e) => {
-        const file = e.dataTransfer.files && e.dataTransfer.files[0];
-        if (!file || !file.type.startsWith("image/")) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          companyLogoDataUrl = ev.target.result;
-          updateLogoPreview();
-          renderPayslip();
-          showToast("Logo uploaded", "success");
-        };
-        reader.readAsDataURL(file);
-      });
-
-      if (removeBtn) {
-        removeBtn.addEventListener("click", (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          companyLogoDataUrl = "";
-          input.value = "";
-          updateLogoPreview();
-          renderPayslip();
-          showToast("Logo removed", "info");
-        });
-      }
+      if (zone) zone.classList.add("has-logo");
     }
 
     /* Semi-monthly pay schedule (PH) */
@@ -2995,7 +2949,7 @@
     function updatePanelSummaries() {
       const compS = document.getElementById("companySummary");
       if (compS) {
-        const name = textValue("companyName");
+        const name = COMPANY_NAME;
         const contact = textValue("companyContact");
         compS.textContent = name ? [name, contact].filter(Boolean).join(" · ") : "Not set yet — click to set up";
       }
@@ -3196,11 +3150,11 @@
 
     function saveCompany() {
       const company = {
-        name: textValue("companyName"),
+        name: COMPANY_NAME,
         address: textValue("companyAddress"),
         contact: textValue("companyContact"),
         tin: textValue("companyTin"),
-        logo: companyLogoDataUrl
+        logo: COMPANY_LOGO_SRC
       };
 
       localStorage.setItem(STORAGE_KEYS.company, JSON.stringify(company));
@@ -3211,12 +3165,12 @@
     function loadCompanyFromStorage() {
       const company = JSON.parse(localStorage.getItem(STORAGE_KEYS.company) || "{}");
 
-      document.getElementById("companyName").value = company.name || "";
+      document.getElementById("companyName").value = COMPANY_NAME;
       document.getElementById("companyAddress").value = company.address || "";
       document.getElementById("companyContact").value = company.contact || "";
       document.getElementById("companyTin").value = company.tin || "";
 
-      companyLogoDataUrl = company.logo || "";
+      companyLogoDataUrl = COMPANY_LOGO_SRC;
       updateLogoPreview();
     }
 
@@ -3225,12 +3179,11 @@
       if (!ok) return;
 
       localStorage.removeItem(STORAGE_KEYS.company);
-      document.getElementById("companyName").value = "";
+      document.getElementById("companyName").value = COMPANY_NAME;
       document.getElementById("companyAddress").value = "";
       document.getElementById("companyContact").value = "";
       document.getElementById("companyTin").value = "";
-      document.getElementById("companyLogo").value = "";
-      companyLogoDataUrl = "";
+      companyLogoDataUrl = COMPANY_LOGO_SRC;
       updateLogoPreview();
       renderPayslip();
       showToast("Company profile cleared", "info");
@@ -3239,9 +3192,10 @@
     function updateLogoPreview() {
       const logoPreview = document.getElementById("logoPreview");
       const dropZone = document.getElementById("logoDropZone");
+      const logoSrc = companyLogoDataUrl || COMPANY_LOGO_SRC;
 
-      if (companyLogoDataUrl) {
-        logoPreview.innerHTML = `<img src="${companyLogoDataUrl}" alt="Company Logo">`;
+      if (logoSrc) {
+        logoPreview.innerHTML = `<img src="${logoSrc}" alt="Company Logo">`;
         if (dropZone) dropZone.classList.add("has-logo");
       } else {
         logoPreview.innerHTML = `<span class="drop-icon">🖼️</span>`;
@@ -3418,11 +3372,11 @@
 
       return {
         company: {
-          name: textValue("companyName") || "Company Name",
+          name: COMPANY_NAME,
           address: textValue("companyAddress"),
           contact: textValue("companyContact"),
           tin: textValue("companyTin"),
-          logo: companyLogoDataUrl
+          logo: COMPANY_LOGO_SRC
         },
         employee: {
           name: textValue("employeeName"),
