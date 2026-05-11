@@ -4555,7 +4555,10 @@
         const qr = qrcode(0, "L");
         qr.addData(text);
         qr.make();
-        return qr.createSvgTag(8, 0);
+        return qr.createSvgTag(8, 0)
+          .replace(/\swidth="[^"]+"/, ' width="100%"')
+          .replace(/\sheight="[^"]+"/, ' height="100%"')
+          .replace(/preserveAspectRatio="[^"]+"/, 'preserveAspectRatio="xMidYMid meet"');
       } catch (error) {
         console.warn(error);
         return verifyGlyphSvg(text);
