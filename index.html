@@ -580,19 +580,23 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      margin-top: 6px;
-      font-size: 9px;
-      color: #6b7280;
+      gap: 12px;
+      margin-top: 10px;
+      padding: 0;
+      width: 100%;
+      background: transparent;
+      border-radius: 0;
+      font-size: 9.5px;
+      color: #52525b;
       text-align: left;
     }
 
     .slip-verify-mark {
-      width: 60px;
-      height: 60px;
-      border: 1px solid #e4e4e7;
+      width: 124px;
+      height: 124px;
+      border: 1px solid #d4d4d8;
       border-radius: 6px;
-      padding: 4px;
+      padding: 8px;
       background: #fff;
       flex-shrink: 0;
     }
@@ -604,20 +608,47 @@
     }
 
     .slip-verify-copy {
-      max-width: 220px;
+      max-width: none;
       line-height: 1.35;
+      min-width: 0;
+      text-align: left;
     }
 
     .slip-verify-copy strong {
       display: block;
       color: #18181c;
-      font-size: 9px;
-      letter-spacing: 0.04em;
+      font-size: 10px;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
+      margin-bottom: 5px;
+      text-align: center;
     }
 
     .slip-verify-copy span {
       display: block;
+      overflow-wrap: anywhere;
+    }
+
+    .slip-verify-row {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 10px;
+      align-items: baseline;
+      margin-top: 2px;
+      width: max-content;
+      max-width: 100%;
+    }
+
+    .slip-verify-row .label {
+      color: #71717a;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .slip-verify-row .value {
+      color: #18181c;
+      font-weight: 700;
       overflow-wrap: anywhere;
     }
 
@@ -2206,6 +2237,11 @@
       gap: 4px;
     }
 
+    .slip-sheet.receipt .slip-verify {
+      border-radius: 0;
+      margin-top: 8px;
+    }
+
     .slip-sheet.receipt .slip-footer::before {
       content: "* * * THANK YOU * * *";
       font-weight: 700;
@@ -2293,6 +2329,11 @@
 
     .slip-sheet.formal .mini-table tfoot td {
       border-top: 1px solid #18181c !important;
+    }
+
+    .slip-sheet.formal .slip-verify {
+      border-radius: 8px;
+      padding: 12px;
     }
 
     @media print {
@@ -4481,25 +4522,12 @@
 
     function verificationPayload(data) {
       const payload = {
-        v: 1,
-        i: COMPANY_NAME,
+        v: 2,
         r: data.reference,
-        e: {
-          n: data.employee.name,
-          id: data.employee.employeeId
-        },
-        p: {
-          s: data.payPeriod.start,
-          e: data.payPeriod.end,
-          pd: data.payPeriod.paymentDate
-        },
-        t: {
-          g: moneyValue(data.totals.grossPay),
-          d: moneyValue(data.totals.totalDeductions),
-          n: moneyValue(data.totals.netPay)
-        },
-        c: "PHP",
-        io: data.payPeriod.paymentDate || new Date().toISOString().slice(0, 10)
+        id: data.employee.employeeId || "",
+        n: moneyValue(data.totals.netPay),
+        p: `${data.payPeriod.start || ""}/${data.payPeriod.end || ""}`,
+        d: data.payPeriod.paymentDate || ""
       };
       payload.k = checksum(stableStringify(payload));
       return payload;
@@ -4510,8 +4538,12 @@
     }
 
     function verificationUrl(data) {
+      const token = verificationToken(data);
+      if (window.location.protocol === "file:") {
+        return `KNB:${token}`;
+      }
       const base = new URL(VERIFY_PAGE_PATH, window.location.href);
-      base.hash = verificationToken(data);
+      base.hash = token;
       return base.href;
     }
 
@@ -4520,10 +4552,10 @@
         return verifyGlyphSvg(text);
       }
       try {
-        const qr = qrcode(0, "M");
+        const qr = qrcode(0, "L");
         qr.addData(text);
         qr.make();
-        return qr.createSvgTag(2, 0);
+        return qr.createSvgTag(8, 0);
       } catch (error) {
         console.warn(error);
         return verifyGlyphSvg(text);
@@ -5054,7 +5086,8 @@
               <div class="slip-verify-mark" aria-label="Verification QR code">${verifyQr}</div>
               <div class="slip-verify-copy">
                 <strong>Scan to verify</strong>
-                <span>Net ${peso(data.totals.netPay)} · Check ${escapeHtml(verifyPayload.k)}</span>
+                <div class="slip-verify-row"><span class="label">Net</span><span class="value">${peso(data.totals.netPay)}</span></div>
+                <div class="slip-verify-row"><span class="label">Check</span><span class="value">${escapeHtml(verifyPayload.k)}</span></div>
               </div>
             </div>
           </div>

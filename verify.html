@@ -206,17 +206,32 @@
         status.textContent = valid ? "Checksum valid" : "Checksum mismatch";
         status.classList.toggle("bad", !valid);
 
-        details.innerHTML = [
-          row("Issuer", payload.i),
-          row("Reference", payload.r),
-          row("Employee", `${payload.e?.n || "-"}${payload.e?.id ? " (" + payload.e.id + ")" : ""}`),
-          row("Pay Period", `${formatDate(payload.p?.s)} to ${formatDate(payload.p?.e)}`),
-          row("Payment Date", formatDate(payload.p?.pd)),
-          row("Gross Pay", peso(payload.t?.g)),
-          row("Deductions", peso(payload.t?.d)),
-          row("Net Pay", peso(payload.t?.n), "net"),
-          row("Checksum", payload.k || "-")
-        ].join("");
+        const isCompact = payload.v === 2;
+        const period = isCompact
+          ? String(payload.p || "").split("/")
+          : [payload.p?.s, payload.p?.e];
+
+        details.innerHTML = isCompact
+          ? [
+              row("Issuer", "KNB Web Solutions Incorporated"),
+              row("Reference", payload.r),
+              row("Employee ID", payload.id || "-"),
+              row("Pay Period", `${formatDate(period[0])} to ${formatDate(period[1])}`),
+              row("Payment Date", formatDate(payload.d)),
+              row("Net Pay", peso(payload.n), "net"),
+              row("Checksum", payload.k || "-")
+            ].join("")
+          : [
+              row("Issuer", payload.i),
+              row("Reference", payload.r),
+              row("Employee", `${payload.e?.n || "-"}${payload.e?.id ? " (" + payload.e.id + ")" : ""}`),
+              row("Pay Period", `${formatDate(payload.p?.s)} to ${formatDate(payload.p?.e)}`),
+              row("Payment Date", formatDate(payload.p?.pd)),
+              row("Gross Pay", peso(payload.t?.g)),
+              row("Deductions", peso(payload.t?.d)),
+              row("Net Pay", peso(payload.t?.n), "net"),
+              row("Checksum", payload.k || "-")
+            ].join("");
 
         note.textContent = valid
           ? "Compare these values against the printed PDF. If the PDF text differs from this page, the PDF was changed after issue."
