@@ -3516,6 +3516,36 @@
         set("periodEnd", params.get("periodEnd") || "");
         set("paymentDate", params.get("paymentDate") || "");
 
+        // Auto-select 1st / 2nd cutoff (or leave on Custom). Salary-client detects
+        // this from the row's period dates and forwards via URL params. We update
+        // the underlying select + the segmented-control pills *visually only* —
+        // dispatching `change` would re-trigger applyPaySchedule, which overwrites
+        // the explicit period/payment dates we already pre-filled above.
+        const paySchedule = params.get("paySchedule");
+        const payMonth = params.get("payMonth");
+        if (paySchedule === "first" || paySchedule === "second") {
+          const cutoffSel = document.getElementById("payCutoff");
+          const monthEl = document.getElementById("payMonth");
+          if (monthEl && payMonth) monthEl.value = payMonth;
+          if (cutoffSel) {
+            cutoffSel.value = paySchedule;
+            // Segmented control is inserted as the previous sibling of the (now-hidden) select.
+            const seg = cutoffSel.previousElementSibling;
+            if (seg && seg.classList && seg.classList.contains("segmented")) {
+              seg.querySelectorAll(".seg-option").forEach(b => {
+                const active = b.dataset.value === paySchedule;
+                b.classList.toggle("active", active);
+                b.setAttribute("aria-checked", active ? "true" : "false");
+                b.tabIndex = active ? 0 : -1;
+              });
+            }
+            // Show the "Applied …" badge so the user sees which cutoff was inferred.
+            if (typeof showAppliedBadge === "function" && payMonth) {
+              try { showAppliedBadge(paySchedule, payMonth); } catch (_) {}
+            }
+          }
+        }
+
         // If a pre-split breakdown is present (basicPay / overtimePay / bonuses /
         // allowances), apply each field individually. This lets the salary-client
         // route a row's surplus into overtime, route bonus-type rows into Bonuses,
@@ -3534,6 +3564,10 @@
         const splitBonuses   = setEarnings("bonuses",     "bonuses");
         const splitAllowance = setEarnings("allowances",  "allowances");
         const hasSplit = splitBasic || splitOvertime || splitBonuses || splitAllowance;
+
+        // Shortfall against expected basic shows up as a Late/Absence deduction
+        // (salary-client splits negative variance there so basic stays accurate).
+        setEarnings("lateDeduction", "lateDeduction");
 
         // Legacy single-amount path: only apply if no per-field split was given.
         const amount = params.get("amount");
@@ -5249,7 +5283,17 @@
       const dataForFile = getPayslipData();
       const employeeName = textValue("employeeName") || "employee";
       const periodEnd = textValue("periodEnd") || new Date().toISOString().slice(0, 10);
-      const filename = `${dataForFile.reference || `payslip-${employeeName.replace(/\s+/g, "-").toLowerCase()}-${periodEnd}`}.pdf`;
+      // Always include the employee name in the filename so downloaded PDFs
+      // are easy to identify even when archived/renamed by hand.
+      const employeeSlug = employeeName
+        .trim()
+        .replace(/\s+/g, "-")             // spaces → dashes
+        .replace(/[^A-Za-z0-9\-_]/g, "")  // strip everything not safe in filenames
+        .replace(/-+/g, "-")              // collapse runs of dashes
+        .replace(/^-|-$/g, "")            // trim leading/trailing dashes
+        .toLowerCase() || "employee";
+      const tail = dataForFile.reference ? `-${dataForFile.reference}` : `-${periodEnd}`;
+      const filename = `payslip-${employeeSlug}${tail}.pdf`;
 
       const mode = getPdfMode();
       const PDF_WIDTH_MM = mode === "formal" ? 210 : 115;
