@@ -2888,6 +2888,8 @@
       attachBatchDownload();
       attachModalA11y();
       loadDraft();
+      // Deep-link from KNB-SALARY-CLIENT: pre-fill form from URL params if present.
+      applyDeepLinkParams();
       setInterval(tickSaveLabel, 1000);
       MONEY_FIELDS.forEach((id) => {
         const el = document.getElementById(id);
@@ -3483,6 +3485,104 @@
           if (el && !el.value) el.value = draft[id];
         });
       } catch (e) {}
+    }
+
+    // Read URL params (e.g. ?source=knb-salary-client&key=...&name=...&basic=...)
+    // and pre-fill the employee fields. Triggered after loadDraft so deep-link wins.
+    function applyDeepLinkParams() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("source") !== "knb-salary-client") return;
+        const set = (id, val) => {
+          const el = document.getElementById(id);
+          if (el && val != null && val !== "") el.value = val;
+        };
+        set("employeeName", params.get("name") || "");
+        set("employeeId", params.get("employeeId") || "");
+        set("position", params.get("position") || "");
+        set("department", params.get("department") || "");
+        set("employeeEmail", params.get("email") || "");
+        const basic = params.get("basic");
+        if (basic && Number(basic) > 0) {
+          const salaryEl = document.getElementById("basicSalary");
+          if (salaryEl) salaryEl.value = formatMoneyInput(basic);
+          const payEl = document.getElementById("basicPay");
+          if (payEl) {
+            payEl.dataset.autofilled = "1";
+            if (typeof syncBasicPayFromSalary === "function") syncBasicPayFromSalary();
+          }
+        }
+        set("periodStart", params.get("periodStart") || "");
+        set("periodEnd", params.get("periodEnd") || "");
+        set("paymentDate", params.get("paymentDate") || "");
+
+        // If a pre-split breakdown is present (basicPay / overtimePay / bonuses /
+        // allowances), apply each field individually. This lets the salary-client
+        // route a row's surplus into overtime, route bonus-type rows into Bonuses,
+        // route reimbursements into Allowances, etc. Pre-split wins over `amount`.
+        const setEarnings = (paramName, fieldId) => {
+          const v = params.get(paramName);
+          if (v == null || v === "" || !(Number(v) > 0)) return false;
+          const el = document.getElementById(fieldId);
+          if (!el) return false;
+          el.value = formatMoneyInput(v);
+          if (fieldId === "basicPay") el.dataset.autofilled = "0";
+          return true;
+        };
+        const splitBasic     = setEarnings("basicPay",    "basicPay");
+        const splitOvertime  = setEarnings("overtimePay", "overtimePay");
+        const splitBonuses   = setEarnings("bonuses",     "bonuses");
+        const splitAllowance = setEarnings("allowances",  "allowances");
+        const hasSplit = splitBasic || splitOvertime || splitBonuses || splitAllowance;
+
+        // Legacy single-amount path: only apply if no per-field split was given.
+        const amount = params.get("amount");
+        if (!hasSplit && amount && Number(amount) > 0) {
+          const payEl = document.getElementById("basicPay");
+          if (payEl) {
+            payEl.value = formatMoneyInput(amount);
+            payEl.dataset.autofilled = "0"; // user/source intent, do not auto-sync away
+          }
+        }
+
+        // Carry through the salary-client reference + optional type as a note hint.
+        // If notes already have content, append on a new line instead of skipping —
+        // otherwise drafts can silently swallow this info.
+        const refParam = params.get("reference");
+        const typeParam = params.get("type");
+        if (refParam || typeParam) {
+          const notesEl = document.getElementById("notes");
+          if (notesEl) {
+            const bits = [];
+            if (typeParam) bits.push(`Type: ${typeParam}`);
+            if (refParam) bits.push(`Ref: ${refParam}`);
+            const note = bits.join(" · ");
+            if (note && notesEl.value.indexOf(note) === -1) {
+              notesEl.value = notesEl.value ? `${notesEl.value}\n${note}` : note;
+            }
+          }
+        }
+
+        // If a known employee key was passed, select it so future Save lands on the right slug.
+        const key = params.get("key");
+        if (key) {
+          const select = document.getElementById("employeeSelect");
+          if (select) {
+            const exists = Array.from(select.options).some(o => o.value === key);
+            if (exists) select.value = key;
+          }
+        }
+
+        if (typeof syncBasicPayHint === "function") syncBasicPayHint();
+        if (typeof updateDownloadState === "function") updateDownloadState();
+        if (typeof renderPayslip === "function") renderPayslip();
+        if (typeof showToast === "function") {
+          const who = params.get("name") || "employee";
+          showToast(`Pre-filled from KNB Salary Client: ${who}`, "info");
+        }
+      } catch (e) {
+        console.warn("applyDeepLinkParams failed:", e);
+      }
     }
 
     function scheduleAutosave() {
